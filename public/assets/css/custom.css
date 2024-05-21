@@ -1,0 +1,65 @@
+/**
+ *
+ * You can write your CSS code here, DO NOT touch the default JavaScript file
+ * because it will make it harder for you to update.
+ * 
+ */
+
+/*# sourceMappingURL=custom.css.map */
+
+
+.image_list {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border: 3px solid #6777ef;
+    padding: 5px;
+    border-radius: 10px;
+    background-color: #6777ef;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.image_list_preview {
+     /* middel image */
+     margin-top: auto;
+     margin-bottom: auto;
+     margin-left: auto;
+     margin-right: auto;
+     width: 50%;
+     padding: 10px;
+     border-radius: 10px;
+     color: white;
+     text-align: center;
+     font-size: 20px;
+     cursor: pointer;
+ 
+}
+
+.image_list_danger {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    border: 3px solid red;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.color-success {
+    border-color: #28a745 !important
+}
+
+.color-fail {
+    border-color: #dc3545 !important
+}
