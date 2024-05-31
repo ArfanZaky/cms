@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ Helper::_get_logo() ?? asset('favicon.ico') }}"/>
+    <link rel="icon" type="image/x-icon" href="{{ \App\Helper\Helper::_get_logo() ?? asset('favicon.ico') }}"/>
 
     <!-- General CSS Files -->
     <link rel="stylesheet" href="{{ asset('assets/modules/jquery-ui-1.9.2.custom/css/base/jquery-ui-1.9.2.custom.min.css') }}">

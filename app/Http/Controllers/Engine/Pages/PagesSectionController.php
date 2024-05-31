@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WebMenus;
 use App\Models\WebPages;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -66,7 +66,7 @@ class PagesSectionController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }
@@ -133,7 +133,7 @@ class PagesSectionController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }

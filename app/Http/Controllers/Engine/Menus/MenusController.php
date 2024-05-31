@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WebArticleCategories;
 use App\Models\WebMenus;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +50,7 @@ class MenusController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree = Helper::tree($data_tree);
+        $data_tree = \App\Helper\Helper::tree($data_tree);
         $menu_table = menu_table($data_tree, 0, $data = []);
         $menu_table = collect($menu_table)->sortBy('visibility');
 
@@ -74,7 +74,7 @@ class MenusController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }
@@ -95,7 +95,7 @@ class MenusController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree2);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree2);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree2;
         }
@@ -191,7 +191,7 @@ class MenusController extends Controller
             ];
         }
 
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }
@@ -213,7 +213,7 @@ class MenusController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree2);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree2);
         $menu_table_category = menu_table($data_tree_helper, 0, $data = []);
 
         $data = WebMenus::with('translations')->find($id);

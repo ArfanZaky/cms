@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use App\Models\WebArticleCategories;
 use Carbon\Carbon;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -87,7 +87,7 @@ class ApiResource extends JsonResource
             'meta' => [
                 'title' => $this->meta('title'),
                 'description' => $this->meta('description'),
-                'canonical' => Helper::_setting_code('web_url'),
+                'canonical' => \App\Helper\Helper::_setting_code('web_url'),
                 'image' => (isset($this->image)) ? (($this->image == 'default.jpg') ? asset('assets/img/default.jpg') : env('APP_URL').$this->image) : false,
                 'meta' => [
                     'charset' => 'utf-8',
@@ -98,11 +98,11 @@ class ApiResource extends JsonResource
                 'og:title' => $this->meta('title'),
                 'og:description' => $this->meta('description'),
                 'og:type' => 'website',
-                'og:url' => Helper::_setting_code('web_url'),
+                'og:url' => \App\Helper\Helper::_setting_code('web_url'),
                 'og:image' => (isset($this->image)) ? (($this->image == 'default.jpg') ? asset('assets/img/default.jpg') : env('APP_URL').$this->image) : false,
                 'og:image:alt' => asset('assets/img/default.jpg'),
                 'twitter:card' => 'summary',
-                'twitter:site' => Helper::_setting_code('name_company'),
+                'twitter:site' => \App\Helper\Helper::_setting_code('name_company'),
                 'twitter:title' => $this->meta('title'),
                 'twitter:description' => $this->meta('description'),
                 'twitter:image' => (isset($this->image)) ? (($this->image == 'default.jpg') ? asset('assets/img/default.jpg') : env('APP_URL').$this->image) : false,
@@ -178,9 +178,9 @@ class ApiResource extends JsonResource
         if ($id == 'kurs' || $id == 'datekurs') {
             $data = DB::table('web_kurs')->get();
             if ($id == 'kurs') {
-                $currency = Helper::_wording('currency', $this->lang);
-                $buy = Helper::_wording('buy', $this->lang);
-                $sell = Helper::_wording('sell', $this->lang);
+                $currency = \App\Helper\Helper::_wording('currency', $this->lang);
+                $buy = \App\Helper\Helper::_wording('buy', $this->lang);
+                $sell = \App\Helper\Helper::_wording('sell', $this->lang);
 
                 return view('engine.include.table.index', compact(['data', 'currency', 'buy', 'sell']))->render();
             }

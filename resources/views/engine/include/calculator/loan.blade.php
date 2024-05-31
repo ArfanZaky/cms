@@ -1,14 +1,14 @@
 <div>
-    <div class="1.125em font-bold my-8 leading-[24.51px]">{{ \Helper::_wording('result', $data->lang) }}</div>
+    <div class="1.125em font-bold my-8 leading-[24.51px]">{{ \\App\Helper\Helper::_wording('result', $data->lang) }}</div>
     <div class="grid grid-cols-12 gap-4 w-full mb-8">
         <div class="col-span-12 md:col-span-5">
-            <button class="bg-secondary text-start w-full text-white rounded-br-[30px] p-4">{{ \Helper::_wording('eligible_amount', $data->lang) }} {{collect($result)->first()['jumlahAngsuran']}}</button>
+            <button class="bg-secondary text-start w-full text-white rounded-br-[30px] p-4">{{ \\App\Helper\Helper::_wording('eligible_amount', $data->lang) }} {{collect($result)->first()['jumlahAngsuran']}}</button>
         </div>
         <div class="col-span-12 md:col-span-7">
-            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \Helper::_wording('monthly_loan_emi', $data->lang) }} {{collect($result)->first()['pokok']}}</button>
+            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \\App\Helper\Helper::_wording('monthly_loan_emi', $data->lang) }} {{collect($result)->first()['pokok']}}</button>
         </div>
         <div class="col-span-12 md:col-span-5">
-            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \Helper::_wording('monthly_interest', $data->lang) }} {{collect($result)->first()['bunga']}}</button>
+            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \\App\Helper\Helper::_wording('monthly_interest', $data->lang) }} {{collect($result)->first()['bunga']}}</button>
         </div>
     </div>
 
@@ -19,19 +19,19 @@
                     <thead class="bg-[#142336] text-white rounded-tl-[15px]">
                         <tr class="rounded-tl-[15px]">
                             <th class="p-4 text-start rounded-tl-[15px] sticky left-0 bg-[#142336]">
-                                {{ \Helper::_wording('month', $data->lang) }}
+                                {{ \\App\Helper\Helper::_wording('month', $data->lang) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('amount', $data->lang) }}
+                                {{ \\App\Helper\Helper::_wording('amount', $data->lang) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('interest', $data->lang) }}
+                                {{ \\App\Helper\Helper::_wording('interest', $data->lang) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('monthly_loan', $data->lang) }}
+                                {{ \\App\Helper\Helper::_wording('monthly_loan', $data->lang) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('remaining_loan', $data->lang) }}
+                                {{ \\App\Helper\Helper::_wording('remaining_loan', $data->lang) }}
                             </th>
                         </tr>
                     </thead>

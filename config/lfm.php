@@ -26,7 +26,7 @@ return [
     |
      */
 
-    'allow_private_folder' => false,
+    'allow_private_folder' => true,
 
     // Flexible way to customize client folders accessibility
     // If you want to customize client folders, publish tag="lfm_handler"
@@ -37,7 +37,7 @@ return [
 
     'allow_shared_folder' => false,
 
-    'shared_folder_name' => '1',
+    'shared_folder_name' => 'shares',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,13 +91,6 @@ return [
                 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'application/vnd.ms-powerpoint',
                 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-                'application/zip',
-                'application/x-7z-compressed',
-                'application/gzip',
-                'application/x-bzip2',
-                'application/x-bzip',
-                'application/x-rar-compressed',
-                'application/x-zip-compressed',
             ],
         ],
         'image' => [
@@ -140,7 +133,7 @@ return [
      */
 
     'paginator' => [
-        'perPage' => 30,
+        'perPage' => 40,
     ],
 
     /*
@@ -193,9 +186,9 @@ return [
         'image/webp',
     ],
 
-    'thumb_img_width' => 200,
+    'thumb_img_width' => 100,
 
-    'thumb_img_height' => 200,
+    'thumb_img_height' => 100,
 
     /*
     |--------------------------------------------------------------------------

@@ -9,7 +9,7 @@ use App\Models\Roles;
 use App\Models\WebArticleCategories;
 use App\Services\LogServices;
 use App\Services\PermissionService;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -170,7 +170,7 @@ class RolesController extends Controller
                 'url' => $value->url,
             ];
         }
-        $data_tree_category = Helper::tree($data_tree_category);
+        $data_tree_category = \App\Helper\Helper::tree($data_tree_category);
         $data_tree_category = menu_table($data_tree_category, 0, $data = []);
 
         return view('engine.module.roles.permission', compact('role', 'id', 'role_user', 'array', 'data_tree_category', 'permission_category', 'permission_page'));

@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\WebArticleCategories;
 use App\Models\WebMenus;
 use App\Models\WebPages;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Support\Str;
 
 class ApiService

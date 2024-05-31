@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\WebLogs;
-use DataTables;
-use Helper;
+use Yajra\DataTables\Facades\DataTables;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -40,7 +40,7 @@ class HomeController extends Controller
         return Datatables::of($log)
             ->addIndexColumn()
             ->addColumn('name_main', function ($row) {
-                return Helper::getLogName($row);
+                return \App\Helper\Helper::getLogName($row);
             })
             ->addColumn('name', function ($row) {
                 return str_replace('Article', 'Post', $row->name);

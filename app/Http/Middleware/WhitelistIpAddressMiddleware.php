@@ -21,7 +21,7 @@ class WhitelistIpAddressMiddleware
     public function handle(Request $request, Closure $next)
     {
  
-        if (env('APP_ENV') === 'development' || env('APP_ENV') === 'local') {
+        if (env('APP_ENV') === 'development') {
             return $next($request);
         }
         $ip_backend = WebSettings::where('code', 'ip_backend')->first()->value;

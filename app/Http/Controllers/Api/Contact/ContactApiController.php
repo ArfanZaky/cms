@@ -9,7 +9,7 @@ use App\Models\WebContacts;
 use App\Models\WebEmail;
 use App\Models\WebSettings;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -76,7 +76,7 @@ class ContactApiController extends BaseController
             $temp['subject'] = $request->subject;
             $temp['email'] = $request->email;
             $temp['description'] = $request->description;
-            $email = Helper::_setting_code('web_email');
+            $email = \App\Helper\Helper::_setting_code('web_email');
 
             Mail::to($email)->send(new FormMail($temp));
 

@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        {!! Helper::_setting_code('web_report') !!}
+        {!! \App\Helper\Helper::_setting_code('web_report') !!}
 
         <div class="section-body">
             {{-- audit log --}}

@@ -64,9 +64,9 @@
                                             @if($key == 0)
                                                 @php
                                                     if($item->translations?->first()?->slug == 'search'){
-                                                        $view = \Helper::_view_page() . '/search?keyword=bank';
+                                                        $view = \\App\Helper\Helper::_view_page() . '/search?keyword=bank';
                                                     }else{
-                                                        $view = \Helper::_view_page() . '/page/' . $item->translations?->first()?->slug;
+                                                        $view = \\App\Helper\Helper::_view_page() . '/page/' . $item->translations?->first()?->slug;
                                                     }
                                                 @endphp
                                             @endif

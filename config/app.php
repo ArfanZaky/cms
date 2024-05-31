@@ -224,10 +224,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
-        'Helper' => App\Helper\Helper::class,
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
 ];

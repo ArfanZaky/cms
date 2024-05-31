@@ -100,7 +100,7 @@
                                 <td>{!! Status($item['status']) !!}</td>
                                 <td>
                                  
-                                  <a href="{{ \Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
+                                  <a href="{{ \\App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
                                   <a href="{{ route('category.article.edit', [$item['id'], 'parent' => request()->get('parent'), 'component' => request()->get('component')]) }}" class="btn btn-primary ">Edit</a>
                                   @if (request()->has('dev'))
                                     <a href="{{ route('category.article.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>

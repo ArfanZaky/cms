@@ -9,7 +9,7 @@ use App\Models\WebArticles;
 use App\Models\WebMenus;
 use App\Services\LogServices;
 use App\Services\ApiService;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -156,7 +156,7 @@ class CategoryApiController extends BaseController
 
                 $menus = new ApiService();
                 $menus = $menus->toArray($menusModel,true, $this->languages);
-                $menus = Helper::tree($menus);
+                $menus = \App\Helper\Helper::tree($menus);
             }
 
             if ( $this->db->visibility == 0 && $this->db->parent != 0 || $this->db->visibility == 8 && $this->db->parent != 0) {

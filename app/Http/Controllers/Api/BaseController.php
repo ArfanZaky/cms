@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
+    protected $LogServices;
     public function __construct(LogServices $LogServices)
     {
         $this->LogServices = $LogServices;
@@ -84,7 +85,7 @@ class BaseController extends Controller
         $response = [
             'status' => $status,
             'data' => [
-                'notfound' => Helper::_wording('not_found_page', (int) languages_code()[$languages_code]),
+                'notfound' => \App\Helper\Helper::_wording('not_found_page', (int) languages_code()[$languages_code]),
                 'translation' => [
                     'url' => '/',
                 ],

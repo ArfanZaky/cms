@@ -46,7 +46,7 @@ if (request()->parent || request()->category) {
 $data = collect($category)->filter(function ($item) use ($permission_category) {
         return in_array($item->id, $permission_category);
     })->map(function ($item) {
-        $breadcrumb = \Helper::_category_slug_map($item, 1);
+        $breadcrumb = \\App\Helper\Helper::_category_slug_map($item, 1);
         $slug = '';
         collect($breadcrumb)->map(function ($item, $key) use (&$slug) {
             $slug .= $item['slug'].'/';
@@ -69,7 +69,7 @@ foreach ($data as $key => $value) {
         'url' => $value->url,
     ];
 }
-$data_tree = \Helper::tree($data_tree);
+$data_tree = \\App\Helper\Helper::tree($data_tree);
 $menu_table = menu_table($data_tree, 0, $data = []);
 
 
@@ -78,7 +78,7 @@ $menu_table = menu_table($data_tree, 0, $data = []);
 <div class="main-sidebar sidebar-style-2">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('engine') }}">{{Helper::_setting_code('name_company')}}</a>
+            <a href="{{ route('engine') }}">{{\App\Helper\Helper::_setting_code('name_company')}}</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="">N</a>

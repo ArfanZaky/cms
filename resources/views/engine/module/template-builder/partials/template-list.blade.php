@@ -30,7 +30,7 @@
                                         class="group-hover:translate-x-[140px]  transition ease-in duration-500 "></span>
                                     <span
                                     class="transition ease-in duration-500 text-18 text-primary   group-hover:translate-x-[-10px] font-bold  group-hover:text-white">
-                                        {{ \Helper::_wording('learn_more', $value['language_id']) }}
+                                        {{ \\App\Helper\Helper::_wording('learn_more', $value['language_id']) }}
                                     </span>
                                 </button>
                             </a>

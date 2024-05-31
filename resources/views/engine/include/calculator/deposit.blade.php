@@ -1,16 +1,16 @@
 
     <div>
-    <div class="1.125em font-bold my-8 leading-[24.51px]">{{ \Helper::_wording('result', $data['lang']) }}</div>
+    <div class="1.125em font-bold my-8 leading-[24.51px]">{{ \\App\Helper\Helper::_wording('result', $data['lang']) }}</div>
     <div class="grid grid-cols-12 gap-4 w-full mb-8">
         <div class="col-span-12 md:col-span-5">
-            <button class="bg-secondary text-start w-full text-white rounded-br-[30px] p-4">{{ \Helper::_wording('interest_nett', $data['lang']) }} {{ $data['interest_nett'] }}</button>
+            <button class="bg-secondary text-start w-full text-white rounded-br-[30px] p-4">{{ \\App\Helper\Helper::_wording('interest_nett', $data['lang']) }} {{ $data['interest_nett'] }}</button>
         </div>
         <div class="col-span-12 md:col-span-7">
-            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \Helper::_wording('total_tax', $data['lang']) }} {{$data['last_tax']}}</button>
+            <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \\App\Helper\Helper::_wording('total_tax', $data['lang']) }} {{$data['last_tax']}}</button>
         </div>
         @if(!empty($data['last_deposito']))
             <div class="col-span-12 md:col-span-5">
-                <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \Helper::_wording('total_deposito', $data['lang']) }} {{$data['last_deposito']}}</button>
+                <button class=" rounded-br-[30px] text-start w-full text-white bg-[#A6A6A6] p-4">{{ \\App\Helper\Helper::_wording('total_deposito', $data['lang']) }} {{$data['last_deposito']}}</button>
             </div>
         @endif
     </div>
@@ -22,20 +22,20 @@
                     <thead class="bg-[#142336] text-white rounded-tl-[15px]">
                         <tr class="rounded-tl-[15px]">
                             <th class="p-4 text-start rounded-tl-[15px] left-0 bg-[#142336]">
-                                {{ \Helper::_wording('month', $data['lang']) }}
+                                {{ \\App\Helper\Helper::_wording('month', $data['lang']) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('deposito', $data['lang']) }}
+                                {{ \\App\Helper\Helper::_wording('deposito', $data['lang']) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('InterestAmount', $data['lang']) }}
+                                {{ \\App\Helper\Helper::_wording('InterestAmount', $data['lang']) }}
                             </th>
                             <th class="p-4 text-start">
-                                {{ \Helper::_wording('taxAfter', $data['lang']) }}
+                                {{ \\App\Helper\Helper::_wording('taxAfter', $data['lang']) }}
                             </th>
                             @if(!empty($data['last_deposito']))
                                 <th class="p-4 text-start">
-                                    {{ \Helper::_wording('depositoAfter', $data['lang']) }}
+                                    {{ \\App\Helper\Helper::_wording('depositoAfter', $data['lang']) }}
                                 </th>
                             @endif
                         </tr>

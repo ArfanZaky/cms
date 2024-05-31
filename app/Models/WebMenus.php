@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Services\ApiService;
 use App\Traits\GlobalQueryTraits;
 use App\Traits\HasResponses;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -100,9 +100,9 @@ class WebMenus extends Model
         $menus = $this->withTranslationsForLanguage($language_id)->get();
         $apiService = new ApiService;
         $menus = $apiService->toArray($menus, true);
-        $menus = Helper::parent($menus);
-        $menus = Helper::tree($menus);
-        $menus = Helper::obj($menus);
+        $menus = \App\Helper\Helper::parent($menus);
+        $menus = \App\Helper\Helper::tree($menus);
+        $menus = \App\Helper\Helper::obj($menus);
 
         return $menus;
     }

@@ -17,20 +17,7 @@ use Illuminate\Http\Request;
 
 // Token
 Route::post('/token', [App\Http\Controllers\Api\BaseController::class, 'GetToken']);
-Route::get('/get-aes-encrypt', function (Request $request) {
-    $body = $request->getContent();
-    $decryptedBody = encryptAES($body);
 
-    return $decryptedBody;
-});
-
-Route::get('/get-aes-decrypt', function (Request $request) {
-    $body = $request->getContent();
-    $decryptedBody = decryptAES($body);
-    $decryptedBody = json_decode($decryptedBody, true);
-
-    return $decryptedBody;
-});
 // group middleware
 Route::group(['middleware' => ['auth:sanctum','decrypted', 'encrypted']], function () {
 
@@ -60,17 +47,7 @@ Route::group(['middleware' => ['auth:sanctum','decrypted', 'encrypted']], functi
     Route::get('/seo/{lang}/{slug?}', [App\Http\Controllers\Api\Global\GlobalController::class, 'seo'])->where('slug', '(.*)')->middleware('cacheResponse:31536000');
 
     // mapping
-    Route::get('/{lang}/{slug?}', [App\Http\Controllers\Api\Global\GlobalController::class, 'mapping'])->where('slug', '(.*)')->middleware('doNotCacheResponse');
-    
-
-    // page
-    Route::get('/{lang}/page/data/{slug}', [App\Http\Controllers\Api\Page\PageApiController::class, 'page_filter_by_slug'])->middleware('cacheResponse:31536000');
-
-    // category
-    Route::get('/{lang}/category/by_slug/{slug}', [App\Http\Controllers\Api\Category\CategoryApiController::class, 'filter_by_article_slug'])->middleware('cacheResponse:31536000');
-
-    // article
-    Route::get('/{lang}/article/slug/{slug}', [App\Http\Controllers\Api\Article\ArticleApiController::class, 'filter_by_slug'])->middleware('cacheResponse:31536000');
+    Route::get('/{lang}/{slug?}', [App\Http\Controllers\Api\Global\GlobalController::class, 'mapping'])->where('slug', '(.*)')->middleware('cacheResponse:31536000');
 
     Route::any('{path}', function () {
         $status = [
@@ -80,7 +57,7 @@ Route::group(['middleware' => ['auth:sanctum','decrypted', 'encrypted']], functi
         $response = [
             'status' => $status,
             'data' => [
-                'notfound' => Helper::_wording('not_found_page', 1),
+                'notfound' => \App\Helper\Helper::_wording('not_found_page', 1),
                 'translation' => [
                     'url' => '/',
                 ],

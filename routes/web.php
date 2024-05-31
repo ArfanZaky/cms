@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,20 +28,6 @@ Route::get('/', function () {
     return view('auth.login');
 })->name('engine');
 
-
-Route::get('/GetAESEncrypt', function (Request $request) {
-    $body = $request->getContent();
-    $decryptedBody = encryptAES($body);
-
-    return $decryptedBody;
-});
-
-Route::get('/GetAESDecrypt', function (Request $request) {
-    $body = $request->getContent();
-    $decryptedBody = decryptAES($body);
-    $decryptedBody = json_decode($decryptedBody, true);
-    return $decryptedBody;
-});
 
 
 // file manager plugins

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Engine\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\WebSettings;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -166,7 +166,7 @@ class WebSettingsController extends Controller
                     'og:image' => env('APP_URL').$image,
                     'og:image:alt' => env('APP_URL').$image,
                     'twitter:card' => 'summary',
-                    'twitter:site' => Helper::_setting_code('name_company'),
+                    'twitter:site' => \App\Helper\Helper::_setting_code('name_company'),
                     'twitter:title' => $title,
                     'twitter:description' => $description,
                     'twitter:image' => env('APP_URL').$image,

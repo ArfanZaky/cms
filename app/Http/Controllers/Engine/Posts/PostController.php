@@ -8,7 +8,7 @@ use App\Models\WebArticleCategoryRelations;
 use App\Models\WebArticles;
 use App\Models\WebTenderCategoryRelationToZone;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +48,7 @@ class PostController extends Controller
                 return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
             }
             $categories = WebArticleCategories::with('translations')->where('status', 1)->get();
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $categories, $categories->where('id', $category)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $categories, $categories->where('id', $category)->first());
             $categories = $categories->where('id', $category)->first();
         } else {
             return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
@@ -74,7 +74,7 @@ class PostController extends Controller
         $zone = false;
         if ($category) {
             $parent_categories = WebArticleCategories::with('translations')->where('status', 1)->get();
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $parent_categories, $parent_categories->where('id', $category)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $parent_categories, $parent_categories->where('id', $category)->first());
             $parent_categories = $parent_categories->where('id', $category)->first();
 
             // custom tender / auction
@@ -193,7 +193,7 @@ class PostController extends Controller
         $relatedZone = false;
         if ($category) {
             $parent_categories = WebArticleCategories::with('translations')->where('status', 1)->get();
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $parent_categories, $parent_categories->where('id', $category)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $parent_categories, $parent_categories->where('id', $category)->first());
             $parent_categories = $parent_categories->where('id', $category)->first();
 
             // custom tender

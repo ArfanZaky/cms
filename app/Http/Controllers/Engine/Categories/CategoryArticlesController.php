@@ -7,7 +7,7 @@ use App\Models\WebArticleCategories;
 use App\Models\PermissionRelations;
 use App\Services\PermissionService;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -43,7 +43,7 @@ class CategoryArticlesController extends Controller
             if (! in_array($request->parent, $permission_category)) {
                 return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
             }
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
             $data = $category->where('parent', $request->parent);
 
             $id = $data->pluck('id')->toArray();
@@ -77,7 +77,7 @@ class CategoryArticlesController extends Controller
                 'url' => $value->url,
             ];
         }
-        $data_tree = Helper::tree($data_tree);
+        $data_tree = \App\Helper\Helper::tree($data_tree);
         $menu_table = menu_table($data_tree, 0, $data = []);
 
         return view('engine.module.category.article.index', compact('menu_table', 'breadcrumbs'));
@@ -106,7 +106,7 @@ class CategoryArticlesController extends Controller
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
         }
 
         $data_tree = [];
@@ -121,7 +121,7 @@ class CategoryArticlesController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }
@@ -245,7 +245,7 @@ class CategoryArticlesController extends Controller
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
         }
 
         $menu_table = [];

@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Http\Resources\ApiResource;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Database\Eloquent\Builder;
 
 trait HasResponses

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Engine\Categories;
 use App\Http\Controllers\Controller;
 use App\Models\WebChatbotCategories;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -33,7 +33,7 @@ class CategoryChatbotController extends Controller
         $breadcrumbs = false;
         $data = $category;
         if ($request->parent) {
-            $breadcrumbs = Helper::_post_type_breadcrumbs('category.chatbot', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.chatbot', $category, $category->where('id', $request->parent)->first());
             $data = $category->where('parent', $request->parent);
 
             $id = $data->pluck('id')->toArray();
@@ -57,7 +57,7 @@ class CategoryChatbotController extends Controller
             ];
         }
 
-        $data_tree = Helper::tree($data_tree);
+        $data_tree = \App\Helper\Helper::tree($data_tree);
         $data_tree = menu_table($data_tree, 0, $data = []);
         $menu_table = collect($data_tree)->sortBy('visibility');
 
@@ -91,7 +91,7 @@ class CategoryChatbotController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }
@@ -179,7 +179,7 @@ class CategoryChatbotController extends Controller
                 'status' => $value->status,
             ];
         }
-        $data_tree_helper = Helper::tree($data_tree);
+        $data_tree_helper = \App\Helper\Helper::tree($data_tree);
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree;
         }

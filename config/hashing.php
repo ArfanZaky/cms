@@ -34,6 +34,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | rehash_on_login
+    |--------------------------------------------------------------------------
+    |
+    | When true, passwords will be rehashed automatically on login if they do
+    | not use the default algorithm. This is recommended for maximum security.
+    |
+    */
+    'rehash_on_login' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Argon Options
     |--------------------------------------------------------------------------
     |

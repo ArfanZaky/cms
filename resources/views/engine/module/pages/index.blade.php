@@ -57,7 +57,7 @@
                                                 <td>
                                                     <a href="{{ route('page.generic.builder', $item->id) }}"
                                                         class="btn btn-primary ">Builder</a>
-                                                    <a href="{{ \Helper::_view_page() . '/page/' . $item->translations?->first()?->slug }}"
+                                                    <a href="{{ \\App\Helper\Helper::_view_page() . '/page/' . $item->translations?->first()?->slug }}"
                                                         target="_blank" class="btn btn-info ">View</a>
                                                     @if (!$type)
                                                         <a href="{{ route('page.generic.edit', $item->id) }}"

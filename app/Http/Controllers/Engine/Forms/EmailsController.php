@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\WebArticleCategories;
 use App\Models\WebEmail;
 use App\Services\LogServices;
-use Helper;
+use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -47,7 +47,7 @@ class EmailsController extends Controller
             $data = collect($data)->toArray();
 
             return [
-                'label' => ($item->parent == 7) ? Helper::_wording('personal', $language).' - '.$data['name'] : Helper::_wording('corporate', $language).' - '.$data['name'],
+                'label' => ($item->parent == 7) ? \App\Helper\Helper::_wording('personal', $language).' - '.$data['name'] : \App\Helper\Helper::_wording('corporate', $language).' - '.$data['name'],
                 'value' => $data['id'],
             ];
 
@@ -138,7 +138,7 @@ class EmailsController extends Controller
             $data = collect($data)->toArray();
 
             return [
-                'label' => ($item->parent == 7) ? Helper::_wording('personal', $language).' - '.$data['name'] : Helper::_wording('corporate', $language).' - '.$data['name'],
+                'label' => ($item->parent == 7) ? \App\Helper\Helper::_wording('personal', $language).' - '.$data['name'] : \App\Helper\Helper::_wording('corporate', $language).' - '.$data['name'],
                 'value' => $data['id'],
             ];
 
