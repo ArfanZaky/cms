@@ -1,6 +1,6 @@
 <div class="flex flex-col gap-8">
     <div>
-        <h1>{{ $category?->translations()->where('language_id', $value['language_id'])?->first()?->name }}</h1>
+        <h1>{{ $content?->translations()->where('language_id', $value['language_id'])?->first()?->name }}</h1>
         <div class="w-[219px] h-[6px] bg-primary"></div>
     </div>
     <div class="grid grid-cols-1 2xl:grid-cols-2 gap-x-8 gap-y-8">

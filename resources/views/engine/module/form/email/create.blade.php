@@ -29,10 +29,10 @@
                                 @csrf
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="name">Category Product</label>
-                                        <select class="form-control select2" id="category">
-                                            <option value="">Select Category Product</option>
-                                            @foreach ($category_product as $value)
+                                        <label for="name">content Product</label>
+                                        <select class="form-control select2" id="content">
+                                            <option value="">Select content Product</option>
+                                            @foreach ($content_product as $value)
                                                 <option value="{{ $value['value'] }}">{{ $value['label'] }}</option>
                                             @endforeach
                                         </select>
@@ -63,7 +63,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="name">Sub Product</label>
-                                        <select name="category_id" class="form-control select2" id="sub">
+                                        <select name="content_id" class="form-control select2" id="sub">
                                             <option value="">Select Sub Product</option>
                                         </select>
                                         {{-- invalid --}}
@@ -117,7 +117,7 @@
         <script>
             $(document).ready(function() {
                 // 'form.email.filter'
-                $('#category').on('change', function() {
+                $('#content').on('change', function() {
                     var id = $(this).val();
                     if (id != '') {
                         $.ajax({

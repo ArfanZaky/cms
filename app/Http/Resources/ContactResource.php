@@ -15,7 +15,7 @@ class ContactResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'category_id' => $this->category_id,
+            'content_id' => $this->content_id,
             'name' => isset($this->name) ? $this->name : false,
             'email' => isset($this->email) ? $this->email : false,
             'phone' => isset($this->phone) ? $this->phone : false,

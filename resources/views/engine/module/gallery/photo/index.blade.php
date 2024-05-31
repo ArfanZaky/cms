@@ -39,14 +39,14 @@
                                         <h4>Data Gallery Item</h4>
                                         <div class="card-header-form mr-5 w-25">
                                             <form action="" method="GET"
-                                                {{ request()->has('category') ? 'style=display:none' : '' }}>
+                                                {{ request()->has('content') ? 'style=display:none' : '' }}>
                                                 <div class="input-group">
-                                                    <select class="form-control select2" name="category"
+                                                    <select class="form-control select2" name="content"
                                                         onchange="this.form.submit()">
                                                         <option value="-">-- Select Gallery --</option>
                                                         @foreach ($gallery as $key => $item)
                                                             <option value="{{ $item->id }}"
-                                                                {{ request()->has('category') && request()->get('category') == $item->id ? 'selected' : '' }}>
+                                                                {{ request()->has('content') && request()->get('content') == $item->id ? 'selected' : '' }}>
                                                                 {{ $item->translations[0]->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -105,12 +105,12 @@
                                         <div class="card-header-form mr-5 w-25">
                                             <form action="" method="GET" >
                                                 <div class="input-group">
-                                                    <select class="form-control select2" name="category"
+                                                    <select class="form-control select2" name="content"
                                                         onchange="this.form.submit()">
                                                         <option value="-">-- Select Gallery --</option>
                                                         @foreach ($gallery as $key => $item)
                                                             <option value="{{ $item->id }}"
-                                                                {{ request()->has('category') && request()->get('category') == $item->id ? 'selected' : '' }}>
+                                                                {{ request()->has('content') && request()->get('content') == $item->id ? 'selected' : '' }}>
                                                                 {{ $item->translations[0]->name }}</option>
                                                         @endforeach
                                                     </select>
@@ -131,7 +131,7 @@
                                                     <tr>
                                                         <th>No</th>
                                                         <th>Photo</th>
-                                                        <th>Category</th>
+                                                        <th>content</th>
                                                         <th>Name</th>
                                                         <th>#</th>
                                                         <th>Status</th>

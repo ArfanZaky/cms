@@ -44,11 +44,11 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="category_id">Category :<em class="text-danger">*required</em></label>
-                                            <select name="category_id" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
-                                                <option value="">- Root Category</option>
+                                            <label for="content_id">content :<em class="text-danger">*required</em></label>
+                                            <select name="content_id" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
+                                                <option value="">- Root content</option>
                                                 @foreach($vacancy as $vacancies)
-                                                    <option value="{{ $vacancies->id }}" {{ $data->category_id == $vacancies->id ? 'selected' : '' }}>
+                                                    <option value="{{ $vacancies->id }}" {{ $data->content_id == $vacancies->id ? 'selected' : '' }}>
                                                     {!! $vacancies->translations[0]->name !!}
                                                     </option>
                                                 @endforeach

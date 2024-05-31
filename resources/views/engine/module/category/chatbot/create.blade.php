@@ -12,7 +12,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <h1>Category Chatbot Management</h1>
+            <h1>content Chatbot Management</h1>
         </div>
         {{-- if error --}}
         @if ($errors->any())
@@ -32,9 +32,9 @@
                     <?php
                     $parent = request()->has('parent') ? request()->get('parent') : false;
                     if ($parent) {
-                        $url = route('category.chatbot.store', ['parent' => $parent]);
+                        $url = route('content.chatbot.store', ['parent' => $parent]);
                     } else {
-                        $url = route('category.chatbot.store');
+                        $url = route('content.chatbot.store');
                     }
                     ?>
                     <form action="{{ $url }}" novalidate  class="needs-validation" method="POST" enctype="multipart/form-data">
@@ -42,7 +42,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4>Category Chatbot Form</h4>
+                                    <h4>content Chatbot Form</h4>
                                 </div>
 
                                 <div class="card-body">
@@ -51,18 +51,18 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="Parent">Category Parent : </label>
+                                            <label for="Parent">content Parent : </label>
                                             <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
                                                 @if(!$parent)
-                                                    <option value="0">- Root Category</option>
+                                                    <option value="0">- Root content</option>
                                                 @endif
-                                                @foreach($menu_table as $category)
-                                                    <option value="{{ $category['id'] }}" {{ old('parent') == $category['id'] ? 'selected' : '' }}>
+                                                @foreach($menu_table as $content)
+                                                    <option value="{{ $content['id'] }}" {{ old('parent') == $content['id'] ? 'selected' : '' }}>
                                                         <?php
-                                                            $category['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $category['name']);
-                                                            $category['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $category['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $content['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $content['name']);
                                                         ?>
-                                                        {!! $category['name'] !!}
+                                                        {!! $content['name'] !!}
 
                                                     </option>
                                                 @endforeach

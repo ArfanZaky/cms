@@ -71,7 +71,7 @@ function _get_visibility_post($config)
 
 function _custom_visibility_menu()
 {
-    return collect(config('cms.visibility.post.category'))->filter(
+    return collect(config('cms.visibility.post.content'))->filter(
         function ($value, $key) {
             return $key == 'Template Pages' || $key == 'Template List';
         }
@@ -389,7 +389,7 @@ function generateBreadcrumbArray($url, $languages)
     foreach ($segments as $segment) {
         $currentUrl .= '/'.$segment;
 
-        if ($segment == 'category' || in_array($segment, code_lang())) {
+        if ($segment == 'content' || in_array($segment, code_lang())) {
             continue;
         }
 

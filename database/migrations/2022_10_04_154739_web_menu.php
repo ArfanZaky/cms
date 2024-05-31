@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('menu_id')->default(0);
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
-            $table->unsignedBigInteger('category_id')->default(0);
+            $table->unsignedBigInteger('content_id')->default(0);
             $table->unsignedBigInteger('catalog_id')->default(0);
             $table->unsignedBigInteger('gallery_id')->default(0);
             $table->BigInteger('parent')->default(0);

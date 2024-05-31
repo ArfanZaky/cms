@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('web_contacts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('web_contact_categories')->onDelete('cascade');
+            $table->foreignId('content_id')->constrained('web_contact_categories')->onDelete('cascade');
             $table->string('name');
             $table->string('email');
             $table->string('phone');

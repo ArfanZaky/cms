@@ -4,7 +4,7 @@ $segment_3 = Request::segment(3);
 $type = Request::input('type');
 $permission =  session('permission');
 
-$permission_category = session('permission_category');
+$permission_content = session('permission_content');
 
 $pages = false;
 $users = false;
@@ -35,15 +35,15 @@ $article_news_menu = \App\Models\WebContent::with(['translations' => function ($
 ->where('status', 1)
 ->get();
 
-$category = request()->category;
+$content = request()->content;
 
 $visibility = false;
-if($category){
+if($content){
     $visibility = \App\Models\WebContent::with(['translations' => function ($q) {
         $q->where('language_id', 1);
     }])
     ->orderBy('sort', 'asc')
-    ->where('id', $category)
+    ->where('id', $content)
     ->first('visibility');
 }
 
@@ -76,46 +76,46 @@ if($category){
            
 
             @if ($post)
-                @if (in_array('category/article', $permission))
+                @if (in_array('content/article', $permission))
                     <li class="dropdown 
-                    @routeis(['category.article.*', 'category.article'])
-                        @if (request()->component == 'category') active @endif 
+                    @routeis(['content.article.*', 'content.article'])
+                        @if (request()->component == 'content') active @endif 
                     @endrouteis
                     @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                        @if (request()->component == 'category') active @endif 
+                        @if (request()->component == 'content') active @endif 
                     @endif
                     @routeis(['article.*', 'article'])  active @endrouteis
                     ">
-                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>Category</span></a>
+                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>content</span></a>
                         <ul class="dropdown-menu" 
                         
-                        @routeis(['category.article.*', 'category.article'])
-                            @if (request()->component == 'category') style="display: block;" @endif 
+                        @routeis(['content.article.*', 'content.article'])
+                            @if (request()->component == 'content') style="display: block;" @endif 
                         @endrouteis
                         @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                            @if (request()->component == 'category') style="display: block;" @endif 
+                            @if (request()->component == 'content') style="display: block;" @endif 
                         @endif
                         @routeis(['article.*', 'article'])  style="display:block"  @endrouteis
                         
                         >
                             <li 
-                                    @routeis(['category.article.*', 'category.article'])
-                                        @if (request()->component == 'category') class="active" @endif 
+                                    @routeis(['content.article.*', 'content.article'])
+                                        @if (request()->component == 'content') class="active" @endif 
                                     @endrouteis
                                     @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                                        @if (request()->component == 'category') class="active" @endif 
+                                        @if (request()->component == 'content') class="active" @endif 
                                     @endif
                                 >
-                                <a class="nav-link" href="{{ route('category.article', ['component' => 'category']) }}">  <i class="fas fa-solid fa-layer-group"></i>List Category</a>
+                                <a class="nav-link" href="{{ route('content.article', ['component' => 'content']) }}">  <i class="fas fa-solid fa-layer-group"></i>List content</a>
                             </li>
                             @foreach ($article_news_menu as $item)
-                                @if (! in_array($item->id, (array) $permission_category)) 
+                                @if (! in_array($item->id, (array) $permission_content)) 
                                     @continue
                                 @endif
                                 
                                 @if( in_array($item->visibility, _custom_visibility_menu()))
-                                    <li @routeis(['article.*', 'article']) @if (request()->category == $item->id) class="active" @endif @endrouteis>
-                                        <a class="nav-link" href="{{ route('article',['category' => $item->id]) }}"><i class="fas fa-stream"></i>
+                                    <li @routeis(['article.*', 'article']) @if (request()->content == $item->id) class="active" @endif @endrouteis>
+                                        <a class="nav-link" href="{{ route('article',['content' => $item->id]) }}"><i class="fas fa-stream"></i>
                                             {{ \Illuminate\Support\Str::limit(\Illuminate\Support\Str::title(strip_tags($item?->translations?->first()?->name)), 15, '...')}}
             
                                         </a>

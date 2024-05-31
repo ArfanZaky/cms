@@ -44,7 +44,7 @@
                             @foreach ($email as $value)
                             <tr>
                               <td>{{ $value->id }}</td>
-                              <td>{{ $value?->category?->translations?->first()?->name }}</td>
+                              <td>{{ $value?->content?->translations?->first()?->name }}</td>
                               <td>{{ $value?->branch?->translations?->first()?->name }}</td>
                               <td>{{ $value->email }}</td>
                               <td>{{ $value->created_at }}</td>

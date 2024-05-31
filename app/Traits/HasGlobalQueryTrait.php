@@ -123,7 +123,7 @@ trait HasGlobalQueryTrait
                 $json = [];
                 foreach ($value as $keys => $value) {
                     $json[code_lang()[$key]]['Section'][$keys]['type'] = $value;
-                    $json[code_lang()[$key]]['Section'][$keys]['category_id'] = $request->category_id[$key][$keys];
+                    $json[code_lang()[$key]]['Section'][$keys]['content_id'] = $request->content_id[$key][$keys];
                     $json[code_lang()[$key]]['Section'][$keys]['template'] = $request->template[$key][$keys];
                     $json[code_lang()[$key]]['Section'][$keys]['col'] = $request->col[$key][$keys] ?? 0;
 

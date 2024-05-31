@@ -16,14 +16,14 @@ trait HasResponse
             if ($get_model == 'App\Models\WebPages') {
                 $get_model = 'page';
             } else {
-                $get_model = 'category';
+                $get_model = 'content';
             }
         } catch (\Throwable $th) {
         }
         $lang = code_lang()[($language - 1)];
 
         $url = false;
-        if ($get_model == 'category') {
+        if ($get_model == 'content') {
             $slug = $data->translations->where('language_id', $language)->first()->slug;
             $url = '/'.$lang.'/'.$slug;
         }
@@ -45,9 +45,9 @@ trait HasResponse
             ];
         })->toArray();
 
-        $category_data = new ApiResource($data, $language, $array_lang, $get_model, $url);
+        $content_data = new ApiResource($data, $language, $array_lang, $get_model, $url);
 
-        return $category_data;
+        return $content_data;
     }
 
     public function scopeWhereSlug($query, $slug, $language)

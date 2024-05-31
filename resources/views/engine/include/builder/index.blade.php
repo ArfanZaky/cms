@@ -46,16 +46,16 @@
                                     <div class="col-4 border-end">
                                         <div class="input-group align-items-center gap-2">
                                             <label class="text-secondary">
-                                                {!! __('Category') !!}
+                                                {!! __('content') !!}
                                             </label>
                                         </div>
-                                        <select name="category_id[{{ $i }}][]"
+                                        <select name="content_id[{{ $i }}][]"
                                             {{ $values['type'] == 'CUSTOM' ? 'disabled' : '' }}
                                             data-number="{{ $key }}"
-                                            class="form-control category_id-{{ $key }}-{{ $i }}">
+                                            class="form-control content_id-{{ $key }}-{{ $i }}">
                                             <option value="0">-- Pilih --</option>
-                                            @foreach ($categories as $keyCategory => $value)
-                                                <option disabled value="{{ $keyCategory }}">{{ $keyCategory }}
+                                            @foreach ($categories as $keycontent => $value)
+                                                <option disabled value="{{ $keycontent }}">{{ $keycontent }}
                                                 </option>
                                                 @foreach ($value as  $value)
                                                     <option value="{{ $value->model_id }}-{{ $value->model_type }}"

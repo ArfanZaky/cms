@@ -124,11 +124,11 @@
                     '<div class="input-group align-items-center gap-2">' +
                     //   '<i class="fa fa-grip-horizontal"></i>' +
                     '<label  class="text-secondary">' +
-                    '{!! __('Category') !!}' +
+                    '{!! __('content') !!}' +
                     '</label>' +
                     '</div>' +
-                    '<select name="category_id[' + index + '][]" data-number="' + number +
-                    '" class="form-control category_id-' + number + '-' + index + '" >' +
+                    '<select name="content_id[' + index + '][]" data-number="' + number +
+                    '" class="form-control content_id-' + number + '-' + index + '" >' +
                     '<option value="0">-- Pilih --</option>';
 
 
@@ -191,11 +191,11 @@
                 let index = $(val).data('index');
                 if ($(val).val() == 'CUSTOM') {
                     let template = $('.template-' + number + '-' + index).prop('disabled', true);
-                    let category = $('.category_id-' + number + '-' + index).attr('disabled', true);
+                    let content = $('.content_id-' + number + '-' + index).attr('disabled', true);
                     $('.CUSTOM-STEP-' + number + '-' + index).show();
                 } else {
                     let template = $('.template-' + number + '-' + index).prop('disabled', false);
-                    let category = $('.category_id-' + number + '-' + index).attr('disabled', false);
+                    let content = $('.content_id-' + number + '-' + index).attr('disabled', false);
                     $('.CUSTOM-STEP-' + number + '-' + index).hide();
                     $('.temp-des-' + number + '-' + index).prop('disabled', false);
                 }

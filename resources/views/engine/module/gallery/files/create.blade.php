@@ -44,11 +44,11 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="parent">Category: <em
+                                            <label for="parent">content: <em
                                                     class="text-danger">*required</em></label>
                                             <select name="parent" id="select-picker"
                                                 class="form-control input-sm show-tick select2" data-live-search="true" required>
-                                                <option value="">Choose Category</option>
+                                                <option value="">Choose content</option>
                                                 @foreach ($gallery as $galleries)
                                                     <option value="{{ $galleries->id }}" {{ $galleries->id == old('parent') ? 'selected' : '' }}>
                                                         {!! $galleries->translations[0]->name !!}

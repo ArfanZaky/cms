@@ -19,9 +19,9 @@
         @elseif($value['type'] == 'TEMPLATE')
             @php
                 // add / 
-                $category = \App\Models\WebContent::where('id', $value['model_id'])->first();
+                $content = \App\Models\WebContent::where('id', $value['model_id'])->first();
 
-                $items = $category->relation()->with('article.translations')
+                $items = $content->relation()->with('article.translations')
                 ->whereHas('article', function ($q) use ($value) {
                     $q->whereHas('translations', function ($q) use ($value) {
                         $q->where('language_id', $value['language_id']);

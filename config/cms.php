@@ -13,7 +13,7 @@ return [
         ],
 
         'post' => [
-            'category' => [
+            'content' => [
                 'Template' => [
                     '0' => 'tab',
                     '8' => 'tab-board',

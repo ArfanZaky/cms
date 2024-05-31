@@ -4,7 +4,7 @@ $segment_3 = Request::segment(3);
 $type = Request::input('type');
 $permission =  session('permission');
 
-$permission_category = session('permission_category');
+$permission_content = session('permission_content');
 
 $pages = false;
 $users = false;
@@ -29,29 +29,29 @@ foreach ($permission as $key => $value) {
     }
 }
 
-$category = \App\Models\WebContent::with(['translations' => function ($q) {
+$content = \App\Models\WebContent::with(['translations' => function ($q) {
     $q->where('language_id', 2);
 }])
     ->orderBy('sort', 'asc')
     ->get();
-if (request()->parent || request()->category) {
-    if (! in_array(request()->parent, $permission_category)) {
+if (request()->parent || request()->content) {
+    if (! in_array(request()->parent, $permission_content)) {
         return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
     }
-    if (! in_array(request()->category, $permission_category)) {
+    if (! in_array(request()->content, $permission_content)) {
         return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
     }
 }
 
-$data = collect($category)->filter(function ($item) use ($permission_category) {
-        return in_array($item->id, $permission_category);
+$data = collect($content)->filter(function ($item) use ($permission_content) {
+        return in_array($item->id, $permission_content);
     })->map(function ($item) {
-        $breadcrumb = \\App\Helper\Helper::_category_slug_map($item, 1);
+        $breadcrumb = \\App\Helper\Helper::_content_slug_map($item, 1);
         $slug = '';
         collect($breadcrumb)->map(function ($item, $key) use (&$slug) {
             $slug .= $item['slug'].'/';
         })->toArray();
-        $url = '/category/'.$slug;
+        $url = '/content/'.$slug;
         $item->url = $url;
         return $item;
 });
@@ -121,29 +121,29 @@ $menu_table = menu_table($data_tree, 0, $data = []);
                 </li>
             @endif
 
-            @if (in_array('category/article', $permission))
+            @if (in_array('content/article', $permission))
                 <li
-                @routeis(['category.article.*', 'category.article'])
+                @routeis(['content.article.*', 'content.article'])
                     @if (request()->component == 'product') class="active" @endif 
                 @endrouteis
                 >
-                    <a class="nav-link" href="{{ route('category.article', ['component' => 'product']) }}">  <i class="fas fa-solid fa-cubes"></i>Product</a>
+                    <a class="nav-link" href="{{ route('content.article', ['component' => 'product']) }}">  <i class="fas fa-solid fa-cubes"></i>Product</a>
                 </li>
                 @foreach($menu_table as $key => $item)
                     <li class="dropdown">
-                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>Category</span></a>
+                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>content</span></a>
                         <ul class="dropdown-menu" 
-                            @routeis(['category.article.*', 'category.article'])
-                                @if (request()->component == 'category') style="display: block;" @endif 
+                            @routeis(['content.article.*', 'content.article'])
+                                @if (request()->component == 'content') style="display: block;" @endif 
                             @endrouteis
                             @routeis(['article.*', 'article'])  style="display:block"  @endrouteis>
                             
                             <li 
-                                    @routeis(['category.article.*', 'category.article'])
-                                        @if (request()->component == 'category') class="active" @endif 
+                                    @routeis(['content.article.*', 'content.article'])
+                                        @if (request()->component == 'content') class="active" @endif 
                                     @endrouteis
                                 >
-                                <a class="nav-link" href="{{ route('category.article', ['component' => 'category']) }}">  <i class="fas fa-solid fa-layer-group"></i>List Category</a>
+                                <a class="nav-link" href="{{ route('content.article', ['component' => 'content']) }}">  <i class="fas fa-solid fa-layer-group"></i>List content</a>
                             </li>
 
                         </ul>
@@ -160,12 +160,12 @@ $menu_table = menu_table($data_tree, 0, $data = []);
                 </li>
             @endif
 
-            @if (in_array('category/chatbot', $permission))
+            @if (in_array('content/chatbot', $permission))
                 <li
-                    @routeis(['category.chatbot.*', 'category.chatbot'])
+                    @routeis(['content.chatbot.*', 'content.chatbot'])
                         class="active"
                     @endrouteis
-                    ><a class="nav-link" href="{{ route('category.chatbot') }}">  <i class="fas fa-solid fa-robot"></i>Chatbot Option</a></li>
+                    ><a class="nav-link" href="{{ route('content.chatbot') }}">  <i class="fas fa-solid fa-robot"></i>Chatbot Option</a></li>
             @endif
 
             

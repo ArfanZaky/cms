@@ -22,7 +22,7 @@
                   @endif
               </ol>
           </nav>
-            <h1>Category Management</h1>
+            <h1>content Management</h1>
         </div>
         @if (session('success'))
         <div class="alert alert-success">
@@ -39,11 +39,11 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                        <h4>Data Category</h4>
+                        <h4>Data content</h4>
                         <div class="card-header-action">
                           <?php
                           $parent = request()->has('parent') ? request()->get('parent') : false;
-                          $url = route('category.article.create', ['parent' => request()->get('parent'), 'component' => request()->get('component')]);
+                          $url = route('content.article.create', ['parent' => request()->get('parent'), 'component' => request()->get('component')]);
                           ?>
                           <a href="{{ $url }}" class="btn btn-primary">Add Pages</a>
                       </div>
@@ -88,25 +88,25 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
                                   @if (in_array($item['visibility'], [2,3,5, 6, 7]))
-                                      <a href="{{ route('article',['category' => $item['id'],'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
+                                      <a href="{{ route('article',['content' => $item['id'],'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
                                     @else
-                                      <a href="{{ route('category.article', ['parent' => $item['id'], 'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
+                                      <a href="{{ route('content.article', ['parent' => $item['id'], 'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
                                     @endif
                                 </td>
                                 <td>
-                                  {{ _get_visibility_post(config('cms.visibility.post.category'))->where('key', $item['visibility'])->pluck('value')->first() }}
+                                  {{ _get_visibility_post(config('cms.visibility.post.content'))->where('key', $item['visibility'])->pluck('value')->first() }}
                                 </td>
                                 <td>{{ $item['sort'] }}</td>
                                 <td>{!! Status($item['status']) !!}</td>
                                 <td>
                                  
                                   <a href="{{ \\App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
-                                  <a href="{{ route('category.article.edit', [$item['id'], 'parent' => request()->get('parent'), 'component' => request()->get('component')]) }}" class="btn btn-primary ">Edit</a>
+                                  <a href="{{ route('content.article.edit', [$item['id'], 'parent' => request()->get('parent'), 'component' => request()->get('component')]) }}" class="btn btn-primary ">Edit</a>
                                   @if (request()->has('dev'))
-                                    <a href="{{ route('category.article.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>
+                                    <a href="{{ route('content.article.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>
                                   @endif
                                   @if ($item['visibility'] == 21)
-                                    <a href="{{ route('article',['category' => $item['id'],'component' => request()->get('component')]) }}" class="btn btn-success ">
+                                    <a href="{{ route('article',['content' => $item['id'],'component' => request()->get('component')]) }}" class="btn btn-success ">
                                       Items
                                     </a>
                                   @endif

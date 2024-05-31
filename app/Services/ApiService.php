@@ -95,7 +95,7 @@ class ApiService
     {
         // pages
         $url = '#';
-        if ($value->url == '#' && $value->category_id == 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
+        if ($value->url == '#' && $value->content_id == 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
             $page = WebPages::where('menu_id', $value->id)->with(['translations' => function ($query) use ($value) {
                 $query->where('language_id', $value->translations[0]->language_id);
             }])->first();
@@ -104,21 +104,21 @@ class ApiService
             }
 
             // url link
-        } elseif ($value->url != '#' && $value->category_id == 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
+        } elseif ($value->url != '#' && $value->content_id == 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
             if ($value->url == '/' || $value->url == 'javascript:void(0);' || strpos($value->url, 'tel') !== false || strpos($value->url, 'mailto') !== false || strpos($value->url, '#') !== false) {
                 $url = $value->url;
             } else {
                 $url = (preg_match('/http(s)?:\/\//', $value->url)) ? $value->url : env('APP_URL').ltrim($value->url, '/');
             }
 
-            // article category
-        } elseif ($value->url == '#' && $value->category_id != 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
-            $category = WebContent::where('id', $value->category_id)->with(['translations' => function ($query) use ($value) {
+            // article content
+        } elseif ($value->url == '#' && $value->content_id != 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
+            $content = WebContent::where('id', $value->content_id)->with(['translations' => function ($query) use ($value) {
                 $query->where('language_id', $value->translations[0]->language_id);
             }])->first();
-            if ($category) {
+            if ($content) {
                 $url = false;
-                $slug = $category->translations['0']->slug;
+                $slug = $content->translations['0']->slug;
 
                 $url = (isset($slug)) ? $slug : 'javascript:void(0);';
             }

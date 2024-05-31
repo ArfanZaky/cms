@@ -12,7 +12,7 @@
 </style>
     <section class="section">
         <div class="section-header">
-            <h1>Category Catalog Management</h1>
+            <h1>content Catalog Management</h1>
         </div>
         {{-- if error --}}
         @if ($errors->any())
@@ -34,7 +34,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4>Category Catalog Form</h4>
+                                    <h4>content Catalog Form</h4>
                                 </div>
                                
                                 <div class="card-body">

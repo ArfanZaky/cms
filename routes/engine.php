@@ -105,23 +105,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::middleware(['cacheResponse:31536000'])->group(function () {
-        // category
-        Route::prefix('category')->group(function () {
+        // content
+        Route::prefix('content')->group(function () {
             // prefix post
             Route::prefix('article')->group(function () {
-                Route::get('/', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'index'])->name('category.article')->middleware('permission:category/article');
-                Route::get('/create', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'create'])->name('category.article.create')->middleware('permission:category/article/create');
-                Route::get('/edit/{id}', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'edit'])->name('category.article.edit')->middleware('permission:category/article/edit');
+                Route::get('/', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'index'])->name('content.article')->middleware('permission:content/article');
+                Route::get('/create', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'create'])->name('content.article.create')->middleware('permission:content/article/create');
+                Route::get('/edit/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'edit'])->name('content.article.edit')->middleware('permission:content/article/edit');
             });
         });
     });
 
-    Route::prefix('category')->group(function () {
+    Route::prefix('content')->group(function () {
         // prefix post
         Route::prefix('article')->group(function () {
-            Route::post('/store', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'store'])->name('category.article.store')->middleware('permission:category/article/create');
-            Route::post('/update/{id}', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'update'])->name('category.article.update')->middleware('permission:category/article/edit');
-            Route::get('/delete/{id}', [App\Http\Controllers\Engine\Categories\CategoryArticlesController::class, 'destroy'])->name('category.article.delete')->middleware('permission:category/article/delete');
+            Route::post('/store', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'store'])->name('content.article.store')->middleware('permission:content/article/create');
+            Route::post('/update/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'update'])->name('content.article.update')->middleware('permission:content/article/edit');
+            Route::get('/delete/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'destroy'])->name('content.article.delete')->middleware('permission:content/article/delete');
         });
     });
 

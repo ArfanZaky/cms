@@ -17,7 +17,7 @@ class WebContactsFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => 1,
+            'content_id' => 1,
             'subject' => $this->faker->sentence(3),
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,

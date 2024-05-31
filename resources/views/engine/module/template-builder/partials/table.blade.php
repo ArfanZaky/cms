@@ -1,6 +1,6 @@
 <div class="flex flex-col mt-8">
     <div>
-        <h1 class="font-bold leading-[68.26px] text-primary uppercase">{{ $category?->translations()->where('language_id', $value['language_id'])?->first()?->name }}</h1>
+        <h1 class="font-bold leading-[68.26px] text-primary uppercase">{{ $content?->translations()->where('language_id', $value['language_id'])?->first()?->name }}</h1>
         <div class="bg-primary w-[118px] h-[6px]"></div>
     </div>
     <div class="overflow-hidden block">
@@ -10,13 +10,13 @@
                 data-value="16" style="opacity: 1; position: relative; z-index: 2;">
                 <div>
                     <div>
-                        <p class="leading-[24px]">{{ $category?->translations()->where('language_id', $value['language_id'])?->first()?->overview }}
+                        <p class="leading-[24px]">{{ $content?->translations()->where('language_id', $value['language_id'])?->first()?->overview }}
                         </p>
                         <div class="mt-6">
                             <div class="flex flex-col gap-2 w-full">
                                 <div class="table-auto w-full overflow-auto">
                                     @php
-                                        $thead = $category?->translations()->where('language_id', $value['language_id'])?->first()?->sub_name;
+                                        $thead = $content?->translations()->where('language_id', $value['language_id'])?->first()?->sub_name;
                                         $thead = explode(',', $thead);
 
                                     @endphp
@@ -51,7 +51,7 @@
                     </div>
                     <div class="mt-8  text-16 leading-[36px] font-bold text-[#333]">Note:</div>
                     <div class="ps-6 ">
-                        {{ $category?->translations()->where('language_id', $value['language_id'])?->first()?->description }}
+                        {{ $content?->translations()->where('language_id', $value['language_id'])?->first()?->description }}
                     </div>
                 </div>
             </div>

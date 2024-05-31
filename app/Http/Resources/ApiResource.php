@@ -197,14 +197,14 @@ class ApiResource extends JsonResource
                     } elseif ($id == 'name') {
                         return $data->full_name;
                     } elseif ($id == 'product') {
-                        $category = WebContent::with('translations')->find($data->category_id);
-                        if (! $category) {
+                        $content = WebContent::with('translations')->find($data->content_id);
+                        if (! $content) {
                             return $id;
                         }
-                        $category = $category->getResponeses($category, $this->lang);
-                        $category = collect($category)->toArray();
+                        $content = $content->getResponeses($content, $this->lang);
+                        $content = collect($content)->toArray();
 
-                        return $category['name'];
+                        return $content['name'];
                     } elseif ($id == 'statusform') {
                         return $data->status_form;
                     }

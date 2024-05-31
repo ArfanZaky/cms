@@ -48,7 +48,7 @@
                                                     class="text-danger">*required</em></label>
                                             <select name="parent" id="select-picker"
                                                 class="form-control input-sm show-tick select2" data-live-search="true" required>
-                                                <option value="">Choose Category</option>
+                                                <option value="">Choose content</option>
                                                 @foreach ($gallery as $galleries)
                                                     <option value="{{ $galleries->id }}"
                                                         {{ $galleries->id == $data->gallery_id ? 'selected' : '' }}>

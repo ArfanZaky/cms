@@ -24,10 +24,10 @@
                         <div class="card-header-form mr-5 w-25" >
                           <form action="" method="GET" {{ (request()->has('type')) ? 'style=display:none' : '' }}>
                               <div class="input-group">
-                                  <select class="form-control select2" name="category" onchange="this.form.submit()">
+                                  <select class="form-control select2" name="content" onchange="this.form.submit()">
                                       <option value="-">-- Select Catalog --</option>
                                       @foreach ($catalog as $item)
-                                          <option value="{{ $item->id }}" {{ (request()->get('category') == $item->id) ? 'selected' : '' }}>{{ $item->translations->first()->name }}</option>
+                                          <option value="{{ $item->id }}" {{ (request()->get('content') == $item->id) ? 'selected' : '' }}>{{ $item->translations->first()->name }}</option>
                                       @endforeach
                                   </select>
                               </div>

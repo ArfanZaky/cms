@@ -31,7 +31,7 @@
                     @endif
                 </ol>
             </nav>
-            <h1>Category Management</h1>
+            <h1>content Management</h1>
         </div>
         {{-- if error --}}
         @if ($errors->any())
@@ -50,14 +50,14 @@
                 <div class="col-12">
                     <?php
                     $parent = request()->has('parent') ? request()->get('parent') : false;
-                    $url = route('category.article.store', ['parent' => request()->get('parent'), 'component' => request()->get('component')]);
+                    $url = route('content.article.store', ['parent' => request()->get('parent'), 'component' => request()->get('component')]);
                     ?>
                     <form action="{{ $url }}" novalidate  class="needs-validation" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4>Category Form</h4>
+                                    <h4>content Form</h4>
                                 </div>
 
                                 <div class="card-body">
@@ -66,18 +66,18 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="Parent">Category Parent : </label>
+                                            <label for="Parent">content Parent : </label>
                                             <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
                                                 @if(!$parent)
-                                                    <option value="0">- Root Category</option>
+                                                    <option value="0">- Root content</option>
                                                 @endif
-                                                @foreach($menu_table as $category)
-                                                    <option value="{{ $category['id'] }}" {{ old('parent') == $category['id'] ? 'selected' : '' }}>
+                                                @foreach($menu_table as $content)
+                                                    <option value="{{ $content['id'] }}" {{ old('parent') == $content['id'] ? 'selected' : '' }}>
                                                         <?php
-                                                            $category['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $category['name']);
-                                                            $category['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $category['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $content['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $content['name']);
                                                         ?>
-                                                        {!! $category['name'] !!}
+                                                        {!! $content['name'] !!}
 
                                                     </option>
                                                 @endforeach
@@ -249,7 +249,7 @@
                                     <div class="col-12">
                                         <h5>Template</h5>
                                         <div class="form-group row" style="max-height: 200px;overflow: auto;">
-                                            @foreach(config('cms.visibility.post.category') as $keys => $values)
+                                            @foreach(config('cms.visibility.post.content') as $keys => $values)
                                                 <div class="col-6">
                                                     <label for="visibility">{{$keys}}</label>
                                                     @foreach($values as $key => $value)

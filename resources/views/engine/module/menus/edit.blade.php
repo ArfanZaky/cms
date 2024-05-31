@@ -97,14 +97,14 @@
                                 <div class="card-body row">
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label for="category_id">Category</label>
-                                            <select name="category_id" id="select-picker"
+                                            <label for="content_id">content</label>
+                                            <select name="content_id" id="select-picker"
                                                 class="form-control input-sm show-tick select2" data-live-search="true"
                                                 required>
                                                 <option value="0">- None</option>
-                                                @foreach ($menu_table_category as $menus)
+                                                @foreach ($menu_table_content as $menus)
                                                     <option value="{{ $menus['id'] }}"
-                                                        {{ $menus['id'] == $data->category_id ? 'selected' : '' }}>
+                                                        {{ $menus['id'] == $data->content_id ? 'selected' : '' }}>
                                                         <?php
                                                         $menus['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $menus['name']);
                                                         $menus['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $menus['name']);

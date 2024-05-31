@@ -2,14 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\WebLogs;
+use App\Models\WebLog;
 use Illuminate\Support\Facades\Auth;
 
 class LogServices
 {
     public function handle($data)
     {
-        $log = WebLogs::create([
+        $log = WebLog::create([
             'admin_id' => isset(Auth::user()->id) ? Auth::user()->id : 0,
             'ip' => request()->ip(),
             'table_id' => $data['table_id'],

@@ -33,7 +33,7 @@
                           <thead>
                             <tr>
                               <th>No</th>
-                              <th>Category</th>
+                              <th>content</th>
                               <th>Name</th>
                               <th>status</th>
                               <th>Action</th>

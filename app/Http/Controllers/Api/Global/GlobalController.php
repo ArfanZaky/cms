@@ -32,8 +32,8 @@ class GlobalController extends BaseController
     {
         try {
             $language = _get_languages($languages);
-            $section['section1'] = \App\Helper\Helper::_category_post_id(3, $language);
-            $data_section = \App\Helper\Helper::_category_post_id(4, $language);
+            $section['section1'] = \App\Helper\Helper::_content_post_id(3, $language);
+            $data_section = \App\Helper\Helper::_content_post_id(4, $language);
             $data_section = collect($data_section['items']);
             $section['section2'] = $data_section->where('sort', 1)->first();
 
@@ -256,12 +256,12 @@ class GlobalController extends BaseController
         $slug = $slug[count($slug) - 1];
         $code_map = DB::table('web_sitemaps')->where('slug', $slug)->first()?->code;
         if (! $code_map) {
-            return $this->sendResponse([], 'Category retrieved successfully.');
+            return $this->sendResponse([], 'content retrieved successfully.');
         }
-        if ($code_map == 'category') {
-            $category = new \App\Http\Controllers\Api\Category\CategoryApiController($this->LogServices, $request, $lang, $slug);
+        if ($code_map == 'content') {
+            $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $request, $lang, $slug);
 
-            return $category->filter_by_article_slug();
+            return $content->filter_by_article_slug();
         } else {
             return $this->sendResponse([], 'Data retrieved successfully.');
         }
@@ -279,12 +279,12 @@ class GlobalController extends BaseController
         $slug = $slug[count($slug) - 1];
         $code_map = DB::table('web_sitemaps')->where('slug', $slug)->first()?->code;
         if (! $code_map) {
-            return $this->sendResponse([], 'Category retrieved successfully.');
+            return $this->sendResponse([], 'content retrieved successfully.');
         }
-        if ($code_map == 'category') {
-            $category = new \App\Http\Controllers\Api\Category\CategoryApiController($this->LogServices, $request, $lang, $slug);
+        if ($code_map == 'content') {
+            $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $request, $lang, $slug);
 
-            return $category->seo();
+            return $content->seo();
         } else {
             return $this->sendResponse([], 'Data retrieved successfully.');
         }
@@ -315,8 +315,8 @@ class GlobalController extends BaseController
         $path = public_path($lang);
         $sitemap = Sitemap::create();
 
-        $category = WebContent::with(['translations'])->orderBy('sort', 'asc')->get();
-        $category = collect($category)->map(function ($item, $key) use ($language) {
+        $content = WebContent::with(['translations'])->orderBy('sort', 'asc')->get();
+        $content = collect($content)->map(function ($item, $key) use ($language) {
             $article = $item->getResponeses($item, $language);
             $article = collect($article)->toArray();
 
@@ -332,7 +332,7 @@ class GlobalController extends BaseController
             ];
         })->toArray();
 
-        foreach ($category as $key => $value) {
+        foreach ($content as $key => $value) {
             $sitemap->add(Url::create(\App\Helper\Helper::_setting_code('web_url').$value['url'])
                 ->setLastModificationDate(Carbon::yesterday())
                 ->setChangeFrequency(

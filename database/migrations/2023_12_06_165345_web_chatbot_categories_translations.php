@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('web_chatbot_categories_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('chatbot_category_id')->constrained('web_chatbot_categories')->onDelete('cascade');
+            $table->foreignId('chatbot_content_id')->constrained('web_chatbot_categories')->onDelete('cascade');
             $table->foreignId('language_id')->constrained('web_languages')->onDelete('cascade');
             $table->string('name');
             $table->string('sub_name')->nullable();

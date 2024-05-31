@@ -62,11 +62,11 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="category_id">Category :<em class="text-danger">*required</em></label>
-                                            <select name="category_id" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ $category->id == old('category_id') ? 'selected' : '' }}>
-                                                        {{$category->translations->first()->name}}
+                                            <label for="content_id">content :<em class="text-danger">*required</em></label>
+                                            <select name="content_id" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
+                                                @foreach($categories as $content)
+                                                    <option value="{{ $content->id }}" {{ $content->id == old('content_id') ? 'selected' : '' }}>
+                                                        {{$content->translations->first()->name}}
                                                     </option>
                                                 @endforeach
                                             </select>

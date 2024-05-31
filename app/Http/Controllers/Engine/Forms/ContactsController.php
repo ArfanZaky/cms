@@ -95,7 +95,7 @@ class ContactsController extends Controller
 
     public function list(Request $request)
     {
-        $data = WebContacts::with(['category.translations', 'branch.translations']);
+        $data = WebContacts::with(['content.translations', 'branch.translations']);
         if ($request->start_date && $request->end_date) {
             $data = $data->when($request->start_date, function ($query, $start_date) {
                 return $query->whereDate('created_at', '>=', $start_date);
@@ -108,7 +108,7 @@ class ContactsController extends Controller
         }
 
         if ($request->product) {
-            $data = $data->where('category_id', $request->product);
+            $data = $data->where('content_id', $request->product);
         }
 
         $data = $data->orderBy('created_at', 'desc')->get();

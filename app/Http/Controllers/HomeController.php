@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WebLogs;
+use App\Models\WebLog;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,7 +30,7 @@ class HomeController extends Controller
 
     public function Apilogs()
     {
-        $log = WebLogs::select('web_logs.*', 'users.name as admin_name')
+        $log = WebLog::select('web_logs.*', 'users.name as admin_name')
             ->leftjoin('users', 'users.id', '=', 'web_logs.admin_id')->OrderBy('web_logs.id', 'desc')
             ->where('web_logs.name', '!=', 'Log Error')
             ->limit(100)

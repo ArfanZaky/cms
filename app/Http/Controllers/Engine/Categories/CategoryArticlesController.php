@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class CategoryArticlesController extends Controller
+class contentArticlesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,29 +28,29 @@ class CategoryArticlesController extends Controller
 
     public function index(Request $request)
     {
-        $category = WebContent::with(['translations' => function ($q) {
+        $content = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])
             ->orderBy('sort', 'asc')
             ->get();
 
-        $permission_category = session('permission_category');
+        $permission_content = session('permission_content');
 
         $breadcrumbs = false;
-        $data = $category;
+        $data = $content;
         if ($request->parent) {
-            if (! in_array($request->parent, $permission_category)) {
+            if (! in_array($request->parent, $permission_content)) {
                 return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
             }
-            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
-            $data = $category->where('parent', $request->parent);
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());
+            $data = $content->where('parent', $request->parent);
 
             $id = $data->pluck('id')->toArray();
             $data = collect($data)->map(function ($item) {
                 $item['parent'] = 0;
 
                 return $item;
-            })->union($category->whereIn('parent', $id));
+            })->union($content->whereIn('parent', $id));
         }
         $data = collect($data)->map(function ($item) {
             $slug = $item->translations->where('language_id', 1)->first()->slug;
@@ -62,7 +62,7 @@ class CategoryArticlesController extends Controller
 
         $data_tree = [];
         foreach ($data as $key => $value) {
-            if (! in_array($value->id, $permission_category)) {
+            if (! in_array($value->id, $permission_content)) {
                 continue;
             }
             $data_tree[] = [
@@ -79,7 +79,7 @@ class CategoryArticlesController extends Controller
         $data_tree = \App\Helper\Helper::tree($data_tree);
         $menu_table = menu_table($data_tree, 0, $data = []);
 
-        return view('engine.module.category.article.index', compact('menu_table', 'breadcrumbs'));
+        return view('engine.module.content.article.index', compact('menu_table', 'breadcrumbs'));
     }
 
     /**
@@ -99,13 +99,13 @@ class CategoryArticlesController extends Controller
 
         $breadcrumbs = false;
         if ($parent) {
-            $category = WebContent::with(['translations' => function ($q) {
+            $content = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
             }])
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());
         }
 
         $data_tree = [];
@@ -126,7 +126,7 @@ class CategoryArticlesController extends Controller
         }
         $menu_table = menu_table($data_tree_helper, 0, $data = []);
 
-        return view('engine.module.category.article.create', compact('menu_table', 'breadcrumbs'));
+        return view('engine.module.content.article.create', compact('menu_table', 'breadcrumbs'));
     }
 
     /**
@@ -177,18 +177,18 @@ class CategoryArticlesController extends Controller
             $data->createTranslations($data, $request);
             $log = $this->LogServices->handle([
                 'table_id' => $data->id,
-                'name' => 'Create Category Article',
+                'name' => 'Create content Article',
                 'json' => json_encode($data),
             ]);
 
             $PermissionRelations = [
                 [
                     'role_id' => Auth::user()?->role?->first()?->id,
-                    'category_id' => $data->id,
+                    'content_id' => $data->id,
                 ],
                 [
                     'role_id' => 1,
-                    'category_id' => $data->id,
+                    'content_id' => $data->id,
                 ],
             ];
 
@@ -201,22 +201,22 @@ class CategoryArticlesController extends Controller
             $this->PermissionService->handle();
             DB::commit();
 
-            return redirect()->route('category.article', ['parent' => $request->parent, 'component' => $request->component])->with('success', 'Create Category Article Success');
+            return redirect()->route('content.article', ['parent' => $request->parent, 'component' => $request->component])->with('success', 'Create content Article Success');
         } catch (\Exception $e) {
             DB::rollback();
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
 
-            return redirect()->route('category.article', ['parent' => $request->parent, 'component' => $request->component])->with('error', 'Create Category Article Error');
+            return redirect()->route('content.article', ['parent' => $request->parent, 'component' => $request->component])->with('error', 'Create content Article Error');
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\WebCategorys  $webCategorys
+     * @param  \App\Models\Webcontents  $webcontents
      * @return \Illuminate\Http\Response
      */
-    public function show(WebCategorys $webCategorys)
+    public function show(Webcontents $webcontents)
     {
         //
     }
@@ -224,7 +224,7 @@ class CategoryArticlesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\WebCategorys  $webCategorys
+     * @param  \App\Models\Webcontents  $webcontents
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
@@ -238,13 +238,13 @@ class CategoryArticlesController extends Controller
         )->get();
         $breadcrumbs = false;
         if ($parent) {
-            $category = WebContent::with(['translations' => function ($q) {
+            $content = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
             }])
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('category.article', $category, $category->where('id', $request->parent)->first());
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());
         }
 
         $menu_table = [];
@@ -265,13 +265,13 @@ class CategoryArticlesController extends Controller
         $data = WebContent::with('translations')->find($id);
 
         // return $data;
-        return view('engine.module.category.article.edit', compact('menu_table', 'data', 'breadcrumbs'));
+        return view('engine.module.content.article.edit', compact('menu_table', 'data', 'breadcrumbs'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Models\WebCategorys  $webCategorys
+     * @param  \App\Models\Webcontents  $webcontents
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -313,27 +313,27 @@ class CategoryArticlesController extends Controller
             $data->updateTranslations($data, $request);
             $log = $this->LogServices->handle([
                 'table_id' => $data->id,
-                'name' => 'Update Category Article',
+                'name' => 'Update content Article',
                 'json' => json_encode($data),
             ]);
             DB::commit();
 
-            return redirect()->route('category.article', ['parent' => $request->parent, 'component' => $request->component])->with('success', 'Update Category Article Success');
+            return redirect()->route('content.article', ['parent' => $request->parent, 'component' => $request->component])->with('success', 'Update content Article Success');
         } catch (\Exception $e) {
             DB::rollback();
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
 
-            return redirect()->route('category.article', ['parent' => $request->parent, 'component' => $request->component])->with('error', 'Update Category Article Error');
+            return redirect()->route('content.article', ['parent' => $request->parent, 'component' => $request->component])->with('error', 'Update content Article Error');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\WebCategorys  $webCategorys
+     * @param  \App\Models\Webcontents  $webcontents
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WebContent $webCategorys, $id)
+    public function destroy(WebContent $webcontents, $id)
     {
         DB::beginTransaction();
         try {
@@ -342,17 +342,17 @@ class CategoryArticlesController extends Controller
             $data->delete();
             $log = $this->LogServices->handle([
                 'table_id' => $data->id,
-                'name' => 'Delete Category Article',
+                'name' => 'Delete content Article',
                 'json' => json_encode($data),
             ]);
             DB::commit();
 
-            return redirect()->back()->with('success', 'Delete Category Article Success');
+            return redirect()->back()->with('success', 'Delete content Article Success');
         } catch (\Exception $e) {
             DB::rollback();
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
 
-            return redirect()->back()->with('error', 'Delete Category Article Error');
+            return redirect()->back()->with('error', 'Delete content Article Error');
         }
     }
 }

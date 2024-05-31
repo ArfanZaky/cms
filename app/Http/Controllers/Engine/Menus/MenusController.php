@@ -79,11 +79,11 @@ class MenusController extends Controller
         }
         $menu_table_menu = menu_table($data_tree_helper, 0, $data = []);
 
-        $category = WebContent::with(['translations' => function ($q) {
+        $content = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)->get();
         $data_tree2 = [];
-        foreach ($category as $key => $value) {
+        foreach ($content as $key => $value) {
             $data_tree2[] = [
                 'id' => $value->id,
                 'parent' => $value->parent,
@@ -98,9 +98,9 @@ class MenusController extends Controller
         if (count($data_tree_helper) == 0) {
             $data_tree_helper = $data_tree2;
         }
-        $menu_table_category = menu_table($data_tree_helper, 0, $data = []);
+        $menu_table_content = menu_table($data_tree_helper, 0, $data = []);
 
-        return view('engine.module.menus.create', compact('menu_table_menu', 'menu_table_category'));
+        return view('engine.module.menus.create', compact('menu_table_menu', 'menu_table_content'));
     }
 
     public function store(Request $request)
@@ -119,8 +119,8 @@ class MenusController extends Controller
             if (isset($request->menu_id)) {
                 $menu->menu_id = $request->menu_id;
             }
-            if (isset($request->category_id)) {
-                $menu->category_id = $request->category_id;
+            if (isset($request->content_id)) {
+                $menu->content_id = $request->content_id;
             }
             if (isset($request->gallery_id)) {
                 $menu->gallery_id = $request->gallery_id;
@@ -196,12 +196,12 @@ class MenusController extends Controller
         }
         $menu_table_menu = menu_table($data_tree_helper, 0, $data = []);
 
-        $category = WebContent::with(['translations' => function ($q) {
+        $content = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)->get();
 
         $data_tree2 = [];
-        foreach ($category as $key => $value) {
+        foreach ($content as $key => $value) {
             $data_tree2[] = [
                 'id' => $value->id,
                 'parent' => $value->parent,
@@ -213,11 +213,11 @@ class MenusController extends Controller
             ];
         }
         $data_tree_helper = \App\Helper\Helper::tree($data_tree2);
-        $menu_table_category = menu_table($data_tree_helper, 0, $data = []);
+        $menu_table_content = menu_table($data_tree_helper, 0, $data = []);
 
         $data = WebMenus::with('translations')->find($id);
 
-        return view('engine.module.menus.edit', compact('menu_table_menu', 'menu_table_category', 'data'));
+        return view('engine.module.menus.edit', compact('menu_table_menu', 'menu_table_content', 'data'));
     }
 
     public function update(Request $request, $id)
@@ -236,8 +236,8 @@ class MenusController extends Controller
             if (isset($request->menu_id)) {
                 $menu->menu_id = $request->menu_id;
             }
-            if (isset($request->category_id)) {
-                $menu->category_id = $request->category_id;
+            if (isset($request->content_id)) {
+                $menu->content_id = $request->content_id;
             }
             if (isset($request->gallery_id)) {
                 $menu->gallery_id = $request->gallery_id;

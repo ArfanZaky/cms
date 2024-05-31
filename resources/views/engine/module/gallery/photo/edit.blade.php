@@ -45,7 +45,7 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="parent">Category: <em class="text-danger">*required</em></label>
+                                            <label for="parent">content: <em class="text-danger">*required</em></label>
                                             <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
                                                 <option value="0">None</option>
                                                 @foreach($gallery as $galleries)

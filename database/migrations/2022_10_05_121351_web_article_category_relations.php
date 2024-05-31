@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('web_article_category_relations', function (Blueprint $table) {
+        Schema::create('web_article_content_relations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained('web_articles')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained('web_contents')->onDelete('cascade');
+            $table->foreignId('content_id')->constrained('web_contents')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('web_article_category_relations');
+        Schema::dropIfExists('web_article_content_relations');
     }
 };

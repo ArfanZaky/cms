@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Spatie\ResponseCache\Facades\ResponseCache;
 
 class RoleRelations extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasCache;
 
     protected $table = 'user_role_relations';
 
@@ -17,21 +18,6 @@ class RoleRelations extends Model
         'admin_id',
         'role_id',
     ];
-
-    protected static function booted()
-    {
-        self::created(function () {
-            ResponseCache::clear();
-        });
-
-        self::updated(function () {
-            ResponseCache::clear();
-        });
-
-        self::deleted(function () {
-            ResponseCache::clear();
-        });
-    }
 
     public function role()
     {

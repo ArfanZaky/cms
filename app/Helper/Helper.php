@@ -12,18 +12,18 @@ use Illuminate\Support\Str;
 
 class Helper
 {
-    public static function _category_post_id($id, $language, $limit = false)
+    public static function _content_post_id($id, $language, $limit = false)
     {
-        $category = WebContent::with('translations')->find($id);
-        if (! $category) {
+        $content = WebContent::with('translations')->find($id);
+        if (! $content) {
             return [];
         }
-        $id = $category->id;
-        $category = $category->getResponeses($category, $language);
-        $category = collect($category)->toArray();
+        $id = $content->id;
+        $content = $content->getResponeses($content, $language);
+        $content = collect($content)->toArray();
 
-        $article = WebArticles::whereHas('categoryArticles', function ($q) use ($id) {
-            $q->where('category_id', $id);
+        $article = WebArticles::whereHas('contentArticles', function ($q) use ($id) {
+            $q->where('content_id', $id);
         })
             ->with('translations')
             ->orderBy('sort', 'asc')
@@ -43,142 +43,46 @@ class Helper
             return $item;
         });
 
-        $category['items'] = $data;
+        $content['items'] = $data;
 
-        return $category;
+        return $content;
     }
 
-    public static function _category_post_id_top_search($language, $limit = 3)
+    public static function _content_post_id_top_search($language, $limit = 3)
     {
         $language = _get_languages($language);
-        $category = WebContent::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
+        $content = WebContent::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
         $article = WebArticles::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
 
         // merge
-        $merge = collect($category)->merge($article)->sortByDesc('view')->take($limit)->values()->all();
+        $merge = collect($content)->merge($article)->sortByDesc('view')->take($limit)->values()->all();
         if (empty($merge)) {
             return [];
         }
-        $category = collect($merge)->map(function ($item) use ($language) {
-            $category = $item->getResponeses($item, $language);
-            $category = collect($category)->toArray();
+        $content = collect($merge)->map(function ($item) use ($language) {
+            $content = $item->getResponeses($item, $language);
+            $content = collect($content)->toArray();
 
             return [
-                'id' => $category['id'],
-                'image' => $category['image']['default'],
+                'id' => $content['id'],
+                'image' => $content['image']['default'],
                 'parent' => '_self',
                 'type' => 'text',
-                'name' => $category['name'],
+                'name' => $content['name'],
                 'target' => '_self',
-                'url' => $category['url'],
-                'slug' => $category['slug'],
-                'visibility' => $category['visibility'],
+                'url' => $content['url'],
+                'slug' => $content['slug'],
+                'visibility' => $content['visibility'],
             ];
         });
 
-        return $category;
-    }
-
-    public static function _text_chatbot($languages, $keyword, $limit = 3)
-    {
-        $language = _get_languages($languages);
-        $db = DB::table('web_keywords')->where('language_id', $language)->get();
-        $removeNonWords = ['?', '!', '.', ',', ';', ':', '"', "'", '(', ')', '[', ']', '{', '}', '-', '_', '+', '=', '/', '\\', '|', '<', '>', '@', '#', '$', '%', '^', '&', '*', '~', '`'];
-        $removeBasicWord = DB::table('web_basic_word')->get()->pluck('basic_word')->map(function ($item) {
-            return trim(strtolower($item));
-        })->toArray();
-
-        $merge = collect($removeNonWords)->merge($removeBasicWord)->unique()->toArray();
-
-        $db = collect($db)->map(function ($item) use ($merge) {
-            $item->final_keyword = str_replace($merge, '', $item->final_keyword);
-            $item->final_keyword = strtolower($item->final_keyword);
-
-            return $item;
-        });
-
-        $finalKeywords = collect($db)->pluck('final_keyword')->toArray();
-        $finalKeywords = collect($finalKeywords)->map(function ($item) {
-            $item = explode(',', $item);
-
-            return $item;
-        })->flatten()->toArray();
-
-        $keyword = trim(strtolower(str_replace($merge, '', $keyword)));
-        $questionLower = explode(' ', $keyword);
-        if (count($questionLower) > 1) {
-            $matchedKeywords = collect($questionLower)->map(function ($items) use ($finalKeywords) {
-                $matchedKeywords = collect($finalKeywords)->filter(function ($item) use ($items) {
-                    $item = trim(strtolower($item));
-
-                    return stristr($item, $items) !== false
-                                        || strpos($items, $item) !== false;
-                });
-
-                return $matchedKeywords;
-            })->flatten()->toArray();
-        } else {
-            $matchedKeywords = collect($finalKeywords)->filter(function ($item) use ($keyword) {
-                $item = trim(strtolower($item));
-
-                return stristr($item, $keyword) !== false
-                                    || strpos($keyword, $item) !== false;
-            });
-        }
-
-        $matchedKeywords = collect($matchedKeywords)->sortBy(function ($item) use ($keyword) {
-            return levenshtein($keyword, $item);
-        })->unique()->map(function ($item) use ($db) {
-            $data = collect($db)->filter(function ($items) use ($item) {
-                // replace stristr with your choice of matching function
-                return stristr($items->final_keyword, $item) !== false;
-            })->map(function ($item) {
-                $item->unique = $item->model_id.'-'.$item->model_type;
-
-                return $item;
-            })->values()->toArray();
-
-            return $data;
-        })->flatten()->unique('unique')->toArray();
-
-        $data = collect($matchedKeywords)->map(function ($item) use ($language) {
-            if ($item->model_type == 'article') {
-                $data = WebArticles::with('translations')->where('id', $item->model_id)->first();
-            } elseif ($item->model_type == 'category') {
-                $data = WebContent::with('translations')->where('id', $item->model_id)->first();
-            } elseif ($item->model_type == 'page') {
-                $data = WebPages::with('translations')->where('id', $item->model_id)->first();
-            }
-            if (! $data) {
-                return [];
-            }
-            $data = $data->getResponeses($data, $language);
-            $item = collect($data)->toArray();
-
-            return [
-                'id' => $item['id'],
-                'image' => $item['image']['default'],
-                'overview' => isset($item['meta']['description']) ? $item['meta']['description'] : $item['description'],
-                'parent' => '_self',
-                'type' => 'text',
-                'name' => $item['name'],
-                'target' => '_self',
-                'url' => $item['url'],
-                'label' => $item['label'],
-                'slug' => $item['slug'],
-                'visibility' => $item['visibility'],
-            ];
-        });
-
-        return collect($data)->filter(function ($item) {
-            return ! empty($item);
-        })->values()->toArray();
+        return $content;
     }
 
     public static function _search($language, $keyword, $offset, $limit)
     {
         $language = _get_languages($language);
-        $category = WebContent::with('translations')->whereHas('translations', function ($q) use ($keyword, $language) {
+        $content = WebContent::with('translations')->whereHas('translations', function ($q) use ($keyword, $language) {
             $q->where('language_id', $language)->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', '%'.$keyword.'%')->orWhere('meta_keyword', 'like', '%'.$keyword.'%')->orWhere('description', 'like', '%'.$keyword.'%');
             });
@@ -191,7 +95,7 @@ class Helper
         })->get();
 
         // merge
-        $merge = collect($category)->merge($article)->sortByDesc('view')->values()->all();
+        $merge = collect($content)->merge($article)->sortByDesc('view')->values()->all();
         $items = collect($merge)->skip($offset)->take($limit)->values()->all();
         $total = collect($merge)->count();
         if (empty($merge)) {
@@ -378,8 +282,8 @@ class Helper
             $data = DB::table('web_settings')->where('id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Page')) {
             $data = DB::table('web_page_translations')->where('page_id', $row->table_id)->first();
-        } elseif (Str::contains($name, 'Category Article')) {
-            $data = DB::table('web_content_translations')->where('category_id', $row->table_id)->first();
+        } elseif (Str::contains($name, 'content Article')) {
+            $data = DB::table('web_content_translations')->where('content_id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Article')) {
             $data = DB::table('web_article_translations')->where('article_id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Wording')) {
@@ -416,13 +320,13 @@ class Helper
         return $result;
     }
 
-    public static function _category_slug_map_loop($data, $post, $array = [])
+    public static function _content_slug_map_loop($data, $post, $array = [])
     {
 
         $array[] = ['slug' => $post?->translations?->first()?->slug, 'name' => $post?->translations?->first()?->name];
         if ($post?->parent != 0) {
             $post = $data->where('id', $post->parent)->first();
-            $result = self::_category_slug_map_loop($data, $post, $array);
+            $result = self::_content_slug_map_loop($data, $post, $array);
         } else {
             $result = array_reverse($array);
         }
@@ -430,7 +334,7 @@ class Helper
         return $result;
     }
 
-    public static function _category_slug_map($post, $lang)
+    public static function _content_slug_map($post, $lang)
     {
 
         $get_model = get_class($post);
@@ -438,10 +342,10 @@ class Helper
         $id = $post->id;
         if ($get_model == 'App\Models\WebArticles') {
             $temp = $post;
-            $id = $post?->categoryArticles()?->first()?->id;
+            $id = $post?->contentArticles()?->first()?->id;
         }
 
-        $category = WebContent::with([
+        $content = WebContent::with([
             'translations' => function ($q) use ($lang) {
                 $q->where('language_id', $lang);
             },
@@ -450,7 +354,7 @@ class Helper
             ->orderBy('sort', 'asc')
             ->get();
 
-        $result = self::_category_slug_map_loop($category, $category->where('id', $id)->first());
+        $result = self::_content_slug_map_loop($content, $content->where('id', $id)->first());
 
         if ($get_model == 'App\Models\WebArticles') {
             $result[] = [

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Category;
+namespace App\Http\Controllers\Api\content;
 
 use App\Events\UpdateViewCount;
 use App\Http\Controllers\Api\BaseController as BaseController;
@@ -12,7 +12,7 @@ use App\Services\LogServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class CategoryApiController extends BaseController
+class contentApiController extends BaseController
 {
     protected $LogServices;
 
@@ -32,7 +32,7 @@ class CategoryApiController extends BaseController
 
     protected $year;
 
-    protected $category;
+    protected $content;
 
     protected $article;
 
@@ -48,7 +48,7 @@ class CategoryApiController extends BaseController
         $this->request = $request;
         $this->languages = $languages;
         $this->slug = $slug;
-        $this->category = [];
+        $this->content = [];
         $this->article = [];
         $this->children = [];
         $this->total_article = 0;
@@ -72,7 +72,7 @@ class CategoryApiController extends BaseController
         ])->whereSlug($this->slug, _get_languages($this->languages))->first();
 
         if (! $this->db) {
-            return $this->sendResponse([], 'Category retrieved successfully.');
+            return $this->sendResponse([], 'content retrieved successfully.');
         }
         $this->offset = $this->request->active != config('cms.visibility.post.slug')[$this->db->visibility] ? 0 : $this->request->input('offset', 0);
 
@@ -82,7 +82,7 @@ class CategoryApiController extends BaseController
     {
         try {
             if (! $this->db) {
-                return $this->sendResponse([], 'Category retrieved successfully.');
+                return $this->sendResponse([], 'content retrieved successfully.');
             }
             event(new UpdateViewCount($this->db));
 
@@ -91,12 +91,12 @@ class CategoryApiController extends BaseController
                 $slug_r = $slug_r[count($slug_r) - 1];
                 $code_map = DB::table('web_sitemaps')->where('slug', $slug_r)->first()?->code;
                 if (! $code_map) {
-                    return $this->sendResponse([], 'Category retrieved successfully.');
+                    return $this->sendResponse([], 'content retrieved successfully.');
                 }
-                if ($code_map == 'category') {
-                    $category = new \App\Http\Controllers\Api\Category\CategoryApiController($this->LogServices, $this->request, $this->languages, $slug_r);
+                if ($code_map == 'content') {
+                    $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $this->request, $this->languages, $slug_r);
 
-                    return $category->filter_by_article_slug();
+                    return $content->filter_by_article_slug();
                 } elseif ($code_map == 'article') {
                     $article = new \App\Http\Controllers\Api\Article\ArticleApiController($this->LogServices);
 
@@ -175,14 +175,14 @@ class CategoryApiController extends BaseController
                 }
             }
 
-            $this->category = collect($this->db->getResponeses($this->db, $language))->toArray();
-            $this->category['description'] = $currentDB == null ? $this->category['description'] : $currentDB;
-            $this->category['name'] = $currentDBName == null ? $this->category['name'] : $currentDBName;
-            $this->category['translation'] = $currentDBTranslation == null ? $this->category['translation'] : $currentDBTranslation;
-            $this->category['meta'] = $currentDBMeta == null ? $this->category['meta'] : $currentDBMeta;
+            $this->content = collect($this->db->getResponeses($this->db, $language))->toArray();
+            $this->content['description'] = $currentDB == null ? $this->content['description'] : $currentDB;
+            $this->content['name'] = $currentDBName == null ? $this->content['name'] : $currentDBName;
+            $this->content['translation'] = $currentDBTranslation == null ? $this->content['translation'] : $currentDBTranslation;
+            $this->content['meta'] = $currentDBMeta == null ? $this->content['meta'] : $currentDBMeta;
 
-            $article = WebArticles::whereHas('categoryArticles', function ($q) {
-                $q->where('category_id', $this->db->id);
+            $article = WebArticles::whereHas('contentArticles', function ($q) {
+                $q->where('content_id', $this->db->id);
             })
                 ->with('translations')
                 ->orderBy('sort', 'asc')
@@ -205,8 +205,8 @@ class CategoryApiController extends BaseController
                 $this->article = [];
             }
 
-            $this->total_article = WebArticles::whereHas('categoryArticles', function ($q) {
-                $q->where('category_id', $this->db->id);
+            $this->total_article = WebArticles::whereHas('contentArticles', function ($q) {
+                $q->where('content_id', $this->db->id);
             })
                 ->count();
 
@@ -217,14 +217,14 @@ class CategoryApiController extends BaseController
                 $item = collect($item)->toArray();
 
                 if ($this->db->visibility == 0 && $key == 0 && $currentDB == null) {
-                    $this->category['description'] = $item['description'];
-                    $this->category['name'] = $item['name'];
-                    $item['url'] = $this->category['url'];
+                    $this->content['description'] = $item['description'];
+                    $this->content['name'] = $item['name'];
+                    $item['url'] = $this->content['url'];
                 }
 
                 if ($this->db->visibility == 1) {
-                    $article_child = WebArticles::whereHas('categoryArticles', function ($q) use ($item) {
-                        $q->where('category_id', $item['id']);
+                    $article_child = WebArticles::whereHas('contentArticles', function ($q) use ($item) {
+                        $q->where('content_id', $item['id']);
                     })
                         ->with('translations')
                         ->orderBy('sort', 'asc')
@@ -259,8 +259,8 @@ class CategoryApiController extends BaseController
                     ];
                     $this->article[] = $itemArticle;
                 });
-                $this->category['image']['apps'] = collect($databoard->getResponeses($databoard, $language))->toArray()['image']['default'];
-                $this->category['sub_name'] = collect($databoard->getResponeses($databoard, $language))->toArray()['sub_name'];
+                $this->content['image']['apps'] = collect($databoard->getResponeses($databoard, $language))->toArray()['image']['default'];
+                $this->content['sub_name'] = collect($databoard->getResponeses($databoard, $language))->toArray()['sub_name'];
             }
 
             if ($this->db->visibility == 0 || $this->db->visibility == 8) {
@@ -272,16 +272,16 @@ class CategoryApiController extends BaseController
             }
 
             $this->children = $children;
-            $this->category['active_page'] = $menu_id;
-            $this->category['tab'] = $this->children;
+            $this->content['active_page'] = $menu_id;
+            $this->content['tab'] = $this->children;
 
-            $this->category['template'] = config('cms.visibility.post.slug')[$this->db->visibility];
+            $this->content['template'] = config('cms.visibility.post.slug')[$this->db->visibility];
 
             if ($currentData) {
-                $this->category['template'] = config('cms.visibility.post.slug')[$currentData];
+                $this->content['template'] = config('cms.visibility.post.slug')[$currentData];
             }
 
-            $this->category['list'] = $this->article;
+            $this->content['list'] = $this->article;
             $breadcrumbGet = (new WebContent())->breadcrumb($current->parent, $this->languages);
             $breadcrumb[] = [
                 'id' => 0,
@@ -302,11 +302,11 @@ class CategoryApiController extends BaseController
                 'name' => $current->translations->first()->name,
                 'url' => '/'.$this->languages.'/'.$current->translations->first()->slug,
             ];
-            $this->category['breadcrumb'] = $breadcrumb;
+            $this->content['breadcrumb'] = $breadcrumb;
 
             $MapVisibility = $this->MapVisibility();
 
-            return $this->sendResponse($this->category, 'Category retrieved successfully.', $this->limit, $this->offset);
+            return $this->sendResponse($this->content, 'content retrieved successfully.', $this->limit, $this->offset);
         } catch (\Exception $e) {
             return $e;
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
@@ -319,7 +319,7 @@ class CategoryApiController extends BaseController
     {
         try {
             if (! $this->db) {
-                return $this->sendResponse([], 'Category retrieved successfully.');
+                return $this->sendResponse([], 'content retrieved successfully.');
             }
 
             if (! empty($this->db->translations->first()->redirection)) {
@@ -327,12 +327,12 @@ class CategoryApiController extends BaseController
                 $slug_r = $slug_r[count($slug_r) - 1];
                 $code_map = DB::table('web_sitemaps')->where('slug', $slug_r)->first()?->code;
                 if (! $code_map) {
-                    return $this->sendResponse([], 'Category retrieved successfully.');
+                    return $this->sendResponse([], 'content retrieved successfully.');
                 }
-                if ($code_map == 'category') {
-                    $category = new \App\Http\Controllers\Api\Category\CategoryApiController($this->LogServices, $this->request, $this->languages, $slug_r);
+                if ($code_map == 'content') {
+                    $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $this->request, $this->languages, $slug_r);
 
-                    return $category->seo();
+                    return $content->seo();
                 } elseif ($code_map == 'article') {
                     $article = new \App\Http\Controllers\Api\Article\ArticleApiController($this->LogServices);
 
@@ -344,13 +344,13 @@ class CategoryApiController extends BaseController
 
             $language = _get_languages($this->languages);
 
-            $this->category = collect($this->db->getResponeses($this->db, $language))->toArray();
+            $this->content = collect($this->db->getResponeses($this->db, $language))->toArray();
 
             $data = [];
-            $data['meta'] = $this->category['meta'];
-            $data['template'] = $this->category['template'];
+            $data['meta'] = $this->content['meta'];
+            $data['template'] = $this->content['template'];
 
-            return $this->sendResponse($data, 'Category retrieved successfully.', $this->limit, $this->offset);
+            return $this->sendResponse($data, 'content retrieved successfully.', $this->limit, $this->offset);
         } catch (\Exception $e) {
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
 

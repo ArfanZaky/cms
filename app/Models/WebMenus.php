@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Services\ApiService;
+use App\Traits\HasCache;
 use App\Traits\HasGlobalQueryTrait;
 use App\Traits\HasResponse;
+use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,48 +14,9 @@ use Spatie\ResponseCache\Facades\ResponseCache;
 
 class WebMenus extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse;
+    use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache, HasStatus;
 
-    protected static function booted()
-    {
-        static::addGlobalScope('status', function (Builder $builder) {
-            // only api
-            if (request()->is('page/*')) {
-                $builder->where('status', 1);
-            }
-        });
-
-        self::created(function () {
-            ResponseCache::clear();
-        });
-
-        self::updated(function () {
-            ResponseCache::clear();
-        });
-
-        self::deleted(function () {
-            ResponseCache::clear();
-        });
-    }
-
-    protected $table = 'web_menus';
-
-    protected $fillable = [
-        'menu_id',
-        'admin_id',
-        'category_id',
-        'catalog_id',
-        'gallery_id',
-        'parent',
-        'target',
-        'image',
-        'image_sm',
-        'parameter',
-        'url',
-        'sort',
-        'visibility',
-        'status',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
         'created_at' => 'datetime',
@@ -63,22 +26,22 @@ class WebMenus extends Model
 
     public function translations()
     {
-        return $this->hasMany('App\Models\WebMenuTranslations', 'menu_id', 'id');
+        return $this->hasMany(WebMenuTranslations::class, 'menu_id', 'id');
     }
 
     public function parent()
     {
-        return $this->hasOne('App\Models\WebMenus', 'id', 'parent');
+        return $this->hasOne(WebMenus::class, 'id', 'parent');
     }
 
     public function parentData()
     {
-        return $this->hasOne('App\Models\WebMenus', 'id', 'parent');
+        return $this->hasOne(WebMenus::class, 'id', 'parent');
     }
 
     public function children()
     {
-        return $this->hasMany('App\Models\WebMenus', 'parent', 'id');
+        return $this->hasMany(WebMenus::class, 'parent', 'id');
     }
 
     public function scopeWithTranslationsForLanguage($query, $language_id)

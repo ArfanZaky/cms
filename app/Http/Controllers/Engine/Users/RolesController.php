@@ -134,7 +134,7 @@ class RolesController extends Controller
         $PermissionRelations = PermissionRelations::where('role_id', $id)->get();
 
         $permission_global = $PermissionRelations->pluck('permission_id')->filter()->values()->toArray();
-        $permission_category = $PermissionRelations->pluck('category_id')->filter()->values()->toArray();
+        $permission_content = $PermissionRelations->pluck('content_id')->filter()->values()->toArray();
         $permission_page = $PermissionRelations->pluck('page_id')->filter(function ($value) {
             return ! is_null($value);
         })->values()->toArray();
@@ -150,15 +150,15 @@ class RolesController extends Controller
             array_push($array, $data);
         }
 
-        $category = WebContent::with(['translations' => function ($q) {
+        $content = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])
             ->orderBy('sort', 'asc')
             ->get();
 
-        $data_tree_category = [];
-        foreach ($category as $key => $value) {
-            $data_tree_category[] = [
+        $data_tree_content = [];
+        foreach ($content as $key => $value) {
+            $data_tree_content[] = [
                 'id' => $value->id,
                 'parent' => $value->parent,
                 'children' => [],
@@ -169,10 +169,10 @@ class RolesController extends Controller
                 'url' => $value->url,
             ];
         }
-        $data_tree_category = \App\Helper\Helper::tree($data_tree_category);
-        $data_tree_category = menu_table($data_tree_category, 0, $data = []);
+        $data_tree_content = \App\Helper\Helper::tree($data_tree_content);
+        $data_tree_content = menu_table($data_tree_content, 0, $data = []);
 
-        return view('engine.module.roles.permission', compact('role', 'id', 'role_user', 'array', 'data_tree_category', 'permission_category', 'permission_page'));
+        return view('engine.module.roles.permission', compact('role', 'id', 'role_user', 'array', 'data_tree_content', 'permission_content', 'permission_page'));
     }
 
     public function permissionStore(Request $request, $id)
@@ -190,12 +190,12 @@ class RolesController extends Controller
                     PermissionRelations::create($data);
                 }
             }
-            $permission_Category = $request->get('permission_Category');
-            if (! empty($permission_Category)) {
-                foreach ($permission_Category as $permission_Category_value) {
+            $permission_content = $request->get('permission_content');
+            if (! empty($permission_content)) {
+                foreach ($permission_content as $permission_content_value) {
                     $data = [
                         'role_id' => $id,
-                        'category_id' => $permission_Category_value,
+                        'content_id' => $permission_content_value,
                     ];
                     PermissionRelations::create($data);
                 }

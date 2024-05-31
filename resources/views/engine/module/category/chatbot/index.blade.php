@@ -22,7 +22,7 @@
                   @endif
               </ol>
           </nav>
-            <h1>Category Chatbot Management</h1>
+            <h1>content Chatbot Management</h1>
         </div>
         @if (session('success'))
         <div class="alert alert-success">
@@ -39,14 +39,14 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                        <h4>Data Category</h4>
+                        <h4>Data content</h4>
                         <div class="card-header-action">
                           <?php
                           $parent = request()->has('parent') ? request()->get('parent') : false;
                           if ($parent) {
-                              $url = route('category.chatbot.create', ['parent' => $parent]);
+                              $url = route('content.chatbot.create', ['parent' => $parent]);
                           } else {
-                              $url = route('category.chatbot.create');
+                              $url = route('content.chatbot.create');
                           }
                           ?>
                           <a href="{{ $url }}" class="btn btn-primary">Add Pages</a>
@@ -72,18 +72,18 @@
                             @endif
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{!! has_child($item,'category.chatbot') !!}</td>
+                                <td>{!! has_child($item,'content.chatbot') !!}</td>
                                 <td>{!! Status($item['status']) !!}</td>
                                 <td>
                                   @if (!$parent)
-                                      <a href="{{ route('category.chatbot.edit', $item['id']) }}"
+                                      <a href="{{ route('content.chatbot.edit', $item['id']) }}"
                                           class="btn btn-primary ">Edit</a>
                                   @else
-                                      <a href="{{ route('category.chatbot.edit', [$item['id'], 'parent' => $parent]) }}"
+                                      <a href="{{ route('content.chatbot.edit', [$item['id'], 'parent' => $parent]) }}"
                                           class="btn btn-primary ">Edit</a>
                                   @endif
                                   @if (request()->has('dev'))
-                                    <a href="{{ route('category.chatbot.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>
+                                    <a href="{{ route('content.chatbot.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>
                                   @endif
 
                                 </td>

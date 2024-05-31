@@ -43,7 +43,7 @@
                             <h4>Data {{ $categories ? $categories?->translations?->first()?->name : '' }}</h4>
                             <div class="card-header-action">
                                 @if ($categories)
-                                    <a href="{{ route('article.create', ['category' => $categories->id]) }}"
+                                    <a href="{{ route('article.create', ['content' => $categories->id]) }}"
                                         class="btn btn-primary">Add</a>
                                 @else
                                     <a href="{{ route('article.create') }}" class="btn btn-primary">Add</a>
@@ -58,7 +58,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Category</th>
+                                            <th>content</th>
                                             <th width="30%">Name</th>
                                             <th>Sort</th>
                                             <th>#</th>
@@ -70,7 +70,7 @@
                                         @foreach ($data as $article)
                                             <tr class="s1" data-id="{{ $article->id }}">
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $article->categories()->count() > 0 ? ($category = $article->categories()->first()->category_name) : ($category = 'Uncategorized') }}
+                                                <td>{{ $article->categories()->count() > 0 ? ($content = $article->categories()->first()->content_name) : ($content = 'Uncategorized') }}
                                                 </td>
                                                 <td>
                                                     {!! $article->translations->first()->name !!}
@@ -93,10 +93,10 @@
                                                 <td>
 
                                                     @if ($categories)
-                                                        <a href="{{ route('article.edit', [$article->id, 'category' => $categories->id]) }}"
+                                                        <a href="{{ route('article.edit', [$article->id, 'content' => $categories->id]) }}"
                                                             class="btn btn-primary">Edit</a>
                                                         @if (request()->has('dev'))
-                                                            <a href="{{ route('article.delete', [$article->id, 'category_id' => $categories->id]) }}"
+                                                            <a href="{{ route('article.delete', [$article->id, 'content_id' => $categories->id]) }}"
                                                             class="btn btn-danger confirm-delete">Delete</a>
                                                         @endif
                                                     @else

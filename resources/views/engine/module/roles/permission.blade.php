@@ -94,21 +94,21 @@
                                             <hr>
                                             {{-- TITLE --}}
                                             <div class="col-12 mb-5">
-                                                <h4>Module Category</h4>
+                                                <h4>Module content</h4>
                                             </div>
                                         </div>
-                                        @foreach ($data_tree_category as $keys => $data_tree_category_value)
+                                        @foreach ($data_tree_content as $keys => $data_tree_content_value)
                                             <div class="col-12">
                                                 <div class="form-check row d-flex align-items-center gap-2" style="gap: 10px;">
                                                     <div class="custom-control custom-checkbox">
                                                         <label class="switch col-12">
-                                                            <input type="checkbox" name="permission_Category[]"
-                                                                {{ in_array($data_tree_category_value['id'] , $permission_category) ? 'checked' : '' }}
-                                                                value="{{ $data_tree_category_value['id'] }}">
+                                                            <input type="checkbox" name="permission_content[]"
+                                                                {{ in_array($data_tree_content_value['id'] , $permission_content) ? 'checked' : '' }}
+                                                                value="{{ $data_tree_content_value['id'] }}">
                                                             <span class="slider round"></span>
                                                         </label>
                                                     </div>
-                                                    <div class="text-start">{!! $data_tree_category_value['name'] !!}</div>
+                                                    <div class="text-start">{!! $data_tree_content_value['name'] !!}</div>
                                                 </div>
                                             </div>
 

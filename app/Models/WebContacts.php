@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\HasCache;
 use App\Traits\HasGlobalQueryTrait;
 use App\Traits\HasResponse;
+use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,63 +14,14 @@ use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class WebContacts extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse;
+    use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache, HasStatus;
 
-    protected $table = 'web_contacts';
-
-    protected static function booted()
-    {
-        static::addGlobalScope('status', function (Builder $builder) {
-            // only api
-            if (request()->is('page/*')) {
-                $builder->where('status', 1);
-            }
-        });
-
-        self::created(function () {
-            ResponseCache::clear();
-        });
-
-        self::updated(function () {
-            ResponseCache::clear();
-        });
-
-        self::deleted(function () {
-            ResponseCache::clear();
-        });
-    }
+    protected $guarded = [];
 
     public function scopeWithExtraAttributes(): Builder
     {
         return $this->logs->modelScope();
     }
-
-    protected $fillable = [
-        'category_id',
-        'full_name',
-        'citizen',
-        'nik',
-        'address',
-        'place_of_birth',
-        'date_of_birth',
-        'passport',
-        'email',
-        'phone',
-        'existing_customer',
-        'amount',
-        'state',
-        'district',
-        'branch_name',
-        'company',
-        'subject',
-        'description',
-        'reference_no',
-        'status',
-        'option',
-        'visibility',
-        'status_form',
-        'logs',
-    ];
 
     protected $hidden = [
         'updated_at',
@@ -82,8 +35,8 @@ class WebContacts extends Model
         'logs' => SchemalessAttributes::class,
     ];
 
-    public function category()
+    public function content()
     {
-        return $this->belongsTo(WebContent::class, 'category_id');
+        return $this->belongsTo(WebContent::class, 'content_id');
     }
 }

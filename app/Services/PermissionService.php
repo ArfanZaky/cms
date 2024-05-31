@@ -11,7 +11,7 @@ class PermissionService
     {
         $role = Auth::user()?->role?->first()?->id;
         $permissions = [];
-        $permission_category = [];
+        $permission_content = [];
         $permission_page = [];
 
         if ($role) {
@@ -20,7 +20,7 @@ class PermissionService
             $permissions = $permissionRelations->filter(function ($value, $key) {
                 return $value->permission_id;
             })->pluck('permission.name')->values()->toArray();
-            $permission_category = $permissionRelations->pluck('category_id')->filter()->unique()->values()->toArray();
+            $permission_content = $permissionRelations->pluck('content_id')->filter()->unique()->values()->toArray();
             $permission_page = $permissionRelations->pluck('page_id')->filter(function ($value) {
                 return ! is_null($value);
             })->values()->toArray();
@@ -28,7 +28,7 @@ class PermissionService
 
         session([
             'permission' => $permissions,
-            'permission_category' => $permission_category,
+            'permission_content' => $permission_content,
             'permission_page' => $permission_page,
         ]);
     }
