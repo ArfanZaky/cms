@@ -95,6 +95,7 @@ class KursController extends Controller
             return redirect()->route('kurs')->with('success', 'Data berhasil diimport');
         } catch (\Throwable $th) {
             return $th;
+
             return redirect()->route('kurs')->with('error', 'Data gagal diimport');
         }
 

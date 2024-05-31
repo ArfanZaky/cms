@@ -460,4 +460,3 @@ function decryptAES($ciphered)
 
     return openssl_decrypt($ciphertext, AES_METHOD, env('APP_AES_PASSWORD'), OPENSSL_RAW_DATA, $iv);
 }
-

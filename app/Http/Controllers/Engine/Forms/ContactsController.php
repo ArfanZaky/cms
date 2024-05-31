@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\WebArticleCategories;
 use App\Models\WebContacts;
 use App\Services\LogServices;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class ContactsController extends Controller
 {

@@ -41,7 +41,7 @@ return [
                 '1' => 'detail-news',
                 '2' => 'detail-gallery',
             ],
- 
+
             'slug' => [
                 '0' => 'tab',
                 '1' => 'news-events',

@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\LogServices;
-use App\Helper\Helper;
 use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
     protected $LogServices;
+
     public function __construct(LogServices $LogServices)
     {
         $this->LogServices = $LogServices;

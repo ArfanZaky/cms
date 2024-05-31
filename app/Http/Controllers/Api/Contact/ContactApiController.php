@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Api\Contact;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Mail\FormMail;
-use App\Models\WebArticleCategories;
 use App\Models\WebContacts;
-use App\Models\WebEmail;
 use App\Models\WebSettings;
 use App\Services\LogServices;
-use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -57,7 +54,7 @@ class ContactApiController extends BaseController
         // if ($responseData->get('success') == false) {
         //     return $this->sendError('Captcha not valid', [], 404);
         // }
-        
+
         DB::beginTransaction();
         try {
             $data = WebContacts::create([
@@ -68,9 +65,9 @@ class ContactApiController extends BaseController
                 'status' => '1',
             ]);
             DB::commit();
-            $data  = [
+            $data = [
                 'code' => 200,
-                'message' => 'Contact created successfully.'
+                'message' => 'Contact created successfully.',
             ];
             $temp['name'] = $request->full_name;
             $temp['subject'] = $request->subject;
@@ -84,8 +81,8 @@ class ContactApiController extends BaseController
         } catch (\Exception $e) {
             DB::rollback();
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
+
             return $this->sendError('Something went wrong', [], 404);
         }
     }
-
 }

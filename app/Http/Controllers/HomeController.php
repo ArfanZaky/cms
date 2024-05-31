@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\WebLogs;
-use Yajra\DataTables\Facades\DataTables;
-use App\Helper\Helper;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class HomeController extends Controller
 {

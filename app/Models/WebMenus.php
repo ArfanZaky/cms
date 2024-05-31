@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Services\ApiService;
 use App\Traits\GlobalQueryTraits;
 use App\Traits\HasResponses;
-use App\Helper\Helper;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

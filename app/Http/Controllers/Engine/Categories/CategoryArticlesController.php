@@ -3,15 +3,14 @@
 namespace App\Http\Controllers\Engine\Categories;
 
 use App\Http\Controllers\Controller;
-use App\Models\WebArticleCategories;
 use App\Models\PermissionRelations;
-use App\Services\PermissionService;
+use App\Models\WebArticleCategories;
 use App\Services\LogServices;
-use App\Helper\Helper;
+use App\Services\PermissionService;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Auth;
 
 class CategoryArticlesController extends Controller
 {
@@ -194,7 +193,7 @@ class CategoryArticlesController extends Controller
             ];
 
             $PermissionRelations = collect($PermissionRelations)->unique('role_id')->toArray();
-            
+
             foreach ($PermissionRelations as $key => $value) {
                 PermissionRelations::create($value);
             }

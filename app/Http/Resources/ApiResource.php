@@ -5,7 +5,6 @@ namespace App\Http\Resources;
 use App\Models\User;
 use App\Models\WebArticleCategories;
 use Carbon\Carbon;
-use App\Helper\Helper;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
 
@@ -48,7 +47,6 @@ class ApiResource extends JsonResource
         if (strpos($redirection, '/storage/') !== false) {
             $redirection = env('APP_URL').$redirection;
         }
-
 
         $url1 = $this->responseData('url_1');
         if (strpos($url1, '/storage/') !== false) {
@@ -123,7 +121,7 @@ class ApiResource extends JsonResource
             'visibility' => isset($this->visibility) ? $this->visibility : false,
             'sort' => isset($this->sort) ? $this->sort : false,
             'status' => isset($this->status) ? $this->status : false,
-            'publish_date' => !empty($this->publish_at) ? Carbon::parse($this->publish_at)->format('d M Y') : Carbon::parse($this->created_at)->format('d M Y') ,
+            'publish_date' => ! empty($this->publish_at) ? Carbon::parse($this->publish_at)->format('d M Y') : Carbon::parse($this->created_at)->format('d M Y'),
             'template' => ($this->get_model == 'page') ? (isset(config('cms.visibility.page.slug')[$this->visibility]) ? config('cms.visibility.page.slug')[$this->visibility] : 'page') : (isset(config('cms.visibility.post.slug')[$this->visibility]) ? config('cms.visibility.post.slug')[isset($this->visibility) ? $this->visibility : 0] : 'page'),
         ];
 

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class AuthenticatedSessionController extends Controller
 {
     protected $PermissionService;
-    
+
     public function __construct(PermissionService $PermissionService)
     {
         $this->PermissionService = $PermissionService;

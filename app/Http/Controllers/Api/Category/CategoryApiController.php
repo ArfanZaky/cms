@@ -7,12 +7,10 @@ use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\WebArticleCategories;
 use App\Models\WebArticles;
 use App\Models\WebMenus;
-use App\Services\LogServices;
 use App\Services\ApiService;
-use App\Helper\Helper;
+use App\Services\LogServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class CategoryApiController extends BaseController
 {
@@ -58,27 +56,25 @@ class CategoryApiController extends BaseController
         $this->dev = $this->request->input('dev', false);
 
         $this->db = WebArticleCategories::with([
-            'translations', 
+            'translations',
 
-            'menu_relation.translations', 
+            'menu_relation.translations',
             'menu_relation.parentData.translations',
             'menu_relation.parentData.parentData.translations',
 
-            'children.translations', 
+            'children.translations',
             'children.children.translations',
             'parents.children.translations',
-            'parents.children.children.translations', 
+            'parents.children.children.translations',
             'parents.parents.translations',
-            'parents.parents.children.translations', 
-            'parents.parents.children.children.translations'
-            ])->whereSlug($this->slug, _get_languages($this->languages))->first();
-
+            'parents.parents.children.translations',
+            'parents.parents.children.children.translations',
+        ])->whereSlug($this->slug, _get_languages($this->languages))->first();
 
         if (! $this->db) {
             return $this->sendResponse([], 'Category retrieved successfully.');
         }
         $this->offset = $this->request->active != config('cms.visibility.post.slug')[$this->db->visibility] ? 0 : $this->request->input('offset', 0);
-
 
     }
 
@@ -125,17 +121,16 @@ class CategoryApiController extends BaseController
                 if ($this->db->menu_relation?->parentData?->parent != null) {
                     $menu_id = $this->db->menu_relation?->parentData?->parent;
                 }
-            }else{
+            } else {
                 $menu_id = $this->db->menu_relation?->id;
             }
 
-
             if ($this->db->visibility == 0 || $this->db->visibility == 8) {
-               
+
                 $menus = WebMenus::where('id', $menu_id)->with([
-                    'translations'=> function ($q) use ($language) {
+                    'translations' => function ($q) use ($language) {
                         $q->where('language_id', $language);
-                    }, 
+                    },
                     'children.translations' => function ($q) use ($language) {
                         $q->where('language_id', $language);
                     },
@@ -148,24 +143,26 @@ class CategoryApiController extends BaseController
                 collect($menus->children)->filter()->map(function ($item) use (&$menusModel) {
                     collect($item->children)->filter()->map(function ($item) use (&$menusModel) {
                         $menusModel[] = $item;
+
                         return $item;
                     });
                     $menusModel[] = $item;
+
                     return $item;
                 });
 
                 $menus = new ApiService();
-                $menus = $menus->toArray($menusModel,true, $this->languages);
+                $menus = $menus->toArray($menusModel, true, $this->languages);
                 $menus = \App\Helper\Helper::tree($menus);
             }
 
-            if ( $this->db->visibility == 0 && $this->db->parent != 0 || $this->db->visibility == 8 && $this->db->parent != 0) {
-                $dataDB =  collect($this->db->getResponeses($this->db, $language))->toArray();
+            if ($this->db->visibility == 0 && $this->db->parent != 0 || $this->db->visibility == 8 && $this->db->parent != 0) {
+                $dataDB = collect($this->db->getResponeses($this->db, $language))->toArray();
                 $currentDB = $dataDB['description'];
                 $currentDBName = $dataDB['name'];
                 $currentDBTranslation = $dataDB['translation'];
                 $currentDBMeta = $dataDB['meta'];
-              
+
                 if ($dataDB['visibility'] == 8) {
                     $databoard = $this->db;
                     $currentData = $dataDB['visibility'];
@@ -173,18 +170,16 @@ class CategoryApiController extends BaseController
 
                 if ($this->db->parents->parent != 0) {
                     $this->db = $this->db->parents->parents;
-                }else{
+                } else {
                     $this->db = $this->db->parents;
                 }
             }
-
 
             $this->category = collect($this->db->getResponeses($this->db, $language))->toArray();
             $this->category['description'] = $currentDB == null ? $this->category['description'] : $currentDB;
             $this->category['name'] = $currentDBName == null ? $this->category['name'] : $currentDBName;
             $this->category['translation'] = $currentDBTranslation == null ? $this->category['translation'] : $currentDBTranslation;
             $this->category['meta'] = $currentDBMeta == null ? $this->category['meta'] : $currentDBMeta;
-            
 
             $article = WebArticles::whereHas('categoryArticles', function ($q) {
                 $q->where('category_id', $this->db->id);
@@ -199,11 +194,9 @@ class CategoryApiController extends BaseController
                 })
                 ->get();
 
-            $this->article = collect($article)->map(function ($item) use ($language,$currentData) {
+            $this->article = collect($article)->map(function ($item) use ($language) {
                 $data = $item->getResponeses($item, $language);
                 $item = collect($data)->toArray();
-
-               
 
                 return $item;
             })->sortBy('sort')->values()->toArray();
@@ -215,10 +208,10 @@ class CategoryApiController extends BaseController
             $this->total_article = WebArticles::whereHas('categoryArticles', function ($q) {
                 $q->where('category_id', $this->db->id);
             })
-            ->count();
+                ->count();
 
             $children = [];
-            collect($this->db->children)->filter()->map(function ($item, $key) use (&$children,$currentDB,$currentData) {
+            collect($this->db->children)->filter()->map(function ($item, $key) use (&$children, $currentDB) {
 
                 $item = $item->getResponeses($item, _get_languages($this->languages));
                 $item = collect($item)->toArray();
@@ -229,8 +222,6 @@ class CategoryApiController extends BaseController
                     $item['url'] = $this->category['url'];
                 }
 
-              
-                
                 if ($this->db->visibility == 1) {
                     $article_child = WebArticles::whereHas('categoryArticles', function ($q) use ($item) {
                         $q->where('category_id', $item['id']);
@@ -240,23 +231,23 @@ class CategoryApiController extends BaseController
                         ->orderBy('created_at', 'desc')
                         ->limit(3)
                         ->get();
-        
-                    $article_child = collect($article_child)->map(function ($item)  {
+
+                    $article_child = collect($article_child)->map(function ($item) {
                         $data = $item->getResponeses($item, _get_languages($this->languages));
                         $item = collect($data)->toArray();
-        
+
                         return $item;
                     })->sortBy('sort')->values()->toArray();
 
                     $item['list'] = $article_child;
                 }
                 $children[] = $item;
+
                 return $item;
             })->values()->toArray();
 
-
             if ($currentData) {
-                collect($databoard->children)->filter()->map(function ($item)  {
+                collect($databoard->children)->filter()->map(function ($item) {
                     $item = $item->getResponeses($item, _get_languages($this->languages));
                     $item = collect($item)->toArray();
                     $itemArticle = [
@@ -275,11 +266,11 @@ class CategoryApiController extends BaseController
             if ($this->db->visibility == 0 || $this->db->visibility == 8) {
                 if (isset(collect($menus)->first()['children'])) {
                     $children = collect($menus)->first()['children'];
-                }else{
+                } else {
                     $children = $menus;
                 }
             }
-            
+
             $this->children = $children;
             $this->category['active_page'] = $menu_id;
             $this->category['tab'] = $this->children;
@@ -357,7 +348,7 @@ class CategoryApiController extends BaseController
 
             $data = [];
             $data['meta'] = $this->category['meta'];
-            $data['template'] =$this->category['template'];
+            $data['template'] = $this->category['template'];
 
             return $this->sendResponse($data, 'Category retrieved successfully.', $this->limit, $this->offset);
         } catch (\Exception $e) {

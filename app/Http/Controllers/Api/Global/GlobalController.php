@@ -5,24 +5,21 @@ namespace App\Http\Controllers\Api\Global;
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\WebArticleCategories;
 use App\Models\WebMenus;
-use App\Models\WebPages;
 use App\Services\ApiService;
 use App\Services\LogServices;
 use Carbon\Carbon;
-use App\Helper\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Spatie\Sitemap\SitemapGenerator;
-use Spatie\Sitemap\Tags\Url;
-use Validator;
 use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 use voku\helper\HtmlDomParser;
 
 class GlobalController extends BaseController
 {
     private $LogServices;
+
     private $ApiService;
 
     public function __construct(LogServices $LogServices, ApiService $ApiService)
@@ -111,6 +108,7 @@ class GlobalController extends BaseController
                 'twitter:description' => \App\Helper\Helper::_setting_code('web_description'),
                 'twitter:image' => env('APP_URL').\App\Helper\Helper::_setting_code('web_image'),
             ];
+
             return $this->sendResponse($section, 'Home retrieved successfully.');
         } catch (\Exception $e) {
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
@@ -126,7 +124,7 @@ class GlobalController extends BaseController
             $menus = WebMenus::with(['translations' => function ($q) use ($language) {
                 $q->where('language_id', $language);
             }])
-                ->whereIn('visibility', [0,1,2,3])
+                ->whereIn('visibility', [0, 1, 2, 3])
                 ->orderBy('sort', 'asc')
                 ->get();
 
@@ -170,6 +168,7 @@ class GlobalController extends BaseController
             if (isset($wording[$languages])) {
                 $result = $wording[$languages];
             }
+
             return $this->sendResponse($result, 'Wording retrieved successfully.');
         } catch (\Exception $e) {
             $this->LogServices->handle(['table_id' => 0, 'name' => 'Log Error',   'json' => $e]);
@@ -261,6 +260,7 @@ class GlobalController extends BaseController
         }
         if ($code_map == 'category') {
             $category = new \App\Http\Controllers\Api\Category\CategoryApiController($this->LogServices, $request, $lang, $slug);
+
             return $category->filter_by_article_slug();
         } else {
             return $this->sendResponse([], 'Data retrieved successfully.');

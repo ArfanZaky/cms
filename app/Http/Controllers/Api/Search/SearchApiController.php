@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Api\Search;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Models\WebPages;
-use App\Helper\Helper;
 use Illuminate\Http\Request;
 
 class SearchApiController extends BaseController
 {
     private $offset;
+
     private $limit;
+
     public function __construct(Request $request)
     {
         $this->offset = $request->offset ?? 0;
@@ -29,7 +29,6 @@ class SearchApiController extends BaseController
             $total_data = $search['total'];
 
             $language = _get_languages($languages);
-            
 
             $resources = [];
             $routeSearch = '/'.$languages.'/search';
