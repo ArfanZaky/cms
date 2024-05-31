@@ -196,6 +196,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -224,6 +225,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+
     ])->toArray(),
 
 ];

@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Engine\Forms;
 
 use App\Exports\FormExport;
 use App\Http\Controllers\Controller;
-use App\Models\WebArticleCategories;
 use App\Models\WebContacts;
+use App\Models\WebContent;
 use App\Services\LogServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +26,7 @@ class ContactsController extends Controller
 
         $status = collect($data)->pluck('status_form')->unique()->values()->all();
 
-        $product = WebArticleCategories::whereIn('visibility', [20, 7, 22, 23])->with(['translations', 'relation.article.translations'])
+        $product = WebContent::whereIn('visibility', [20, 7, 22, 23])->with(['translations', 'relation.article.translations'])
             ->orderBy('sort', 'asc')
             ->get();
         $product = collect($product)->map(function ($item) {

@@ -36,13 +36,6 @@
                             <div class="form-group">
                                 <div class="d-block">
                                     <label for="password">{{ __('Password') }}</label>
-                                    {{-- @if (Route::has('password.request'))
-                                        <div class="float-right">
-                                            <a class="text-small" href="{{ route('password.request') }}">
-                                                {{ __('Forgot Your Password?') }}
-                                            </a>
-                                        </div>
-                                    @endif --}}
                                 </div>
 
                                 <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
@@ -54,13 +47,18 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="form-group">
-                                <div class="custom-control custom-checkbox">
-                                    <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                                    <label class="custom-control-label" for="remember-me">{{ __('Remember Me') }}</label>
+                            <div class="form-group">
+                                <div class="d-block">
+                                    <label for="password">{{ __('Captcha') }}</label>
                                 </div>
-                            </div> --}}
+                                <div class="g-recaptcha" data-sitekey="{{ env('SITE_KEY') }}"></div>
+
+                                @error('g-recaptcha-response')
+                                <div class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                                @enderror
+                            </div>
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-lg btn-block">
@@ -72,7 +70,6 @@
                 </div>
 
                 <div class=" text-muted text-center">
-                    {{-- {{ __('Dont have an account?') }} <a href="{{ route('register') }}">{{ __('Click here to register') }}</a> --}}
                 </div>
             </div>
         </div>

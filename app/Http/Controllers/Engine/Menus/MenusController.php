@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Engine\Menus;
 
 use App\Http\Controllers\Controller;
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use App\Models\WebMenus;
 use App\Services\LogServices;
 use Illuminate\Http\Request;
@@ -79,7 +79,7 @@ class MenusController extends Controller
         }
         $menu_table_menu = menu_table($data_tree_helper, 0, $data = []);
 
-        $category = WebArticleCategories::with(['translations' => function ($q) {
+        $category = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)->get();
         $data_tree2 = [];
@@ -196,7 +196,7 @@ class MenusController extends Controller
         }
         $menu_table_menu = menu_table($data_tree_helper, 0, $data = []);
 
-        $category = WebArticleCategories::with(['translations' => function ($q) {
+        $category = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)->get();
 

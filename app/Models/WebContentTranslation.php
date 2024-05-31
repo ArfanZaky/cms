@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use App\Traits\GlobalQueryTraits;
-use App\Traits\HasResponses;
-use App\Traits\HasTranslations;
+use App\Traits\HasGlobalQueryTrait;
+use App\Traits\HasResponse;
+use App\Traits\HasTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
-class WebArticleTranslations extends Model
+class WebContentTranslation extends Model
 {
-    use GlobalQueryTraits,HasFactory, HasResponses, HasTranslations;
+    use HasFactory,HasGlobalQueryTrait, HasResponse, HasTranslation;
 
     protected static function booted()
     {
@@ -28,37 +28,38 @@ class WebArticleTranslations extends Model
         });
     }
 
-    protected $table = 'web_article_translations';
+    protected $table = 'web_content_translations';
 
     protected $fillable = [
-        'article_id',
+        'category_id',
         'language_id',
         'name',
         'sub_name',
-        'slug',
-        'overview',
         'description',
         'info',
-        'url_1',
-        'url_2',
         'redirection',
+        'label',
+        'target',
+        'url_1',
+        'label_1',
+        'target_1',
+        'url_2',
+        'label_2',
+        'target_2',
+        'slug',
+        'overview',
         'meta_title',
-        'meta_description',
         'meta_keyword',
+        'meta_description',
     ];
 
-    public function scopeSearchData($query, $searchTerm)
+    public function category()
     {
-        return $query->whereRaw('MATCH(description) AGAINST(? IN BOOLEAN MODE)', [$searchTerm]);
-    }
-
-    public function article()
-    {
-        return $this->belongsTo('App\Models\WebArticles', 'article_id', 'id');
+        return $this->belongsTo(WebContent::class, 'category_id');
     }
 
     public function language()
     {
-        return $this->belongsTo('App\Models\Languages', 'language_id', 'id');
+        return $this->belongsTo(Languages::class, 'language_id');
     }
 }

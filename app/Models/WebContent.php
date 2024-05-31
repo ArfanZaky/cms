@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\GlobalQueryTraits;
-use App\Traits\HasResponses;
+use App\Traits\HasGlobalQueryTrait;
+use App\Traits\HasResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,14 +12,15 @@ use MathPHP\Finance;
 use Spatie\ResponseCache\Facades\ResponseCache;
 use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
-class WebArticleCategories extends Model
+class WebContent extends Model
 {
-    use GlobalQueryTraits,HasFactory, HasResponses;
+    use HasFactory,HasGlobalQueryTrait, HasResponse;
+
+    protected $guard = [];
 
     protected static function booted()
     {
         static::addGlobalScope('status', function (Builder $builder) {
-            // only api
             if (request()->is('page/*')) {
                 $builder->where('status', 1);
             }
@@ -43,51 +44,24 @@ class WebArticleCategories extends Model
         'deposit' => SchemalessAttributes::class,
     ];
 
-    protected $table = 'web_article_categories';
-
-    protected $fillable = [
-        'parent',
-        'loan',
-        'deposit',
-        'image',
-        'image_xs',
-        'image_sm',
-        'image_md',
-        'image_lg',
-        'sort',
-        'visibility',
-        'status',
-        'custom',
-    ];
-
     public function translations()
     {
-        return $this->hasMany(WebArticleCategoryTranslations::class, 'category_id');
+        return $this->hasMany(WebContentTranslation::class, 'category_id');
     }
 
     public function parents()
     {
-        return $this->belongsTo(WebArticleCategories::class, 'parent');
+        return $this->belongsTo(WebContent::class, 'parent');
     }
 
     public function children()
     {
-        return $this->hasMany(WebArticleCategories::class, 'parent')->orderBy('sort', 'asc');
-    }
-
-    public function relation()
-    {
-        return $this->hasMany(WebArticleCategoryRelations::class, 'category_id');
+        return $this->hasMany(WebContent::class, 'parent')->orderBy('sort', 'asc');
     }
 
     public function menu_relation()
     {
         return $this->belongsTo(WebMenus::class, 'id', 'category_id');
-    }
-
-    public function email()
-    {
-        return $this->hasMany(WebEmail::class, 'id_category');
     }
 
     public function breadcrumb($id, $lang)

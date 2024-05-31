@@ -2,8 +2,8 @@
 
 namespace App\Helper;
 
-use App\Models\WebArticleCategories;
 use App\Models\WebArticles;
+use App\Models\WebContent;
 use App\Models\WebPages;
 use App\Models\WebSettings;
 use Illuminate\Support\Facades\DB;
@@ -14,7 +14,7 @@ class Helper
 {
     public static function _category_post_id($id, $language, $limit = false)
     {
-        $category = WebArticleCategories::with('translations')->find($id);
+        $category = WebContent::with('translations')->find($id);
         if (! $category) {
             return [];
         }
@@ -51,7 +51,7 @@ class Helper
     public static function _category_post_id_top_search($language, $limit = 3)
     {
         $language = _get_languages($language);
-        $category = WebArticleCategories::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
+        $category = WebContent::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
         $article = WebArticles::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
 
         // merge
@@ -145,7 +145,7 @@ class Helper
             if ($item->model_type == 'article') {
                 $data = WebArticles::with('translations')->where('id', $item->model_id)->first();
             } elseif ($item->model_type == 'category') {
-                $data = WebArticleCategories::with('translations')->where('id', $item->model_id)->first();
+                $data = WebContent::with('translations')->where('id', $item->model_id)->first();
             } elseif ($item->model_type == 'page') {
                 $data = WebPages::with('translations')->where('id', $item->model_id)->first();
             }
@@ -178,7 +178,7 @@ class Helper
     public static function _search($language, $keyword, $offset, $limit)
     {
         $language = _get_languages($language);
-        $category = WebArticleCategories::with('translations')->whereHas('translations', function ($q) use ($keyword, $language) {
+        $category = WebContent::with('translations')->whereHas('translations', function ($q) use ($keyword, $language) {
             $q->where('language_id', $language)->where(function ($q) use ($keyword) {
                 $q->where('name', 'like', '%'.$keyword.'%')->orWhere('meta_keyword', 'like', '%'.$keyword.'%')->orWhere('description', 'like', '%'.$keyword.'%');
             });
@@ -379,7 +379,7 @@ class Helper
         } elseif (Str::contains($name, 'Page')) {
             $data = DB::table('web_page_translations')->where('page_id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Category Article')) {
-            $data = DB::table('web_article_category_translations')->where('category_id', $row->table_id)->first();
+            $data = DB::table('web_content_translations')->where('category_id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Article')) {
             $data = DB::table('web_article_translations')->where('article_id', $row->table_id)->first();
         } elseif (Str::contains($name, 'Wording')) {
@@ -441,7 +441,7 @@ class Helper
             $id = $post?->categoryArticles()?->first()?->id;
         }
 
-        $category = WebArticleCategories::with([
+        $category = WebContent::with([
             'translations' => function ($q) use ($lang) {
                 $q->where('language_id', $lang);
             },

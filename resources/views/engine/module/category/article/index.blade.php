@@ -137,7 +137,7 @@
                 placeholder: '<tr class="placeholder"/>',
                 update: function() {
                     var data = [];
-                    data.model = 'App\\Models\\WebArticleCategories';
+                    data.model = 'App\\Models\\WebContent';
                     data.route = '{{ route('sortable') }}';
                     data.token = '{{ csrf_token() }}';
                     var showEntries = $('#table-custom_length select').val();

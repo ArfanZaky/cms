@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('web_article_categories', function (Blueprint $table) {
+        Schema::create('web_contents', function (Blueprint $table) {
             $table->id();
             $table->UnsignedBigInteger('parent')->default(0);
             $table->string('image')->default('default.jpg');
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('web_article_categories');
+        Schema::dropIfExists('web_contents');
     }
 };

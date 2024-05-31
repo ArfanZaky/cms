@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use App\Models\WebMenus;
 use App\Models\WebPages;
 use Illuminate\Support\Str;
@@ -113,7 +113,7 @@ class ApiService
 
             // article category
         } elseif ($value->url == '#' && $value->category_id != 0 && $value->catalog_id == 0 && $value->gallery_id == 0) {
-            $category = WebArticleCategories::where('id', $value->category_id)->with(['translations' => function ($query) use ($value) {
+            $category = WebContent::where('id', $value->category_id)->with(['translations' => function ($query) use ($value) {
                 $query->where('language_id', $value->translations[0]->language_id);
             }])->first();
             if ($category) {

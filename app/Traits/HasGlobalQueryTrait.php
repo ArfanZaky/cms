@@ -2,7 +2,7 @@
 
 namespace App\Traits;
 
-trait GlobalQueryTraits
+trait HasGlobalQueryTrait
 {
     public function createTranslations($data, $request)
     {

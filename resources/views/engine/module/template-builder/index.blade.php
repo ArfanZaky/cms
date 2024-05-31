@@ -19,7 +19,7 @@
         @elseif($value['type'] == 'TEMPLATE')
             @php
                 // add / 
-                $category = \App\Models\WebArticleCategories::where('id', $value['model_id'])->first();
+                $category = \App\Models\WebContent::where('id', $value['model_id'])->first();
 
                 $items = $category->relation()->with('article.translations')
                 ->whereHas('article', function ($q) use ($value) {

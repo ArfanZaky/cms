@@ -1,8 +1,7 @@
 <?php
 
-use App\Helper\Helper;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +18,7 @@ use Illuminate\Http\Request;
 Route::post('/token', [App\Http\Controllers\Api\BaseController::class, 'GetToken']);
 
 // group middleware
-Route::group(['middleware' => ['auth:sanctum','decrypted', 'encrypted']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'decrypted', 'encrypted']], function () {
 
     Route::get('/check', function (Request $request) {
         return response()->json([
@@ -37,7 +36,7 @@ Route::group(['middleware' => ['auth:sanctum','decrypted', 'encrypted']], functi
 
     // global
     Route::get('/settings', [App\Http\Controllers\Api\Settings\SettingsApiController::class, 'index'])->middleware('cacheResponse:31536000');
-    
+
     Route::get('/seo/{lang}/home', [App\Http\Controllers\Api\Global\GlobalController::class, 'home_seo'])->middleware('cacheResponse:31536000');
     Route::get('/{lang}/home', [App\Http\Controllers\Api\Global\GlobalController::class, 'home'])->middleware('cacheResponse:31536000');
     Route::get('/{lang}/navigasi', [App\Http\Controllers\Api\Global\GlobalController::class, 'navigasi'])->middleware('cacheResponse:31536000');

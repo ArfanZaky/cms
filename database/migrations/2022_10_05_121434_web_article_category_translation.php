@@ -13,9 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('web_article_category_translations', function (Blueprint $table) {
+        Schema::create('web_content_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('web_article_categories')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('web_contents')->onDelete('cascade');
             $table->foreignId('language_id')->constrained('web_languages')->onDelete('cascade');
             $table->string('name');
             $table->string('sub_name')->nullable();

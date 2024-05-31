@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\DB;
@@ -197,7 +197,7 @@ class ApiResource extends JsonResource
                     } elseif ($id == 'name') {
                         return $data->full_name;
                     } elseif ($id == 'product') {
-                        $category = WebArticleCategories::with('translations')->find($data->category_id);
+                        $category = WebContent::with('translations')->find($data->category_id);
                         if (! $category) {
                             return $id;
                         }

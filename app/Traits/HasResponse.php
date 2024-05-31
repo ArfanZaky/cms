@@ -5,7 +5,7 @@ namespace App\Traits;
 use App\Http\Resources\ApiResource;
 use Illuminate\Database\Eloquent\Builder;
 
-trait HasResponses
+trait HasResponse
 {
     public function getResponeses($data, $language)
     {

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('web_article_category_relations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('article_id')->constrained('web_articles')->onDelete('cascade');
-            $table->foreignId('category_id')->constrained('web_article_categories')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('web_contents')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

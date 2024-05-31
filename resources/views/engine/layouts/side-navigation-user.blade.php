@@ -29,7 +29,7 @@ foreach ($permission as $key => $value) {
     }
 }
 
-$category = \App\Models\WebArticleCategories::with(['translations' => function ($q) {
+$category = \App\Models\WebContent::with(['translations' => function ($q) {
     $q->where('language_id', 2);
 }])
     ->orderBy('sort', 'asc')

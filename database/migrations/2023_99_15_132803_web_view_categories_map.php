@@ -16,7 +16,7 @@ return new class extends Migration
             (
                 select * from 
                 (
-                    select `category`.`language_id` ,'article' AS `type` ,`category`.`name` AS `name` ,`category`.`category_id` AS `model_id`,'App/Models/WebArticleCategories' AS `model_type` from `web_article_category_translations` `category` 
+                    select `category`.`language_id` ,'article' AS `type` ,`category`.`name` AS `name` ,`category`.`category_id` AS `model_id`,'App/Models/WebContent' AS `model_type` from `web_content_translations` `category` 
                     union all select `catalog`.`language_id` ,'catalog' AS `type` ,`catalog`.`name` AS `name` ,`catalog`.`catalog_id` AS `model_id`,'App/Models/WebProductsCatalogs' AS `model_type` from `web_products_catalogs_translations` `catalog` 
                     union all select `gallery`.`language_id` ,'gallery' AS `type` ,`gallery`.`name` AS `name` ,`gallery`.`gallery_id` AS `model_id`,'App/Models/WebGalleries' AS `model_type` from `web_gallery_translations` `gallery` 
                     union all select `banner`.`language_id` ,'banner' AS `type` ,`banner`.`name` AS `name` ,`banner`.`banner_id` AS `model_id`,'App/Models/WebBannerCategories' AS `model_type` from `web_banner_translations` `banner` 

@@ -28,7 +28,7 @@ foreach ($permission as $key => $value) {
         $form = true;
     }
 }
-$article_news_menu = \App\Models\WebArticleCategories::with(['translations' => function ($q) {
+$article_news_menu = \App\Models\WebContent::with(['translations' => function ($q) {
     $q->where('language_id', 1);
 }])
 ->orderBy('sort', 'asc')
@@ -39,7 +39,7 @@ $category = request()->category;
 
 $visibility = false;
 if($category){
-    $visibility = \App\Models\WebArticleCategories::with(['translations' => function ($q) {
+    $visibility = \App\Models\WebContent::with(['translations' => function ($q) {
         $q->where('language_id', 1);
     }])
     ->orderBy('sort', 'asc')

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Engine\Categories;
 
 use App\Http\Controllers\Controller;
 use App\Models\PermissionRelations;
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use App\Services\LogServices;
 use App\Services\PermissionService;
 use Auth;
@@ -28,7 +28,7 @@ class CategoryArticlesController extends Controller
 
     public function index(Request $request)
     {
-        $category = WebArticleCategories::with(['translations' => function ($q) {
+        $category = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])
             ->orderBy('sort', 'asc')
@@ -90,7 +90,7 @@ class CategoryArticlesController extends Controller
     public function create(Request $request)
     {
         $parent = $request->parent;
-        $data = WebArticleCategories::with('translations')->where('status', 1)->when(
+        $data = WebContent::with('translations')->where('status', 1)->when(
             $parent,
             function ($q) use ($parent) {
                 $q->where('parent', $parent)->orWhere('id', $parent);
@@ -99,7 +99,7 @@ class CategoryArticlesController extends Controller
 
         $breadcrumbs = false;
         if ($parent) {
-            $category = WebArticleCategories::with(['translations' => function ($q) {
+            $category = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
             }])
                 ->orderBy('visibility', 'desc')
@@ -143,7 +143,7 @@ class CategoryArticlesController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = new WebArticleCategories();
+            $data = new WebContent();
 
             $loan = [
                 'income' => $request->loan[0] ?? 0,
@@ -230,7 +230,7 @@ class CategoryArticlesController extends Controller
     public function edit(Request $request, $id)
     {
         $parent = $request->parent;
-        $data = WebArticleCategories::with('translations')->whereNotin('id', [$id])->where('status', 1)->when(
+        $data = WebContent::with('translations')->whereNotin('id', [$id])->where('status', 1)->when(
             $parent,
             function ($q) use ($parent) {
                 $q->where('id', $parent);
@@ -238,7 +238,7 @@ class CategoryArticlesController extends Controller
         )->get();
         $breadcrumbs = false;
         if ($parent) {
-            $category = WebArticleCategories::with(['translations' => function ($q) {
+            $category = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
             }])
                 ->orderBy('visibility', 'desc')
@@ -262,7 +262,7 @@ class CategoryArticlesController extends Controller
 
         $menu_table = menu_table($menu_table, 0, $data = []);
 
-        $data = WebArticleCategories::with('translations')->find($id);
+        $data = WebContent::with('translations')->find($id);
 
         // return $data;
         return view('engine.module.category.article.edit', compact('menu_table', 'data', 'breadcrumbs'));
@@ -283,7 +283,7 @@ class CategoryArticlesController extends Controller
 
         DB::beginTransaction();
         try {
-            $data = WebArticleCategories::find($id);
+            $data = WebContent::find($id);
             $loan = [
                 'income' => $request->loan[0] ?? 0,
                 'deductions' => $request->loan[1] ?? 0,
@@ -333,11 +333,11 @@ class CategoryArticlesController extends Controller
      * @param  \App\Models\WebCategorys  $webCategorys
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WebArticleCategories $webCategorys, $id)
+    public function destroy(WebContent $webCategorys, $id)
     {
         DB::beginTransaction();
         try {
-            $data = WebArticleCategories::find($id);
+            $data = WebContent::find($id);
             $data->translations()->delete();
             $data->delete();
             $log = $this->LogServices->handle([

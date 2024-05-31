@@ -15,7 +15,7 @@ return new class extends Migration
             CREATE VIEW web_sitemaps AS
             (
                 select `page`.`page_id` AS `id_table`,`page`.`language_id` AS `language`,'page' AS `code`,`page`.`slug` AS `slug` from `web_page_translations` `page` 
-                union all select `category`.`category_id` AS `id_table`,`category`.`language_id` AS `language`,'category' AS `code`,`category`.`slug` AS `slug` from `web_article_category_translations` `category` 
+                union all select `category`.`category_id` AS `id_table`,`category`.`language_id` AS `language`,'category' AS `code`,`category`.`slug` AS `slug` from `web_content_translations` `category` 
                 union all select `article`.`article_id` AS `id_table`,`article`.`language_id` AS `language`,'article' AS `code`,`article`.`slug` AS `slug` from `web_article_translations` `article` 
                 union all select `brand`.`brand_id` AS `id_table`,`brand`.`language_id` AS `language`,'brand' AS `code`,`brand`.`slug` AS `slug` from `web_products_brands_translations` `brand` 
                 union all select `catalog`.`catalog_id` AS `id_table`,`catalog`.`language_id` AS `language`,'catalog' AS `code`,`catalog`.`slug` AS `slug` from `web_products_catalogs_translations` `catalog` 

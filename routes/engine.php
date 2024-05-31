@@ -8,8 +8,8 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     // Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
@@ -48,7 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/storage-link', function () {
         Artisan::call('storage:link');
     });
-    
+
     Route::get('dahsboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
     Route::get('apilogs', [App\Http\Controllers\HomeController::class, 'Apilogs'])->name('Apilogs');
     Route::get('sort', [App\Http\Controllers\HomeController::class, 'Apilogs'])->name('Apilogs');

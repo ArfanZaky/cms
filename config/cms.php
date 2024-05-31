@@ -2,11 +2,6 @@
 
 return [
 
-    // note
-    // savings = product list
-    // individual-current = product detail
-    // star-home-loan = product detail with tab
-
     'prefix' => env('APP_CMS', 'cms'),
 
     'visibility' => [

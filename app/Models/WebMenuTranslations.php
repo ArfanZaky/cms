@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\GlobalQueryTraits;
-use App\Traits\HasResponses;
+use App\Traits\HasGlobalQueryTrait;
+use App\Traits\HasResponse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
 class WebMenuTranslations extends Model
 {
-    use GlobalQueryTraits,HasFactory, HasResponses;
+    use HasFactory,HasGlobalQueryTrait, HasResponse;
 
     protected static function booted()
     {

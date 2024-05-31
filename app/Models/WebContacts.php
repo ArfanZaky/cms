@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Traits\GlobalQueryTraits;
-use App\Traits\HasResponses;
+use App\Traits\HasGlobalQueryTrait;
+use App\Traits\HasResponse;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +12,7 @@ use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class WebContacts extends Model
 {
-    use GlobalQueryTraits,HasFactory, HasResponses;
+    use HasFactory,HasGlobalQueryTrait, HasResponse;
 
     protected $table = 'web_contacts';
 
@@ -84,11 +84,6 @@ class WebContacts extends Model
 
     public function category()
     {
-        return $this->belongsTo(WebArticleCategories::class, 'category_id');
-    }
-
-    public function branch()
-    {
-        return $this->belongsTo(WebArticles::class, 'branch_name');
+        return $this->belongsTo(WebContent::class, 'category_id');
     }
 }

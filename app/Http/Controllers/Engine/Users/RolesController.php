@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PermissionRelations;
 use App\Models\Permissions;
 use App\Models\Roles;
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use App\Services\LogServices;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
@@ -150,7 +150,7 @@ class RolesController extends Controller
             array_push($array, $data);
         }
 
-        $category = WebArticleCategories::with(['translations' => function ($q) {
+        $category = WebContent::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])
             ->orderBy('sort', 'asc')

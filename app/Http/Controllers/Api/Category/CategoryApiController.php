@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\Category;
 
 use App\Events\UpdateViewCount;
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Models\WebArticleCategories;
 use App\Models\WebArticles;
+use App\Models\WebContent;
 use App\Models\WebMenus;
 use App\Services\ApiService;
 use App\Services\LogServices;
@@ -55,7 +55,7 @@ class CategoryApiController extends BaseController
         $this->limit = $this->request->input('limit', 10);
         $this->dev = $this->request->input('dev', false);
 
-        $this->db = WebArticleCategories::with([
+        $this->db = WebContent::with([
             'translations',
 
             'menu_relation.translations',
@@ -282,7 +282,7 @@ class CategoryApiController extends BaseController
             }
 
             $this->category['list'] = $this->article;
-            $breadcrumbGet = (new WebArticleCategories())->breadcrumb($current->parent, $this->languages);
+            $breadcrumbGet = (new WebContent())->breadcrumb($current->parent, $this->languages);
             $breadcrumb[] = [
                 'id' => 0,
                 'name' => $this->languages == 'id' ? 'Beranda' : 'Home',

@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api\Global;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Models\WebArticleCategories;
+use App\Models\WebContent;
 use App\Models\WebMenus;
 use App\Services\ApiService;
 use App\Services\LogServices;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -315,7 +315,7 @@ class GlobalController extends BaseController
         $path = public_path($lang);
         $sitemap = Sitemap::create();
 
-        $category = WebArticleCategories::with(['translations'])->orderBy('sort', 'asc')->get();
+        $category = WebContent::with(['translations'])->orderBy('sort', 'asc')->get();
         $category = collect($category)->map(function ($item, $key) use ($language) {
             $article = $item->getResponeses($item, $language);
             $article = collect($article)->toArray();

@@ -16,7 +16,7 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
-
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     @yield('css')
 </head>
 
