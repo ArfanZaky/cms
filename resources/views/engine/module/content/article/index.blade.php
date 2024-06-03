@@ -87,11 +87,7 @@
                             <tr class="s1" data-id="{{$item['id']}}">
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                  @if (in_array($item['visibility'], [2,3,5, 6, 7]))
-                                      <a href="{{ route('article',['content' => $item['id'],'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
-                                    @else
-                                      <a href="{{ route('content.article', ['parent' => $item['id'], 'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
-                                    @endif
+                                  <a href="{{ route('content.article', ['parent' => $item['id'], 'component' => request()->get('component')]) }}">{!! $item['name']!!}</a>
                                 </td>
                                 <td>
                                   {{ _get_visibility_post(config('cms.visibility.post.content'))->where('key', $item['visibility'])->pluck('value')->first() }}
@@ -100,7 +96,7 @@
                                 <td>{!! Status($item['status']) !!}</td>
                                 <td>
                                  
-                                  <a href="{{ \\App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
+                                  <a href="{{ \App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
                                   <a href="{{ route('content.article.edit', [$item['id'], 'parent' => request()->get('parent'), 'component' => request()->get('component')]) }}" class="btn btn-primary ">Edit</a>
                                   @if (request()->has('dev'))
                                     <a href="{{ route('content.article.delete', $item['id']) }}" class="btn btn-danger confirm-delete">Delete</a>

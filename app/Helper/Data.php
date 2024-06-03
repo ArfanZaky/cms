@@ -100,20 +100,6 @@ function languageSettings()
     return $html;
 }
 
-function languageSettingsChatbot()
-{
-    $array_languages = languages();
-    $html = '';
-    for ($i = 0; $i < 1; $i++) {
-        ($i == 0) ? $data = 'active' : $data = '';
-        $html .= '<li class="nav-item">
-                    <a class="nav-link '.$data.'" data-target_seo="seo_'.$i.'"  data-toggle="tab" href="#'.$array_languages[$i].'" role="tab" aria-controls="'.$array_languages[$i].'" aria-selected="true">Form</a>
-                </li>';
-    }
-
-    return $html;
-}
-
 function Status($status)
 {
     if ($status == 1) {

@@ -11,8 +11,27 @@
     }
 </style>
     <section class="section">
-        <div class="section-header">
-            <h1>Page Management</h1>
+        <div class="section-header d-block">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    @if($breadcrumbs)
+                        @foreach ($breadcrumbs  as $breadcrumb)
+                        <li class="breadcrumb-item
+                        @if($loop->last)
+                            active
+                        @endif
+                        ">
+                            @if($loop->last)
+                                {{$breadcrumb['name']}}
+                            @else 
+                                <a href="{{$breadcrumb['url']}}">{{$breadcrumb['name']}}</a>
+                            @endif
+                        </li>
+                        @endforeach
+                    @endif
+                </ol>
+            </nav>
+            <h1>content Management</h1>
         </div>
         {{-- if error --}}
         @if ($errors->any())
@@ -29,12 +48,16 @@
         <div class="section-body">
             <div class="row">
                 <div class="col-12">
-                    <form action="{{ route('page.section.store') }}" method="POST" novalidate  class="needs-validation" enctype="multipart/form-data">
+                    <?php
+                    $parent = request()->has('parent') ? request()->get('parent') : false;
+                    $url = route('content.article.store', ['parent' => request()->get('parent'), 'component' => request()->get('component')]);
+                    ?>
+                    <form action="{{ $url }}" novalidate  class="needs-validation" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4>Page Form</h4>
+                                    <h4>content Form</h4>
                                 </div>
 
                                 <div class="card-body">
@@ -43,21 +66,22 @@
                                     </ul>
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="menu_id">Menu : </label>
-                                            <select name="menu_id" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" >
-                                                <option value="0">None</option>
-                                                @foreach($menu_table as $menus)
-                                                    <option value="{{ $menus['id'] }}" {{ old('menu_id') == $menus['id'] ? 'selected' : '' }}>
+                                            <label for="Parent">content Parent : </label>
+                                            <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
+                                                @if(!$parent)
+                                                    <option value="0">- Root content</option>
+                                                @endif
+                                                @foreach($menu_table as $content)
+                                                    <option value="{{ $content['id'] }}" {{ old('parent') == $content['id'] ? 'selected' : '' }}>
                                                         <?php
-                                                            $menus['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $menus['name']);
-                                                            $menus['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $menus['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $content['name']);
+                                                            $content['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $content['name']);
                                                         ?>
-                                                        {!! $menus['name'] !!}
+                                                        {!! $content['name'] !!}
 
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            <small>Use to connect with menu</small>
                                         </div>
                                         <?php
                                         $array_languages = languages();
@@ -71,10 +95,22 @@
                                                 @include('engine.include.name.create')
                                                 @include('engine.include.sub_name.create')
                                                 @include('engine.include.slug.create')
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        @include('engine.include.redirection.create')
+                                                    </div>
+                                                    <div class="col-4">
+                                                        @include('engine.include.label.create')
+                                                    </div>
+                                                    <div class="col-4">
+                                                        @include('engine.include.target.create')
+                                                    </div>
+                                                </div>
+
                                                 @include('engine.include.overview.create')
                                                 @include('engine.include.description.create')
                                                 @include('engine.include.info.create')
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-4">
                                                         @include('engine.include.url_1.create')
                                                     </div>
@@ -95,17 +131,9 @@
                                                     <div class="col-4">
                                                         @include('engine.include.target_2.create')
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         <?php } ?>
-                                        <div class="form-group">
-                                            <label for="custom">Custom </em></label>
-                                            <input type="text" name="custom"  class="form-control @error('custom') is-invalid @enderror" id="custom" value="{{ old('custom') }}"
-                                                placeholder="custom" >
-                                        </div>
-                                        @error('custom')
-                                            <div class="alert alert-danger">{{ $errors->first('custom') }}</div>
-                                        @enderror
                                     </div>
                                 </div>
                             </div>
@@ -142,7 +170,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12" style="display: none;">
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Mobile Image</h4>
@@ -153,7 +181,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12" style="display: none;">
                             <div class="card">
                                 <div class="card-body row">
                                     <div class="card-header">
@@ -164,7 +192,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12" >
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Thumbnail Image</h4>
@@ -175,7 +203,7 @@
                             </div>
                         </div>
 
-                        <div class="col-12">
+                        <div class="col-12" style="display: none;">
                             <div class="card">
                                 <div class="card-header">
                                     <h4>Apps Image</h4>
@@ -196,16 +224,31 @@
                               <div class="collapse" id="mycard-collapse">
 
                                 <div class="card-body">
-                                    @foreach(config('cms.visibility.page.section') as $key => $value)
-                                        <div class="form-check">
-                                            <input class="form-check-input" {{ 0 == $key ? 'checked' : '' }} type="radio" name="visibility"  value="{{$key}}">
-                                            <label class="form-check-label">
-                                                {{$value}}
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                    @include('engine.include.status.create')
+                                    <div class="col-12">
+                                        <h5>Template</h5>
+                                        <div class="form-group row" style="max-height: 200px;overflow: auto;">
+                                            @foreach(config('cms.visibility.post.content') as $keys => $values)
+                                                <div class="col-6">
+                                                    <label for="visibility">{{$keys}}</label>
+                                                    @foreach($values as $key => $value)
+                                                        <div class="form-check">
+                                                            <input class="form-check-input"  {{ 50 == $key ? 'checked' : '' }} type="radio" name="visibility" id="visibility2" value="{{$key}}">
+                                                            <label class="form-check-label text-nowrap  " for="visibility2">
+                                                                {{$value}}
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                                   {{-- add line every 4 --}}
+                                                   @if(($loop->iteration % 4) == 0)
+                                                   <div class="w-100 border-bottom my-3">
 
+                                                   </div>
+                                               @endif
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @include('engine.include.status.create')
                                     {{-- Submit Button --}}
                                     <div class="col-12  text-right">
                                         @include('engine.include.submit.submit')
@@ -219,10 +262,10 @@
             </div>
         </div>
     @endsection
-@section('javascript')
-    <script>
-        $(document).ready(function () {
-        editor_config_builder('.tinymce_plugins_info');
-        });
-    </script>
-@endsection
+    @section('javascript')
+        <script>
+            $(document).ready(function () {
+            editor_config_builder('.tinymce_plugins_info');
+            });
+        </script>
+    @endsection

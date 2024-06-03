@@ -9,15 +9,15 @@ trait HasCache
     public static function bootHasCache()
     {
         static::created(function () {
-            ResponseCache::clearCache();
+            ResponseCache::clear();
         });
 
         static::updated(function () {
-            ResponseCache::clearCache();
+            ResponseCache::clear();
         });
 
         static::deleted(function () {
-            ResponseCache::clearCache();
+            ResponseCache::clear();
         });
     }
 }

@@ -46,7 +46,7 @@ class WebContent extends Model
 
     public function menu_relation()
     {
-        return $this->belongsTo(WebMenus::class, 'id', 'content_id');
+        return $this->belongsTo(WebMenu::class, 'id', 'content_id');
     }
 
     public function breadcrumb($id, $lang)

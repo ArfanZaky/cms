@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Global;
 
 use App\Http\Controllers\Api\BaseController as BaseController;
 use App\Models\WebContent;
-use App\Models\WebMenus;
+use App\Models\WebMenu;
 use App\Services\ApiService;
 use App\Services\LogServices;
 use Illuminate\Http\Request;
@@ -18,9 +18,9 @@ use voku\helper\HtmlDomParser;
 
 class GlobalController extends BaseController
 {
-    private $LogServices;
+    protected $LogServices;
 
-    private $ApiService;
+    protected $ApiService;
 
     public function __construct(LogServices $LogServices, ApiService $ApiService)
     {
@@ -32,11 +32,7 @@ class GlobalController extends BaseController
     {
         try {
             $language = _get_languages($languages);
-            $section['section1'] = \App\Helper\Helper::_content_post_id(3, $language);
-            $data_section = \App\Helper\Helper::_content_post_id(4, $language);
-            $data_section = collect($data_section['items']);
-            $section['section2'] = $data_section->where('sort', 1)->first();
-
+           
             $section['meta'] = [
                 'title' => \App\Helper\Helper::_setting_code('web_title'),
                 'description' => \App\Helper\Helper::_setting_code('web_description'),
@@ -121,7 +117,7 @@ class GlobalController extends BaseController
     {
         try {
             $language = _get_languages($languages);
-            $menus = WebMenus::with(['translations' => function ($q) use ($language) {
+            $menus = WebMenu::with(['translations' => function ($q) use ($language) {
                 $q->where('language_id', $language);
             }])
                 ->whereIn('visibility', [0, 1, 2, 3])
@@ -259,7 +255,7 @@ class GlobalController extends BaseController
             return $this->sendResponse([], 'content retrieved successfully.');
         }
         if ($code_map == 'content') {
-            $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $request, $lang, $slug);
+            $content = new \App\Http\Controllers\Api\Content\ContentApiController($this->LogServices, $request, $lang, $slug);
 
             return $content->filter_by_article_slug();
         } else {
@@ -282,7 +278,7 @@ class GlobalController extends BaseController
             return $this->sendResponse([], 'content retrieved successfully.');
         }
         if ($code_map == 'content') {
-            $content = new \App\Http\Controllers\Api\content\contentApiController($this->LogServices, $request, $lang, $slug);
+            $content = new \App\Http\Controllers\Api\Content\ContentApiController($this->LogServices, $request, $lang, $slug);
 
             return $content->seo();
         } else {

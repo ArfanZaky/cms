@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
-class WebMenus extends Model
+class WebMenu extends Model
 {
     use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache, HasStatus;
 
@@ -31,17 +31,17 @@ class WebMenus extends Model
 
     public function parent()
     {
-        return $this->hasOne(WebMenus::class, 'id', 'parent');
+        return $this->hasOne(WebMenu::class, 'id', 'parent');
     }
 
     public function parentData()
     {
-        return $this->hasOne(WebMenus::class, 'id', 'parent');
+        return $this->hasOne(WebMenu::class, 'id', 'parent');
     }
 
     public function children()
     {
-        return $this->hasMany(WebMenus::class, 'parent', 'id');
+        return $this->hasMany(WebMenu::class, 'parent', 'id');
     }
 
     public function scopeWithTranslationsForLanguage($query, $language_id)

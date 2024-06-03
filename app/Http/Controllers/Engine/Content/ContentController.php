@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Engine\Categories;
+namespace App\Http\Controllers\Engine\Content;
 
 use App\Http\Controllers\Controller;
 use App\Models\PermissionRelations;
@@ -12,8 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
-class contentArticlesController extends Controller
+class ContentController extends Controller
 {
+
+    protected $LogServices;
+    protected $PermissionService;
+
     /**
      * Display a listing of the resource.
      *
@@ -144,24 +148,6 @@ class contentArticlesController extends Controller
         DB::beginTransaction();
         try {
             $data = new WebContent();
-
-            $loan = [
-                'income' => $request->loan[0] ?? 0,
-                'deductions' => $request->loan[1] ?? 0,
-                'amount' => $request->loan[2] ?? 0,
-                'tenure' => $request->loan[3] ?? 0,
-                'interest' => $request->loan[4] ?? 0,
-            ];
-
-            $deposit = [
-                'deposito' => $request->deposit[0] ?? 0,
-                'periode' => $request->deposit[1] ?? 0,
-                'interest' => $request->deposit[2] ?? 0,
-                'tax' => $request->deposit[3] ?? 0,
-            ];
-
-            $data->loan = $loan;
-            $data->deposit = $deposit;
             $data->parent = $request->parent;
             $data->status = $request->status;
             $data->visibility = $request->visibility;
@@ -213,10 +199,10 @@ class contentArticlesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Webcontents  $webcontents
+     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
-    public function show(Webcontents $webcontents)
+    public function show(WebContent $WebContent)
     {
         //
     }
@@ -224,7 +210,7 @@ class contentArticlesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Webcontents  $webcontents
+     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
@@ -271,7 +257,7 @@ class contentArticlesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Models\Webcontents  $webcontents
+     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -284,22 +270,7 @@ class contentArticlesController extends Controller
         DB::beginTransaction();
         try {
             $data = WebContent::find($id);
-            $loan = [
-                'income' => $request->loan[0] ?? 0,
-                'deductions' => $request->loan[1] ?? 0,
-                'amount' => $request->loan[2] ?? 0,
-                'tenure' => $request->loan[3] ?? 0,
-                'interest' => $request->loan[4] ?? 0,
-            ];
-            $deposit = [
-                'deposito' => $request->deposit[0] ?? 0,
-                'periode' => $request->deposit[1] ?? 0,
-                'interest' => $request->deposit[2] ?? 0,
-                'tax' => $request->deposit[3] ?? 0,
-            ];
 
-            $data->loan = $loan;
-            $data->deposit = $deposit;
             $data->parent = $request->parent;
             $data->status = $request->status;
             $data->visibility = $request->visibility;
@@ -330,10 +301,10 @@ class contentArticlesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Webcontents  $webcontents
+     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WebContent $webcontents, $id)
+    public function destroy(WebContent $WebContent, $id)
     {
         DB::beginTransaction();
         try {

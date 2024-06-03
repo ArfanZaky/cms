@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Engine\Menus;
 
 use App\Http\Controllers\Controller;
 use App\Models\WebContent;
-use App\Models\WebMenus;
+use App\Models\WebMenu;
 use App\Services\LogServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class MenusController extends Controller
 
     public function index(Request $request)
     {
-        $menus = WebMenus::with(['translations' => function ($q) {
+        $menus = WebMenu::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])
             ->orderBy('visibility', 'desc')
@@ -58,7 +58,7 @@ class MenusController extends Controller
 
     public function create()
     {
-        $menu = WebMenus::with(['translations' => function ($q) {
+        $menu = WebMenu::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)->orderBy('sort', 'asc')->get();
         $data_tree = [];
@@ -114,7 +114,7 @@ class MenusController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            $menu = new WebMenus;
+            $menu = new WebMenu;
             $menu->admin_id = Auth::user()->id;
             if (isset($request->menu_id)) {
                 $menu->menu_id = $request->menu_id;
@@ -164,14 +164,14 @@ class MenusController extends Controller
 
     public function show($id)
     {
-        $menu = WebMenus::find($id);
+        $menu = WebMenu::find($id);
 
         return view('engine.module.menus.show', compact('menu'));
     }
 
     public function edit($id)
     {
-        $menu = WebMenus::with(['translations' => function ($q) {
+        $menu = WebMenu::with(['translations' => function ($q) {
             $q->where('language_id', 1);
         }])->where('status', 1)
             ->where('id', '!=', $id)
@@ -215,7 +215,7 @@ class MenusController extends Controller
         $data_tree_helper = \App\Helper\Helper::tree($data_tree2);
         $menu_table_content = menu_table($data_tree_helper, 0, $data = []);
 
-        $data = WebMenus::with('translations')->find($id);
+        $data = WebMenu::with('translations')->find($id);
 
         return view('engine.module.menus.edit', compact('menu_table_menu', 'menu_table_content', 'data'));
     }
@@ -231,7 +231,7 @@ class MenusController extends Controller
         ]);
         DB::beginTransaction();
         try {
-            $menu = WebMenus::find($id);
+            $menu = WebMenu::find($id);
             $menu->admin_id = Auth::user()->id;
             if (isset($request->menu_id)) {
                 $menu->menu_id = $request->menu_id;
@@ -287,7 +287,7 @@ class MenusController extends Controller
     {
         DB::beginTransaction();
         try {
-            $menu = WebMenus::find($id);
+            $menu = WebMenu::find($id);
             $menu->delete();
             $this->LogServices->handle(['table_id' => $menu->id, 'name' => 'Delete Page',   'json' => json_encode($menu)]);
             DB::commit();
@@ -305,7 +305,7 @@ class MenusController extends Controller
     {
         $data = $request->array;
         foreach ($data as $key => $value) {
-            $menu = WebMenus::find($value);
+            $menu = WebMenu::find($value);
             $menu->sort = $key + 1;
             $menu->save();
         }

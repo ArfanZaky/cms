@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\WebContent;
-use App\Models\WebMenus;
+use App\Models\WebMenu;
 use App\Models\WebPages;
 use Illuminate\Support\Str;
 
@@ -18,7 +18,7 @@ class ApiService
                     $url = $this->menu($value);
                     $target = $value->target;
                 } else {
-                    $temp = WebMenus::where('id', $value->menu_id)->with(['translations' => function ($query) use ($value) {
+                    $temp = WebMenu::where('id', $value->menu_id)->with(['translations' => function ($query) use ($value) {
                         $query->where('language_id', $value->translations[0]->language_id);
                     }])->first();
                     $url = $this->menu($temp);

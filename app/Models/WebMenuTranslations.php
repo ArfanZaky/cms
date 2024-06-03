@@ -17,7 +17,7 @@ class WebMenuTranslations extends Model
 
     public function menu()
     {
-        return $this->belongsTo(WebMenus::class, 'menu_id', 'id');
+        return $this->belongsTo(WebMenu::class, 'menu_id', 'id');
     }
 
     public function getCreatedAtAttribute($value)

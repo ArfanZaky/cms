@@ -104,24 +104,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/menu/sorable', [App\Http\Controllers\Engine\Menus\MenusController::class, 'sortable'])->name('menu.sortable')->middleware('permission:menu');
     });
 
-    Route::middleware(['cacheResponse:31536000'])->group(function () {
+    // Route::middleware(['cacheResponse:31536000'])->group(function () {
         // content
         Route::prefix('content')->group(function () {
             // prefix post
             Route::prefix('article')->group(function () {
-                Route::get('/', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'index'])->name('content.article')->middleware('permission:content/article');
-                Route::get('/create', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'create'])->name('content.article.create')->middleware('permission:content/article/create');
-                Route::get('/edit/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'edit'])->name('content.article.edit')->middleware('permission:content/article/edit');
+                Route::get('/', [App\Http\Controllers\Engine\Content\ContentController::class, 'index'])->name('content.article')->middleware('permission:content/article');
+                Route::get('/create', [App\Http\Controllers\Engine\Content\ContentController::class, 'create'])->name('content.article.create')->middleware('permission:content/article/create');
+                Route::get('/edit/{id}', [App\Http\Controllers\Engine\Content\ContentController::class, 'edit'])->name('content.article.edit')->middleware('permission:content/article/edit');
             });
         });
-    });
+    // });
 
     Route::prefix('content')->group(function () {
         // prefix post
         Route::prefix('article')->group(function () {
-            Route::post('/store', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'store'])->name('content.article.store')->middleware('permission:content/article/create');
-            Route::post('/update/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'update'])->name('content.article.update')->middleware('permission:content/article/edit');
-            Route::get('/delete/{id}', [App\Http\Controllers\Engine\Categories\contentArticlesController::class, 'destroy'])->name('content.article.delete')->middleware('permission:content/article/delete');
+            Route::post('/store', [App\Http\Controllers\Engine\Content\ContentController::class, 'store'])->name('content.article.store')->middleware('permission:content/article/create');
+            Route::post('/update/{id}', [App\Http\Controllers\Engine\Content\ContentController::class, 'update'])->name('content.article.update')->middleware('permission:content/article/edit');
+            Route::get('/delete/{id}', [App\Http\Controllers\Engine\Content\ContentController::class, 'destroy'])->name('content.article.delete')->middleware('permission:content/article/delete');
         });
     });
 
