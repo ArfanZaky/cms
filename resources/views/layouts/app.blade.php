@@ -26,7 +26,7 @@
     <link rel="stylesheet" href="{{ asset('custom/css/chocolat.css') }}">
     <link rel="stylesheet" href="{{ asset('custom/css/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('custom/css/select2.min.css') }}">
-    
+
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/components.css') }}">
@@ -40,11 +40,7 @@
     <div id="app">
         <div class="main-wrapper main-wrapper-1">
             @include('engine.layouts.top-navigation')
-            @if (Auth::user()?->role?->first()?->id == 1)
-                @include('engine.layouts.side-navigation')
-            @else
-                @include('engine.layouts.side-navigation-user')
-            @endif
+            @include('engine.layouts.side-navigation')
 
             <div class="main-content" >
                 @yield('content')
@@ -78,7 +74,7 @@
     <script src="{{ asset('custom/js/jquery.chocolat.min.js') }}"></script>
     <script src="{{ asset('custom/js/iziToast.min.js') }}"></script>
     <script src="{{ asset('custom/js/select2.full.min.js') }}"></script>
-  
+
     <!-- Page Specific JS File -->
     <script src="{{ asset('custom/js/index.js') }}"></script>
     <script src="{{ asset('custom/js/scripts.js') }}"></script>

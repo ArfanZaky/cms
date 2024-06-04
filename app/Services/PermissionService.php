@@ -12,7 +12,6 @@ class PermissionService
         $role = Auth::user()?->role?->first()?->id;
         $permissions = [];
         $permission_content = [];
-        $permission_page = [];
 
         if ($role) {
             $permissionRelations = PermissionRelations::where('role_id', $role)->with('permission')->get();
@@ -21,15 +20,39 @@ class PermissionService
                 return $value->permission_id;
             })->pluck('permission.name')->values()->toArray();
             $permission_content = $permissionRelations->pluck('content_id')->filter()->unique()->values()->toArray();
-            $permission_page = $permissionRelations->pluck('page_id')->filter(function ($value) {
-                return ! is_null($value);
-            })->values()->toArray();
+        }
+
+        $category = \App\Models\WebContent::with(['translations' => function ($q) {
+            $q->where('language_id', 1);
+        }])
+            ->whereIn('id', $permission_content)
+            ->where('is_menu', 1)
+            ->orderBy('sort', 'asc')
+            ->get();
+
+
+        $data = [];
+        if (!empty($category)) {
+            $data = collect($category)->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'parent' => $item->parent,
+                    'children' => [],
+                    'name' => $item->translations->first()->name,
+                    'visibility' => $item->visibility,
+                    'sort' => $item->sort,
+                    'status' => $item->status,
+                    'url' => '/'.$item->url,
+                ];
+            });
+
+            $data = \App\Helper\Helper::tree($data);
+            $data = menu_table($data, 0, $arr = []);
         }
 
         session([
             'permission' => $permissions,
-            'permission_content' => $permission_content,
-            'permission_page' => $permission_page,
+            'permission_content' => $data,
         ]);
     }
 }

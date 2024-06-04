@@ -4,23 +4,12 @@ $segment_3 = Request::segment(3);
 $type = Request::input('type');
 $permission =  session('permission');
 
-$permission_content = session('permission_content');
 
-$pages = false;
 $users = false;
-$post = false;
 $form = false;
-$menu_page = ['page/generic', 'page/section'];
-$menu_post = ['article'];
 $menu_user = ['user', 'role', 'permission'];
 $menu_form = [ 'form/contact'];
 foreach ($permission as $key => $value) {
-    if (in_array($value, $menu_page)) {
-        $pages = true;
-    }
-    if (in_array($value, $menu_post)) {
-        $post = true;
-    }
     if (in_array($value, $menu_user)) {
         $users = true;
     }
@@ -28,24 +17,8 @@ foreach ($permission as $key => $value) {
         $form = true;
     }
 }
-$article_news_menu = \App\Models\WebContent::with(['translations' => function ($q) {
-    $q->where('language_id', 1);
-}])
-->orderBy('sort', 'asc')
-->where('status', 1)
-->get();
 
-$content = request()->content;
-
-$visibility = false;
-if($content){
-    $visibility = \App\Models\WebContent::with(['translations' => function ($q) {
-        $q->where('language_id', 1);
-    }])
-    ->orderBy('sort', 'asc')
-    ->where('id', $content)
-    ->first('visibility');
-}
+$data = session('permission_content');
 
 ?>
 
@@ -73,75 +46,71 @@ if($content){
                     </a>
                 </li>
             @endif
-           
 
-            @if ($post)
-                @if (in_array('content/article', $permission))
-                    <li class="dropdown 
-                    @routeis(['content.article.*', 'content.article'])
-                        @if (request()->component == 'content') active @endif 
-                    @endrouteis
-                    @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                        @if (request()->component == 'content') active @endif 
+            @if (in_array('content/article', $permission))
+                <li class="@routeis(['content.article.*', 'content.article'])
+                    @if (request()->is_menu != 1)
+                        active
                     @endif
-                    @routeis(['article.*', 'article'])  active @endrouteis
-                    ">
-                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>content</span></a>
-                        <ul class="dropdown-menu" 
-                        
-                        @routeis(['content.article.*', 'content.article'])
-                            @if (request()->component == 'content') style="display: block;" @endif 
-                        @endrouteis
-                        @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                            @if (request()->component == 'content') style="display: block;" @endif 
-                        @endif
-                        @routeis(['article.*', 'article'])  style="display:block"  @endrouteis
-                        
-                        >
-                            <li 
-                                    @routeis(['content.article.*', 'content.article'])
-                                        @if (request()->component == 'content') class="active" @endif 
-                                    @endrouteis
-                                    @if($visibility && in_array($visibility->visibility, _custom_visibility_menu()))
-                                        @if (request()->component == 'content') class="active" @endif 
-                                    @endif
+                @endrouteis" >
+                    <a class="nav-link" href="{{ route('content.article', ['component' => 'content']) }}">
+                        <i class="fas fa-window-restore"></i>
+                        <span>Content</span>
+                    </a>
+                </li>
+            @endif
+
+            @if (in_array('content/article', $permission))
+                @if (!empty($data))
+                    @foreach($data as $key => $item)
+                        <li class="dropdown @if (request()->edit == $item['id'] || request()->list == $item['id'])  active @endif">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>
+                                {{ \Illuminate\Support\Str::limit(\Illuminate\Support\Str::title(strip_tags($item['rname'])), 15, '...')}}</span>
+                            </a>
+                            <ul class="dropdown-menu" @if (request()->edit == $item['id'] || request()->list == $item['id']
+                                ) style="display:block" @endif
                                 >
-                                <a class="nav-link" href="{{ route('content.article', ['component' => 'content']) }}">  <i class="fas fa-solid fa-layer-group"></i>List content</a>
-                            </li>
-                            @foreach ($article_news_menu as $item)
-                                @if (! in_array($item->id, (array) $permission_content)) 
-                                    @continue
-                                @endif
-                                
-                                @if( in_array($item->visibility, _custom_visibility_menu()))
-                                    <li @routeis(['article.*', 'article']) @if (request()->content == $item->id) class="active" @endif @endrouteis>
-                                        <a class="nav-link" href="{{ route('article',['content' => $item->id]) }}"><i class="fas fa-stream"></i>
-                                            {{ \Illuminate\Support\Str::limit(\Illuminate\Support\Str::title(strip_tags($item?->translations?->first()?->name)), 15, '...')}}
-            
-                                        </a>
-                                    </li>
-                                @endif  
-                            @endforeach
+                                <li
+                                        @routeis(['content.article.edit', 'content.article.edit.*'])
+                                            @if (request()->edit == $item['id']) class="active" @endif
+                                        @endrouteis
+                                    >
+                                    <a class="nav-link" href="{{  route('content.article.edit', [$item['id'], 'edit' => $item['id'], 'is_menu' => 1]) }}">
+                                        <i class="fas fa-solid fa-edit"></i>
+                                        Edit
+                                    </a>
+                                </li>
 
-                        </ul>
-                    </li>
-
-
-                  
-                   
+                                <li
+                                    @routeis(['content.article.*', 'content.article', 'article.*', 'article'])
+                                        @if (request()->list == $item['id']) class="active" @endif
+                                    @endrouteis
+                                    >
+                                    <a class="nav-link" href="{{ route('content.article', ['parent' => $item['id'], 'list' => $item['id'], 'is_menu' => 1]) }}">
+                                        <i class="fas fa-solid fa-layer-group"></i>List
+                                    </a>
+                                </li>
+                                <li >
+                                    <a class="nav-link" href="{{ \App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" >
+                                        <i class="fas fa-solid fa-eye"></i>View
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    @endforeach
                 @endif
             @endif
 
-            
+
             @if (in_array('form/contact', $permission))
                 <li class="dropdown @routeis(['form.contact.*', 'form.contact', 'form.email'])  active @endrouteis">
                     <a href="#" class="nav-link has-dropdown"><i class="fas fa-window-restore"></i><span>Form</span></a>
                     <ul class="dropdown-menu" @routeis(['form.contact.*', 'form.contact', 'form.email'])  style="display: block;" @endrouteis >
-                        <li class="@routeis(['form.contact.*', 'form.contact']) @endrouteis"> 
+                        <li class="@routeis(['form.contact.*', 'form.contact']) @endrouteis">
                             <a class="nav-link" href="{{ route('form.contact') }}">
                                 <i class="fas fa-file"></i>Contact Form
                             </a>
-                        </li>  
+                        </li>
                     </ul>
                 </li>
             @endif
@@ -189,7 +158,7 @@ if($content){
             @endif
 
         </ul>
-        
+
 
         <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
         </div>

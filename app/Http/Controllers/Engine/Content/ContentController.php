@@ -39,11 +39,10 @@ class ContentController extends Controller
             ->get();
 
         $permission_content = session('permission_content');
-
         $breadcrumbs = false;
         $data = $content;
         if ($request->parent) {
-            if (! in_array($request->parent, $permission_content)) {
+            if (! in_array($request->parent, collect($permission_content)->pluck('id')->toArray())) {
                 return redirect()->route('dashboard')->with('error', 'permission denied, please contact your administrator');
             }
             $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());

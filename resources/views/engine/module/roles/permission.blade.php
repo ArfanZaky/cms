@@ -87,13 +87,6 @@
                                             <hr>
                                             {{-- TITLE --}}
                                             <div class="col-12 mb-5">
-                                                <h4>Module Page</h4>
-                                            </div>
-                                        </div>
-                                        <div class="w-100">
-                                            <hr>
-                                            {{-- TITLE --}}
-                                            <div class="col-12 mb-5">
                                                 <h4>Module content</h4>
                                             </div>
                                         </div>
@@ -114,9 +107,9 @@
 
 
                                         @endforeach
-                                       
 
-                                        
+
+
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Submit</button>

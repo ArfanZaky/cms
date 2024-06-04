@@ -23,7 +23,7 @@
                         ">
                             @if($loop->last)
                                 {{$breadcrumb['name']}}
-                            @else 
+                            @else
                                 <a href="{{$breadcrumb['url']}}">{{$breadcrumb['name']}}</a>
                             @endif
                         </li>
@@ -70,16 +70,19 @@
                                             <label for="Parent">content Parent : </label>
                                             <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
                                                 <option value="0">- Root content</option>
-                                                @foreach($menu_table as $content)
-                                                    <option value="{{ $content['id'] }}" {{ $content['id'] ==  $data->parent  ? 'selected' : '' }}>
-                                                        <?php
-                                                            $content['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $content['name']);
-                                                            $content['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $content['name']);
-                                                        ?>
-                                                        {!! $content['name'] !!}
+                                                @if (!empty($menu_table))
+                                                    @foreach($menu_table as $content)
+                                                        <option value="{{ $content['id'] }}" {{ $content['id'] ==  $data->parent  ? 'selected' : '' }}>
+                                                            <?php
+                                                                $content['name'] = str_replace('<i class="fa fa-angle-double-right"></i>', '-', $content['name']);
+                                                                $content['name'] = str_replace('<i class="fa fa-bars"></i>', '-', $content['name']);
+                                                            ?>
+                                                            {!! $content['name'] !!}
 
-                                                    </option>
-                                                @endforeach
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+
                                             </select>
                                         </div>
                                         <?php

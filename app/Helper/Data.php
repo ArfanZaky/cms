@@ -226,6 +226,7 @@ function menu_table($array, $recursive, $data, $loops = 0)
             'parent' => $value['parent'],
             'recursive' => $recursive,
             'name' => $separator.$icon.'&nbsp;'.$value['name'],
+            'rname' => $value['name'],
             'visibility' => $value['visibility'],
             'sort' => $value['sort'],
             'status' => $value['status'],
