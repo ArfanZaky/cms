@@ -9,14 +9,11 @@ use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
-use MathPHP\Finance;
-use Spatie\ResponseCache\Facades\ResponseCache;
 use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class WebContent extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache, HasStatus;
+    use HasCache,HasFactory, HasGlobalQueryTrait, HasResponse, HasStatus;
 
     protected $guard = [];
 

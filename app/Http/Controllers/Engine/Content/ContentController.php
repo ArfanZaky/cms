@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ContentController extends Controller
 {
-
     protected $LogServices;
+
     protected $PermissionService;
 
     /**
@@ -199,7 +199,6 @@ class ContentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
     public function show(WebContent $WebContent)
@@ -301,7 +300,6 @@ class ContentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\WebContent  $WebContent
      * @return \Illuminate\Http\Response
      */
     public function destroy(WebContent $WebContent, $id)

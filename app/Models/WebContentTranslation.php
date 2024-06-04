@@ -2,17 +2,15 @@
 
 namespace App\Models;
 
-use App\Traits\HasGlobalQueryTrait;
-use App\Traits\HasResponse;
-use App\Traits\HasTranslation;
 use App\Traits\HasCache;
+use App\Traits\HasGlobalQueryTrait;
+use App\Traits\HasTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ResponseCache\Facades\ResponseCache;
 
 class WebContentTranslation extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse, HasTranslation, HasCache;
+    use HasCache,HasFactory, HasGlobalQueryTrait, HasTranslation;
 
     protected $guarded = [];
 

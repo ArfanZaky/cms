@@ -32,7 +32,7 @@ class GlobalController extends BaseController
     {
         try {
             $language = _get_languages($languages);
-           
+
             $section['meta'] = [
                 'title' => \App\Helper\Helper::_setting_code('web_title'),
                 'description' => \App\Helper\Helper::_setting_code('web_description'),

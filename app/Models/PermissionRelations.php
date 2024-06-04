@@ -5,11 +5,10 @@ namespace App\Models;
 use App\Traits\HasCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ResponseCache\Facades\ResponseCache;
 
 class PermissionRelations extends Model
 {
-    use HasFactory, HasCache;
+    use HasCache, HasFactory;
 
     protected $table = 'user_permission_relations';
 

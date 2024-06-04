@@ -6,11 +6,10 @@ use App\Traits\HasCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\ResponseCache\Facades\ResponseCache;
 
 class RoleRelations extends Model
 {
-    use HasFactory, SoftDeletes, HasCache;
+    use HasCache, HasFactory, SoftDeletes;
 
     protected $table = 'user_role_relations';
 

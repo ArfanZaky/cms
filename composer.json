@@ -18,7 +18,7 @@
         "spatie/laravel-responsecache": "^7.4",
         "spatie/laravel-schemaless-attributes": "^2.4",
         "spatie/laravel-sitemap": "*",
-        "unisharp/laravel-filemanager": "^2.0",
+        "unisharp/laravel-filemanager": "^2.9",
         "voku/simple_html_dom": "^4.8",
         "yajra/laravel-datatables-oracle": "^11.1.1"
     },

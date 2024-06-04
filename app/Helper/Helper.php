@@ -4,7 +4,6 @@ namespace App\Helper;
 
 use App\Models\WebArticles;
 use App\Models\WebContent;
-use App\Models\WebPages;
 use App\Models\WebSettings;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;

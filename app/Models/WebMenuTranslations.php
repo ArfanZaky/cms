@@ -4,14 +4,12 @@ namespace App\Models;
 
 use App\Traits\HasCache;
 use App\Traits\HasGlobalQueryTrait;
-use App\Traits\HasResponse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ResponseCache\Facades\ResponseCache;
 
 class WebMenuTranslations extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache;
+    use HasCache,HasFactory, HasGlobalQueryTrait;
 
     protected $guarded = [];
 

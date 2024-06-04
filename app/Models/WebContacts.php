@@ -4,17 +4,15 @@ namespace App\Models;
 
 use App\Traits\HasCache;
 use App\Traits\HasGlobalQueryTrait;
-use App\Traits\HasResponse;
 use App\Traits\HasStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\ResponseCache\Facades\ResponseCache;
 use Spatie\SchemalessAttributes\Casts\SchemalessAttributes;
 
 class WebContacts extends Model
 {
-    use HasFactory,HasGlobalQueryTrait, HasResponse, HasCache, HasStatus;
+    use HasCache,HasFactory, HasGlobalQueryTrait, HasStatus;
 
     protected $guarded = [];
 

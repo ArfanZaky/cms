@@ -4,10 +4,7 @@ namespace App\Http\Controllers\Api\content;
 
 use App\Events\UpdateViewCount;
 use App\Http\Controllers\Api\BaseController as BaseController;
-use App\Models\WebArticles;
 use App\Models\WebContent;
-use App\Models\WebMenu;
-use App\Services\ApiService;
 use App\Services\LogServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,10 +31,6 @@ class ContentApiController extends BaseController
 
     protected $content;
 
-    protected $article;
-
-    protected $total_article;
-
     protected $children;
 
     protected $dev;
@@ -49,9 +42,7 @@ class ContentApiController extends BaseController
         $this->languages = $languages;
         $this->slug = $slug;
         $this->content = [];
-        $this->article = [];
         $this->children = [];
-        $this->total_article = 0;
         $this->limit = $this->request->input('limit', 10);
         $this->dev = $this->request->input('dev', false);
 
@@ -97,8 +88,7 @@ class ContentApiController extends BaseController
                     $content = new \App\Http\Controllers\Api\Content\ContentApiController($this->LogServices, $this->request, $this->languages, $slug_r);
 
                     return $content->filter_by_article_slug();
-                } 
-                else {
+                } else {
                     return $this->sendResponse([], 'Data retrieved successfully.');
                 }
             }
@@ -145,7 +135,7 @@ class ContentApiController extends BaseController
 
             $this->content['breadcrumb'] = $breadcrumb;
 
-            $MapVisibility = $this->MapVisibility();
+            $this->MapVisibility();
 
             return $this->sendResponse($this->content, 'content retrieved successfully.', $this->limit, $this->offset);
         } catch (\Exception $e) {
@@ -173,7 +163,7 @@ class ContentApiController extends BaseController
                     $content = new \App\Http\Controllers\Api\Content\ContentApiController($this->LogServices, $this->request, $this->languages, $slug_r);
 
                     return $content->seo();
-                }   else {
+                } else {
                     return $this->sendResponse([], 'Data retrieved successfully.');
                 }
             }
