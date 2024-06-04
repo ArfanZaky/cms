@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\DB;
 
 class ApiResource extends JsonResource
 {
+    protected $lang;
+    protected $array_lang;
+    protected $get_model;
+    protected $url;
+
     public function __construct($resource, int $language, $array_lang = [], $get_model = false, $url = false)
     {
         parent::__construct($resource);
@@ -173,47 +178,6 @@ class ApiResource extends JsonResource
 
     private function getText($id)
     {
-        if ($id == 'kurs' || $id == 'datekurs') {
-            $data = DB::table('web_kurs')->get();
-            if ($id == 'kurs') {
-                $currency = \App\Helper\Helper::_wording('currency', $this->lang);
-                $buy = \App\Helper\Helper::_wording('buy', $this->lang);
-                $sell = \App\Helper\Helper::_wording('sell', $this->lang);
-
-                return view('engine.include.table.index', compact(['data', 'currency', 'buy', 'sell']))->render();
-            }
-            $lang = code_lang()[$this->lang - 1];
-            if ($lang == 'id') {
-                return formatDateIndonesia(collect($data)?->last()?->updated_at);
-            }
-
-            return date('l, F d, Y h:i:s A (e)', strtotime(collect($data)?->last()?->updated_at));
-        } else {
-            if (request()->has('r')) {
-                $data = DB::table('web_contacts')->where('reference_no', decrypt(request()->r))->first();
-                if ($data) {
-                    if ($id == 'reference') {
-                        return reference_format($data->reference_no);
-                    } elseif ($id == 'name') {
-                        return $data->full_name;
-                    } elseif ($id == 'product') {
-                        $content = WebContent::with('translations')->find($data->content_id);
-                        if (! $content) {
-                            return $id;
-                        }
-                        $content = $content->getResponeses($content, $this->lang);
-                        $content = collect($content)->toArray();
-
-                        return $content['name'];
-                    } elseif ($id == 'statusform') {
-                        return $data->status_form;
-                    }
-
-                }
-            }
-        }
-
         return $id;
-
     }
 }

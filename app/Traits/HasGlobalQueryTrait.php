@@ -114,24 +114,4 @@ trait HasGlobalQueryTrait
 
         }
     }
-
-    public function UpdateBuilder($data, $request)
-    {
-        foreach ($request->type as $key => $value) {
-            $translation = $data->translations()->where('language_id', $key + 1)->first();
-            if ($translation) {
-                $json = [];
-                foreach ($value as $keys => $value) {
-                    $json[code_lang()[$key]]['Section'][$keys]['type'] = $value;
-                    $json[code_lang()[$key]]['Section'][$keys]['content_id'] = $request->content_id[$key][$keys];
-                    $json[code_lang()[$key]]['Section'][$keys]['template'] = $request->template[$key][$keys];
-                    $json[code_lang()[$key]]['Section'][$keys]['col'] = $request->col[$key][$keys] ?? 0;
-
-                }
-                $translation->additionals = $json;
-                $translation->save();
-            }
-
-        }
-    }
 }

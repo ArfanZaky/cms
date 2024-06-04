@@ -2,7 +2,6 @@
 
 namespace App\Helper;
 
-use App\Models\WebArticles;
 use App\Models\WebContent;
 use App\Models\WebSettings;
 use Illuminate\Support\Facades\DB;
@@ -11,73 +10,6 @@ use Illuminate\Support\Str;
 
 class Helper
 {
-    public static function _content_post_id($id, $language, $limit = false)
-    {
-        $content = WebContent::with('translations')->find($id);
-        if (! $content) {
-            return [];
-        }
-        $id = $content->id;
-        $content = $content->getResponeses($content, $language);
-        $content = collect($content)->toArray();
-
-        $article = WebArticles::whereHas('contentArticles', function ($q) use ($id) {
-            $q->where('content_id', $id);
-        })
-            ->with('translations')
-            ->orderBy('sort', 'asc')
-            ->when($limit, function ($q) use ($limit) {
-                $q->limit($limit);
-            })
-            ->get();
-
-        if (! $article) {
-            return [];
-        }
-
-        $data = collect($article)->map(function ($item) use ($language) {
-            $data = $item->getResponeses($item, $language);
-            $item = collect($data)->toArray();
-
-            return $item;
-        });
-
-        $content['items'] = $data;
-
-        return $content;
-    }
-
-    public static function _content_post_id_top_search($language, $limit = 3)
-    {
-        $language = _get_languages($language);
-        $content = WebContent::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
-        $article = WebArticles::with('translations')->orderBy('view', 'desc')->limit($limit)->get();
-
-        // merge
-        $merge = collect($content)->merge($article)->sortByDesc('view')->take($limit)->values()->all();
-        if (empty($merge)) {
-            return [];
-        }
-        $content = collect($merge)->map(function ($item) use ($language) {
-            $content = $item->getResponeses($item, $language);
-            $content = collect($content)->toArray();
-
-            return [
-                'id' => $content['id'],
-                'image' => $content['image']['default'],
-                'parent' => '_self',
-                'type' => 'text',
-                'name' => $content['name'],
-                'target' => '_self',
-                'url' => $content['url'],
-                'slug' => $content['slug'],
-                'visibility' => $content['visibility'],
-            ];
-        });
-
-        return $content;
-    }
-
     public static function _search($language, $keyword, $offset, $limit)
     {
         $language = _get_languages($language);
@@ -87,14 +19,9 @@ class Helper
             });
         })->whereNotIn('visibility', [50]) // remove default
             ->get();
-        $article = WebArticles::with('translations')->whereHas('translations', function ($q) use ($keyword, $language) {
-            $q->where('language_id', $language)->where(function ($q) use ($keyword) {
-                $q->where('name', 'like', '%'.$keyword.'%')->orWhere('meta_keyword', 'like', '%'.$keyword.'%')->orWhere('description', 'like', '%'.$keyword.'%');
-            });
-        })->get();
 
         // merge
-        $merge = collect($content)->merge($article)->sortByDesc('view')->values()->all();
+        $merge = collect($content)->sortByDesc('view')->values()->all();
         $items = collect($merge)->skip($offset)->take($limit)->values()->all();
         $total = collect($merge)->count();
         if (empty($merge)) {
@@ -115,34 +42,6 @@ class Helper
             'total' => $total,
             'items' => $items,
         ];
-    }
-
-    public static function _customize_search_name($url)
-    {
-
-        $url = explode('/', $url);
-        $url = collect($url)->filter(function ($item, $key) {
-            return ! empty($item) && $key > 2;
-        })->values()->toArray();
-
-        if (count($url) < 2) {
-            return '';
-        }
-
-        $html = '( ';
-        foreach ($url as $key => $value) {
-            $value = str_replace('-', ' ', $value);
-            $value = preg_replace('/[0-9]+/', '', $value);
-            $value = ucwords($value);
-            if (count($url) - 1 == $key) {
-                $html .= $value.' )';
-                break;
-            } else {
-                $html .= $value.' / ';
-            }
-        }
-
-        return $html;
     }
 
     public static function _setting_code($code)
@@ -178,34 +77,12 @@ class Helper
         return '';
     }
 
-    public static function _get_wording_partial($languages)
-    {
-        $directory = 'wording';
-        $wording = Storage::disk('public')->get($directory.'/wording.json');
-        $wording = json_decode($wording, true);
-        $result = [];
-        if (isset($wording[$languages])) {
-            $result = $wording[$languages];
-        }
-
-        return $result;
-    }
-
-    public static function MasterTree($data)
-    {
-        $data = self::parent($data);
-        $data = self::tree($data);
-        $data = self::obj($data);
-
-        return $data;
-    }
-
     public static function parent($array, $data = ['parent_id' => 'parent', 'children' => 'children', 'id' => 'id', 'tree' => 'tree'], $parent = 0)
     {
         $tree = [];
         foreach ($array as $key => $value) {
             if ($value[$data['parent_id']] !== false) {
-                $children = self::parent2($array, $data, $value[$data['parent_id']]);
+                $children = self::subParent($array, $data, $value[$data['parent_id']]);
                 if ($children) {
                     $value[$data['tree']] = [
                         'parent' => $children,
@@ -218,14 +95,14 @@ class Helper
         return $tree;
     }
 
-    public static function parent2($array, $data = ['parent_id' => 'parent', 'children' => 'children', 'id' => 'id', 'tree' => 'tree'], $parent = 0)
+    public static function subParent($array, $data = ['parent_id' => 'parent', 'children' => 'children', 'id' => 'id', 'tree' => 'tree'], $parent = 0)
     {
         $tree = [];
 
         foreach ($array as $key => $value) {
             if ($value[$data['id']] == $parent) {
                 if ($value[$data['parent_id']] !== false) {
-                    $children = self::parent2($array, $data, $value[$data['parent_id']]);
+                    $children = self::subParent($array, $data, $value[$data['parent_id']]);
                     if ($children) {
                         $value[$data['tree']] = [
                             'parent' => $children,
@@ -339,10 +216,6 @@ class Helper
         $get_model = get_class($post);
 
         $id = $post->id;
-        if ($get_model == 'App\Models\WebArticles') {
-            $temp = $post;
-            $id = $post?->contentArticles()?->first()?->id;
-        }
 
         $content = WebContent::with([
             'translations' => function ($q) use ($lang) {
@@ -354,13 +227,6 @@ class Helper
             ->get();
 
         $result = self::_content_slug_map_loop($content, $content->where('id', $id)->first());
-
-        if ($get_model == 'App\Models\WebArticles') {
-            $result[] = [
-                'slug' => $temp->translations?->where('language_id', $lang)->first()?->slug,
-                'name' => $temp->translations?->where('language_id', $lang)->first()?->name,
-            ];
-        }
 
         return $result;
     }

@@ -64,4 +64,28 @@ class WebContent extends Model
 
         return $result;
     }
+
+    public function GetData($lang, $limit = 3)
+    {
+        $content = $this->first();
+        if (! $content) {
+            return [];
+        }
+
+        $id = $content->id;
+        $language = _get_languages($lang);
+        $content = collect($content->getResponeses($content, $language))->toArray();
+
+        $children = $this->children()->limit($limit)->get();
+
+        $children = collect($children)->map(function ($item) use ($language) {
+            $data = $item->getResponeses($item, $language);
+            $item = collect($data)->toArray();
+            return $item;
+        });
+
+        $content['items'] = $children;
+
+        return $content;
+    }
 }

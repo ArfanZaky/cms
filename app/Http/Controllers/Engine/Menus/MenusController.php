@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 
 class MenusController extends Controller
 {
+    protected $LogServices;
     public function __construct(LogServices $LogServices)
     {
         $this->LogServices = $LogServices;

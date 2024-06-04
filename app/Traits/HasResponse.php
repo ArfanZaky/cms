@@ -9,30 +9,18 @@ trait HasResponse
 {
     public function getResponeses($data, $language)
     {
-
         $get_model = false;
-        try {
-            $get_model = get_class($data);
-            if ($get_model == 'App\Models\WebPages') {
-                $get_model = 'page';
-            } else {
-                $get_model = 'content';
-            }
-        } catch (\Throwable $th) {
-        }
+        try {$get_model = get_class($data);} catch (\Throwable $th) {}
         $lang = code_lang()[($language - 1)];
 
         $url = false;
-        if ($get_model == 'content') {
-            $slug = $data->translations->where('language_id', $language)->first()->slug;
-            $url = '/'.$lang.'/'.$slug;
-        }
+        $slug = $data->translations->where('language_id', $language)->first()->slug;
+        $url = '/'.$lang.'/'.$slug;
 
         $array_lang = $data?->translations->filter(function ($item) use ($language) {
             return $item->language_id != $language;
         })->mapWithKeys(function ($item, $key) use ($get_model, $data) {
             $lang = code_lang()[($item->language_id - 1)];
-
             $slug = $item->slug;
 
             return [
@@ -41,7 +29,7 @@ trait HasResponse
                 'slug' => $item['slug'],
                 'code' => $lang,
                 'url' => '/'.$lang.'/'.$slug,
-                'template' => ($get_model == 'page') ? (isset(config('cms.visibility.page.slug')[$data->visibility]) ? config('cms.visibility.page.slug')[$data->visibility] : 'page') : (isset(config('cms.visibility.post.slug')[$data->visibility]) ? config('cms.visibility.post.slug')[$data->visibility] : 'page'),
+                'template' => (isset(config('cms.visibility.post.slug')[$data->visibility]) ? config('cms.visibility.post.slug')[$data->visibility] : ''),
             ];
         })->toArray();
 
