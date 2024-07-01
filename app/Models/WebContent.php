@@ -65,18 +65,22 @@ class WebContent extends Model
         return $result;
     }
 
-    public function GetData($lang, $limit = 3)
+    public function getChildren($lang, $limit = false, $visibility = 1)
     {
-        $content = $this->first();
-        if (! $content) {
+        $getContent = $this->where('visibility', $visibility)->first();
+        if (! $getContent) {
             return [];
         }
 
-        $id = $content->id;
+        $id = $getContent->id;
         $language = _get_languages($lang);
-        $content = collect($content->getResponeses($content, $language))->toArray();
+        $content = collect($getContent->getResponeses($getContent, $language))->toArray();
 
-        $children = $this->children()->limit($limit)->get();
+        if ($limit) {
+            $children = $getContent->children()->limit($limit)->get();
+        } else {
+            $children = $getContent->children()->get();
+        }
 
         $children = collect($children)->map(function ($item) use ($language) {
             $data = $item->getResponeses($item, $language);

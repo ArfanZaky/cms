@@ -19,6 +19,7 @@ foreach ($permission as $key => $value) {
 }
 
 $data = session('permission_content');
+$data = collect($data)->where('is_menu', 1)->where('status', 1)->toArray();
 
 ?>
 

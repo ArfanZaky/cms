@@ -10,7 +10,6 @@
             </span>
         </div>
     </a>
-
 </div>
 <div class="col-6">
     <div class="image_list_preview position-relative">

@@ -116,11 +116,15 @@ var interval = setInterval(function() {
 
 $('#myTab3 a[data-toggle="tab"]').on('show.bs.tab', function(e) {
   let target = $(e.target).data('target_seo');
-
+  let section = $(e.target).data('target_section');
   $('.'+target)
       .addClass('active show')
       .siblings('.tab-pane.active')
       .removeClass('active show')
+  $('.'+section)
+        .addClass('active show')
+        .siblings('.tab-pane.active')
+        .removeClass('active show')
 });
 function editor_config_builder(className){
   var editor_config_builder = {
@@ -209,16 +213,16 @@ function editor_config_builder(className){
     file_picker_callback : function(callback, value, meta) {
       var x = window.innerWidth || document.documentElement.clientWidth || document.getElementsByTagName('body')[0].clientWidth;
       var y = window.innerHeight|| document.documentElement.clientHeight|| document.getElementsByTagName('body')[0].clientHeight;
-  
+
       var cmsURL = editor_config_builder.path_absolute + 'laravel-filemanager?editor=' + meta.fieldname;
       if (meta.filetype == 'image') {
         cmsURL = cmsURL + "&type=image";
       }else if(meta.filetype == 'media') {
-        cmsURL = cmsURL + "&type=video"; 
+        cmsURL = cmsURL + "&type=video";
       }else {
         cmsURL = cmsURL + "&type=file";
       }
-      
+
       tinyMCE.activeEditor.windowManager.openUrl({
         url : cmsURL,
         title : 'Filemanager',
@@ -425,7 +429,7 @@ $(document).on('click', '.confirm-delete', function(e) {
               }
               , 1000
           );
-      } 
+      }
   });
 });
 function sendOrderToServer(data) {

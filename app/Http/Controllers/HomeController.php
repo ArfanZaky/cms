@@ -60,4 +60,16 @@ class HomeController extends Controller
 
         return response()->json(['success' => 'success']);
     }
+
+    public function addSection(Request $request)
+    {
+        if ($request->type == 'add') {
+            $i = $request->lang.($request->index );
+            $lang = $request->lang;
+
+            return view('engine.include.section.form.create', compact('i','lang'))->render();
+        }
+        return "";
+
+    }
 }

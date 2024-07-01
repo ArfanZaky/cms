@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Http\Resources\LanguageResource;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
@@ -43,6 +44,16 @@ class AppServiceProvider extends ServiceProvider
     {
         Str::macro('currency', function ($price) {
             return number_format($price, 0);
+        });
+
+        Collection::macro('recursive', function () {
+            return $this->map(function ($value) {
+                if (is_array($value) || is_object($value)) {
+                    return collect($value)->recursive();
+                }
+
+                return $value;
+            });
         });
 
         $this->registerBladeDirectives();

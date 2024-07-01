@@ -26,7 +26,6 @@ class PermissionService
             $q->where('language_id', 1);
         }])
             ->whereIn('id', $permission_content)
-            ->where('is_menu', 1)
             ->orderBy('sort', 'asc')
             ->get();
 
@@ -43,10 +42,12 @@ class PermissionService
                     'sort' => $item->sort,
                     'status' => $item->status,
                     'url' => '/'.$item->url,
+                    'is_menu' => $item->is_menu,
                 ];
             });
 
             $data = \App\Helper\Helper::tree($data);
+
             $data = menu_table($data, 0, $arr = []);
         }
 

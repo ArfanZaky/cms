@@ -14,7 +14,7 @@
                       ">
                           @if($loop->last)
                               {{$breadcrumb['name']}}
-                          @else 
+                          @else
                               <a href="{{$breadcrumb['url']}}">{{$breadcrumb['name']}}</a>
                           @endif
                       </li>
@@ -22,7 +22,7 @@
                   @endif
               </ol>
           </nav>
-            <h1>content Management</h1>
+            <h1>Content Management</h1>
         </div>
         @if (session('success'))
         <div class="alert alert-success">
@@ -39,7 +39,7 @@
                 <div class="col-12">
                   <div class="card">
                     <div class="card-header">
-                        <h4>Data content</h4>
+                        <h4>Data Content</h4>
                         <div class="card-header-action">
                           <?php
                           $parent = request()->has('parent') ? request()->get('parent') : false;
@@ -65,22 +65,6 @@
                           </thead>
                           <tbody id="sort">
                             @foreach ($menu_table as $item)
-                            @php
-                                if (!$parent) {
-                                  $product = [33];
-                                  if (request()->get('component') == 'product') {
-                                    if (!in_array($item['visibility'], $product)) {
-                                      continue;
-                                    }
-                                  }else{
-                                    if (in_array($item['visibility'], $product)) {
-                                      continue;
-                                    }
-                                  }
-                                }
-                               
-                            @endphp
-
                             @if ($item['parent'] != 0)
                               @continue
                             @endif
@@ -95,7 +79,7 @@
                                 <td>{{ $item['sort'] }}</td>
                                 <td>{!! Status($item['status']) !!}</td>
                                 <td>
-                                 
+
                                   <a href="{{ \App\Helper\Helper::_view_page() . $item['url'] }}" target="_blank" class="btn btn-info ">View</a>
                                   <a href="{{ route('content.article.edit', [$item['id'], 'parent' => request()->get('parent'), 'component' => request()->get('component')]) }}" class="btn btn-primary ">Edit</a>
                                   @if (request()->has('dev'))

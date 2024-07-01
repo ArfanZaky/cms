@@ -84,6 +84,7 @@
     <script src="{{ asset("assets/modules/jquery-ui-1.9.2.custom/js/jquery-ui-1.12.1.js") }}"></script>
 
     @yield('javascript')
+    @stack('scripts')
 </body>
 
 </html>

@@ -31,7 +31,7 @@
                     @endif
                 </ol>
             </nav>
-            <h1>content Management</h1>
+            <h1>Content Management</h1>
         </div>
         {{-- if error --}}
         @if ($errors->any())
@@ -57,7 +57,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header ">
-                                    <h4>content Form</h4>
+                                    <h4>Content Form</h4>
                                 </div>
 
                                 <div class="card-body">
@@ -67,9 +67,9 @@
 
                                     <div class="tab-content" id="myTabContent2">
                                         <div class="form-group">
-                                            <label for="Parent">content Parent : </label>
+                                            <label for="Parent">Content Parent : </label>
                                             <select name="parent" id="select-picker" class="form-control input-sm show-tick select2" data-live-search="true" required>
-                                                <option value="0">- Root content</option>
+                                                <option value="0">- Root Content</option>
                                                 @if (!empty($menu_table))
                                                     @foreach($menu_table as $content)
                                                         <option value="{{ $content['id'] }}" {{ $content['id'] ==  $data->parent  ? 'selected' : '' }}>
@@ -136,6 +136,7 @@
                                             </div>
                                         <?php } ?>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -159,6 +160,7 @@
                                 </div>
                             </div>
                         </div>
+
 
 
                         <div class="col-12">
@@ -229,28 +231,49 @@
                                     <div class="col-12">
                                         <h5>Template</h5>
                                         <div class="form-group row" style="max-height: 200px;overflow: auto;"   >
-                                            @foreach(config('cms.visibility.post.content') as $keys => $values)
-                                                <div class="col-6">
-                                                    <label for="visibility">{{$keys}}</label>
-                                                    @foreach($values as $key => $value)
+                                            @php
+                                                $visibilityParentData = false;
+                                                if (!empty($parentData) && !empty(config('cms.visibility.post.detail.'.$parentData->visibility))) {
+                                                    $visibilityParentData = collect(config('cms.visibility.post.detail.'.$parentData->visibility));
+                                                }
+                                            @endphp
+                                            @if ($visibilityParentData)
+                                                @foreach($visibilityParentData as $keys => $values)
+                                                    <div class="col-12">
                                                         <div class="form-check">
-                                                            <input class="form-check-input"  {{ $data->visibility == $key ? 'checked' : '' }} type="radio" name="visibility" id="visibility2" value="{{$key}}">
-                                                            <label class="form-check-label text-nowrap " for="visibility2">
-                                                                {{$value}}
+                                                            <input class="form-check-input"  {{ $data->visibility == $keys ? 'checked' : '' }} type="radio" name="visibility" id="visibility2" value="{{$keys}}">
+                                                            <label class="form-check-label text-nowrap  " for="visibility2">
+                                                                {{$values}}
                                                             </label>
                                                         </div>
-                                                    @endforeach
-                                                </div>
-                                                {{-- add line every 4 --}}
-                                                @if(($loop->iteration % 4) == 0)
-                                                    <div class="w-100 border-bottom my-3">
-
                                                     </div>
-                                                @endif
-                                            @endforeach
+                                                @endforeach
+                                            @else
+                                                @foreach(config('cms.visibility.post.content') as $keys => $values)
+                                                    <div class="col-6">
+                                                        <label for="visibility">{{$keys}}</label>
+                                                        @foreach($values as $key => $value)
+                                                            <div class="form-check">
+                                                                <input class="form-check-input"  {{ $data->visibility == $key ? 'checked' : '' }} type="radio" name="visibility" id="visibility2" value="{{$key}}">
+                                                                <label class="form-check-label text-nowrap " for="visibility2">
+                                                                    {{$value}}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                    {{-- add line every 4 --}}
+                                                    @if(($loop->iteration % 4) == 0)
+                                                        <div class="w-100 border-bottom my-3">
+
+                                                        </div>
+                                                    @endif
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                     @include('engine.include.status.update')
+                                    @include('engine.include.set-menu.update')
+                                    @include('engine.include.date.update')
                                     {{-- Submit Button --}}
                                     <div class="col-12  text-right">
                                         @include('engine.include.submit.submit')

@@ -37,8 +37,8 @@ class ContentController extends Controller
         }])
             ->orderBy('sort', 'asc')
             ->get();
-
         $permission_content = session('permission_content');
+
         $breadcrumbs = false;
         $data = $content;
         if ($request->parent) {
@@ -65,7 +65,7 @@ class ContentController extends Controller
 
         $data_tree = [];
         foreach ($data as $key => $value) {
-            if (! in_array($value->id, $permission_content)) {
+            if (! in_array($value->id, collect($permission_content)->pluck('id')->toArray())) {
                 continue;
             }
             $data_tree[] = [
@@ -76,6 +76,7 @@ class ContentController extends Controller
                 'visibility' => $value->visibility,
                 'sort' => $value->sort,
                 'status' => $value->status,
+                'is_menu' => $value->is_menu,
                 'url' => $value->url,
             ];
         }
@@ -101,6 +102,7 @@ class ContentController extends Controller
         )->get();
 
         $breadcrumbs = false;
+        $parentData = [];
         if ($parent) {
             $content = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
@@ -108,7 +110,8 @@ class ContentController extends Controller
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());
+            $parentData = $content->where('id', $request->parent)->first();
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $parentData);
         }
 
         $data_tree = [];
@@ -119,6 +122,7 @@ class ContentController extends Controller
                 'children' => [],
                 'name' => $value->translations[0]->name,
                 'visibility' => $value->visibility,
+                'is_menu' => $value->is_menu,
                 'sort' => $value->sort,
                 'status' => $value->status,
             ];
@@ -129,7 +133,7 @@ class ContentController extends Controller
         }
         $menu_table = menu_table($data_tree_helper, 0, $data = []);
 
-        return view('engine.module.content.article.create', compact('menu_table', 'breadcrumbs'));
+        return view('engine.module.content.article.create', compact('menu_table', 'breadcrumbs', 'parentData'));
     }
 
     /**
@@ -149,8 +153,10 @@ class ContentController extends Controller
             $data = new WebContent();
             $data->parent = $request->parent;
             $data->status = $request->status;
+            $data->is_menu = $request->is_menu;
             $data->visibility = $request->visibility;
             $data->custom = $request->custom;
+            $data->publish_at = $request->publish_at;
             $data->image = ($request->image) ? $request->image : 'default.jpg';
             $data->image_sm = ($request->image_sm) ? $request->image_sm : 'default.jpg';
             $data->image_md = ($request->image_md) ? $request->image_md : 'default.jpg';
@@ -221,6 +227,7 @@ class ContentController extends Controller
             }
         )->get();
         $breadcrumbs = false;
+        $parentData = [];
         if ($parent) {
             $content = WebContent::with(['translations' => function ($q) {
                 $q->where('language_id', 1);
@@ -228,7 +235,8 @@ class ContentController extends Controller
                 ->orderBy('visibility', 'desc')
                 ->orderBy('sort', 'asc')
                 ->get();
-            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $content->where('id', $request->parent)->first());
+            $parentData = $content->where('id', $request->parent)->first();
+            $breadcrumbs = \App\Helper\Helper::_post_type_breadcrumbs('content.article', $content, $parentData);
         }
 
         $menu_table = [];
@@ -239,6 +247,7 @@ class ContentController extends Controller
                 'children' => [],
                 'name' => $value->translations[0]->name,
                 'visibility' => $value->visibility,
+                'is_menu' => $value->is_menu,
                 'sort' => $value->sort,
                 'status' => $value->status,
             ];
@@ -249,7 +258,7 @@ class ContentController extends Controller
         $data = WebContent::with('translations')->find($id);
 
         // return $data;
-        return view('engine.module.content.article.edit', compact('menu_table', 'data', 'breadcrumbs'));
+        return view('engine.module.content.article.edit', compact('menu_table', 'data', 'breadcrumbs', 'parentData'));
     }
 
     /**
@@ -272,6 +281,8 @@ class ContentController extends Controller
             $data->parent = $request->parent;
             $data->status = $request->status;
             $data->visibility = $request->visibility;
+            $data->is_menu = $request->is_menu;
+            $data->publish_at = $request->publish_at;
             $data->custom = $request->custom;
             $data->image = ($request->image) ? $request->image : 'default.jpg';
             $data->image_sm = ($request->image_sm) ? $request->image_sm : 'default.jpg';

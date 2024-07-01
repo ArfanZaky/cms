@@ -93,7 +93,7 @@ function languageSettings()
     for ($i = 0; $i < $languages; $i++) {
         ($i == 0) ? $data = 'active' : $data = '';
         $html .= '<li class="nav-item">
-                    <a class="nav-link '.$data.'" data-target_seo="seo_'.$i.'"  data-toggle="tab" href="#'.$array_languages[$i].'" role="tab" aria-controls="'.$array_languages[$i].'" aria-selected="true">'.$array_languages[$i].'</a>
+                    <a class="nav-link '.$data.'"  data-target_section="section_'.$i.'" data-target_seo="seo_'.$i.'"  data-toggle="tab" href="#'.$array_languages[$i].'" role="tab" aria-controls="'.$array_languages[$i].'" aria-selected="true">'.$array_languages[$i].'</a>
                 </li>';
     }
 
@@ -227,6 +227,7 @@ function menu_table($array, $recursive, $data, $loops = 0)
             'recursive' => $recursive,
             'name' => $separator.$icon.'&nbsp;'.$value['name'],
             'rname' => $value['name'],
+            'is_menu' => $value['is_menu'] ?? 0,
             'visibility' => $value['visibility'],
             'sort' => $value['sort'],
             'status' => $value['status'],

@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('apilogs', [App\Http\Controllers\HomeController::class, 'Apilogs'])->name('Apilogs');
     Route::get('sort', [App\Http\Controllers\HomeController::class, 'Apilogs'])->name('Apilogs');
     Route::post('sortable', [App\Http\Controllers\HomeController::class, 'sortable'])->name('sortable');
+    Route::post('add-section', [App\Http\Controllers\HomeController::class, 'addSection'])->name('addSection');
 
     // role
     Route::prefix('user')->group(function () {

@@ -22,22 +22,44 @@ return [
                     '5' => 'contact-us',
                     '6' => 'career',
                     '7' => 'blog',
-                    '8' => 'form',
+                    '8' => 'get-in-touch',
                     '9' => 'artspace',
+                    '30' => 'our-clients',
+                    '29' => 'Banner',
                 ],
-                'Detail' => [
+                'Default' => [
+                    '50' => 'Default',
+                ],
+            ],
+            'detail' => [
+                '3' => [
                     '20' => 'project-detail',
-                    '21' => 'career-detail',
+                ],
+                '6' => [
+                    '31' => 'form-career',
+                    '32' => 'form-career-with-portofolio',
+                ],
+                '7' => [
                     '22' => 'blog-detail',
-                    '23' => 'interior-design',
-                    '24' => 'art-work',
+                ],
+                '4' => [
                     '25' => 'podcast',
                     '26' => 'video',
                     '27' => 'publication',
                     '28' => 'youtube',
                 ],
-                'Default' => [
+                '9' => [
+                    '23' => 'interior-design',
+                    '24' => 'art-work',
+                ],
+                '2' => [
                     '50' => 'Default',
+                ],
+                '8' => [
+                    '33' => 'request-consultation',
+                    '34' => 'feature-in-media',
+                    '35' => 'become-supplier',
+                    '36' => 'none-of-above',
                 ],
             ],
             'slug' => [
@@ -49,10 +71,9 @@ return [
                 '5' => 'contact-us',
                 '6' => 'career',
                 '7' => 'blog',
-                '8' => 'form',
+                '8' => 'get-in-touch',
                 '9' => 'artspace',
                 '20' => 'project-detail',
-                '21' => 'career-detail',
                 '22' => 'blog-detail',
                 '23' => 'interior-design',
                 '24' => 'art-work',
@@ -60,6 +81,10 @@ return [
                 '26' => 'video',
                 '27' => 'publication',
                 '28' => 'youtube',
+                '29' => 'banner',
+                '30' => 'our-clients',
+                '31' => 'form-career',
+                '32' => 'form-career-with-portofolio',
                 '50' => 'Default',
             ],
         ],

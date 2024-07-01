@@ -32,7 +32,10 @@ class GlobalController extends BaseController
     {
         try {
             $language = _get_languages($languages);
-
+            $section['banner'] = ( new WebContent())->getChildren($languages, 3, 29);
+            $section['our_design'] = collect(( new WebContent())->getChildren($languages, 3, 0))->recursive()?->get('items')?->first();
+            $section['artspace'] = ( new WebContent())->getChildren($languages, 3, 9);
+            $section['our_clients'] = ( new WebContent())->getChildren($languages, 5, 30);
             $section['meta'] = [
                 'title' => \App\Helper\Helper::_setting_code('web_title'),
                 'description' => \App\Helper\Helper::_setting_code('web_description'),
